@@ -921,9 +921,11 @@ footer{margin-top:60px;padding-top:20px;font-size:13.5px;color:var(--ink-muted)}
     note.textContent = n + (n===1?' section matches ':' sections match ') + '"' + find.value.trim() + '". Clear the box to see everything again.';
   });
 
-  function sendHeight(){ try{ window.parent.postMessage({id:'cvrn-study-notes',height:document.documentElement.scrollHeight},'*'); }catch(e){} }
+  function sendHeight(){ try{ window.parent.postMessage({type:'cvrn:height', id:'cvrn-study-notes', height:document.documentElement.scrollHeight}, '*'); }catch(e){} }
   if(window.ResizeObserver) new ResizeObserver(sendHeight).observe(document.body);
   window.addEventListener('load',sendHeight); window.addEventListener('resize',sendHeight);
+  document.addEventListener('click',function(){ setTimeout(sendHeight,60); });
+  window.addEventListener('message',function(e){ if(e.data && e.data.type==='cvrn:ping') sendHeight(); });
 })();
 </script>
 </body>

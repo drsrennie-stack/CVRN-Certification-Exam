@@ -285,25 +285,25 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 <section class="tools" aria-labelledby="toolsHd">
   <p class="hd" id="toolsHd">Study tools</p>
   <div class="toolgrid">
-    <a class="tcard" data-c="gold" href="cvrn-mastery-os.html" aria-current="page">
+    <a class="tcard" data-c="gold" href="cvrn-mastery-os.html" target="_top" aria-current="page">
       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#101820" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4.5v15"/><path d="M12 6.5A3 3 0 0 0 6.6 8 2.7 2.7 0 0 0 5 12a2.7 2.7 0 0 0 1.6 4A3 3 0 0 0 12 17.5"/><path d="M12 6.5A3 3 0 0 1 17.4 8 2.7 2.7 0 0 1 19 12a2.7 2.7 0 0 1-1.6 4A3 3 0 0 1 12 17.5"/></svg></span>
       <h3>Mastery OS</h3>
       <p>Weak spots, today&rsquo;s plan, exam pace.</p>
       <span class="go">You are here</span>
     </a>
-    <a class="tcard" data-c="terra" href="ecg-lab.html">
+    <a class="tcard" data-c="terra" href="ecg-lab.html" target="_top">
       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#101820" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12h3l1.6-4 2.6 8.5L12.6 8l1.5 4h7.4"/></svg></span>
       <h3>ECG Lab</h3>
       <p>Rhythms and 12-leads. Freeze and measure.</p>
       <span class="go">Open &rarr;</span>
     </a>
-    <a class="tcard" data-c="navy" href="cvrn-mastery-os.html#p-gap">
+    <a class="tcard" data-c="navy" href="cvrn-mastery-os.html#p-gap" target="_top">
       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#101820" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/><path d="M12 1.8v3M12 19.2v3M1.8 12h3M19.2 12h3"/></svg></span>
       <h3>Gap Finder</h3>
       <p>Find the holes before you study.</p>
       <span class="go">Open &rarr;</span>
     </a>
-    <a class="tcard" data-c="deep" href="cvrn-mastery-os.html#p-ex">
+    <a class="tcard" data-c="deep" href="cvrn-mastery-os.html#p-ex" target="_top">
       <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#101820" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4.5h6a1 1 0 0 1 1 1V7H8V5.5a1 1 0 0 1 1-1z"/><path d="M8.8 12.4l1.9 1.9 3.9-3.9"/><path d="M9 17.5h6"/></svg></span>
       <h3>Practice Exams</h3>
       <p>Ten scored forms. A real estimate.</p>
@@ -771,9 +771,11 @@ if(S.date) renderPlan();
 renderForms();
 
 /* iframe height sender */
-function sendHeight(){ try{ window.parent.postMessage({id:'cvrn-mastery-os',height:document.documentElement.scrollHeight},'*'); }catch(e){} }
+function sendHeight(){ try{ window.parent.postMessage({type:'cvrn:height', id:'cvrn-mastery-os', height:document.documentElement.scrollHeight}, '*'); }catch(e){} }
 if(window.ResizeObserver) new ResizeObserver(sendHeight).observe(document.body);
 window.addEventListener('load',sendHeight); window.addEventListener('resize',sendHeight);
+  document.addEventListener('click',function(){ setTimeout(sendHeight,60); });
+  window.addEventListener('message',function(e){ if(e.data && e.data.type==='cvrn:ping') sendHeight(); });
 })();
 </script>
 </body>

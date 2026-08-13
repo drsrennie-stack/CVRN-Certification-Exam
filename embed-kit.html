@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVRN Embed Kit | MedMasters Collaborative</title>
+<meta name="description" content="Copy-paste iframe snippets for embedding the CVRN tools in Kajabi or any host page, with the parent-side auto-resizer.">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A1322; --navy-tint:#EDF1F3; --ink:#0A1322; --ink-soft:#14202F; --ink-muted:#3D4860;
+  --gold:#D4A24C; --gold-text:#6E5018; --terra:#C25A3E; --terra-text:#7A2F18; --teal-text:#2C5F66;
+  --rule:#B8BEC8; --rule-soft:#DCE0E6; --white:#fff; --off-white:#fafaf9;
+  --card:0 1px 3px rgba(10,19,34,.08), 0 1px 2px rgba(10,19,34,.05);
+  --lift:0 6px 16px rgba(10,19,34,.10), 0 3px 6px rgba(10,19,34,.06);
+  --r:4px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+em,i,cite,dfn,var{font-style:normal}
+body{font-family:'Atkinson Hyperlegible',system-ui,sans-serif;background:var(--white);color:var(--ink);font-size:16.5px;line-height:1.7}
+h1,h2,h3,h4,.eyebrow,.badge,button,code,pre{font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+.skip{position:absolute;left:-9999px;background:var(--navy);color:#fff;padding:12px 18px;font-weight:700;z-index:99}
+.skip:focus{left:0;top:0}
+:focus-visible{outline:3px solid var(--terra-text);outline-offset:3px;border-radius:var(--r)}
+.wrap{max-width:900px;margin:0 auto;padding:34px 24px 90px}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra-text);font-weight:700;margin-bottom:10px}
+h1{font-size:clamp(28px,4.6vw,38px);font-weight:800;letter-spacing:-.02em;line-height:1.14;margin-bottom:10px}
+.lede{color:var(--ink-muted);font-size:17px;max-width:64ch;margin-bottom:14px}
+h2{font-size:23px;font-weight:800;letter-spacing:-.015em;margin:44px 0 8px}
+h3{font-size:17px;font-weight:700;margin:26px 0 8px}
+p{margin-bottom:13px}
+.badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:4px 11px;border-radius:99px;background:var(--navy);color:#fff}
+ol.steps{list-style:none;counter-reset:st;margin:0 0 18px}
+ol.steps li{counter-increment:st;position:relative;padding:9px 0 9px 40px}
+ol.steps li::before{content:counter(st);position:absolute;left:0;top:9px;width:25px;height:25px;border-radius:99px;background:var(--navy);color:#fff;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;line-height:1;font-family:'Plus Jakarta Sans',sans-serif}
+.snip{background:var(--white);border:1px solid var(--rule-soft);border-radius:var(--r);box-shadow:var(--card);padding:18px 20px;margin:14px 0 22px}
+.snip .hd{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
+.snip h3{margin:0;font-size:16px}
+pre{background:var(--navy);color:#EDF1F3;border-radius:var(--r);padding:15px 17px;overflow-x:auto;font-size:13px;line-height:1.6;white-space:pre;tab-size:2}
+pre code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.btn{font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:700;padding:10px 15px;min-height:44px;border-radius:var(--r);cursor:pointer;border:1px solid var(--rule);background:var(--white);color:var(--ink);transition:box-shadow 180ms ease,transform 180ms ease,border-color 180ms ease}
+.btn:hover{box-shadow:var(--lift);transform:translateY(-1px);border-color:var(--navy)}
+.btn[data-done="1"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.note{background:var(--white);border:1px solid var(--rule-soft);border-radius:var(--r);box-shadow:var(--card);padding:16px 18px;margin:18px 0}
+.note h4{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--terra-text);font-weight:700;margin-bottom:6px;font-family:'Plus Jakarta Sans',sans-serif}
+.note p:last-child{margin-bottom:0}
+table{width:100%;border-collapse:collapse;font-size:15px;margin:8px 0 20px;background:var(--white)}
+th{background:var(--navy);color:#fff;text-align:left;padding:10px 12px;font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700}
+td{padding:10px 12px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:nth-child(even) td{background:var(--off-white)}
+code.inline{background:var(--navy-tint);padding:2px 6px;border-radius:3px;font-size:14px}
+.field{margin:0 0 16px;max-width:520px}
+.field label{display:block;font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-muted);font-weight:700;margin-bottom:6px}
+.field input{width:100%;font-family:inherit;font-size:15px;padding:11px 13px;min-height:44px;border:1px solid var(--rule);border-radius:var(--r)}
+footer{margin-top:56px;padding-top:20px;font-size:13.5px;color:var(--ink-muted)}
+@media(prefers-reduced-motion:reduce){*{transition-duration:1ms !important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="wrap">
+<header>
+  <p class="eyebrow">ECG &amp; CVRN Review Course &middot; MedMasters Collaborative</p>
+  <h1>Embed Kit</h1>
+  <p class="lede">Copy-paste snippets for putting the CVRN tools inside Kajabi, Canvas, or any host page. The tools already send their height to the parent; this page gives you the receiving half plus the iframe markup.</p>
+</header>
+
+<main id="main">
+
+<h2>How it works</h2>
+<ol class="steps">
+  <li>Each tool measures its own height and posts it to the parent window as <code class="inline">{type:'cvrn:height', id:'...', height:1234}</code>, on load, on resize, on any click, and whenever a ResizeObserver fires.</li>
+  <li><code class="inline">cvrn-embed.js</code> sits on the host page, listens for that message, and sets the matching iframe's height. It only accepts messages from origins on its allow list.</li>
+  <li>The result is a tool with no inner scrollbar. The host page scrolls, the iframe does not.</li>
+</ol>
+
+<h2>Step one, set your base URL</h2>
+<div class="field">
+  <label for="base">Where the tools are published</label>
+  <input type="text" id="base" value="https://drsrennie-stack.github.io/cvrn/" spellcheck="false">
+</div>
+<p>Change this and every snippet below updates. Whatever you set here also needs to appear in the <code class="inline">ALLOWED_ORIGINS</code> array inside <code class="inline">cvrn-embed.js</code>.</p>
+
+<h2>Step two, add the resizer once</h2>
+<p>In Kajabi: <strong>Settings &rarr; Site Details &rarr; Custom Code &rarr; Footer</strong>. Add it once for the whole site, not once per page.</p>
+<div class="snip">
+  <div class="hd"><h3>Site-wide footer code</h3><button class="btn" type="button" data-copy="s-resizer">Copy</button></div>
+  <pre><code id="s-resizer">&lt;script src="BASEcvrn-embed.js" defer&gt;&lt;/script&gt;</code></pre>
+</div>
+<p>If you would rather not host the file, paste the contents of <code class="inline">cvrn-embed.js</code> between <code class="inline">&lt;script&gt;</code> tags in the same footer block instead.</p>
+
+<h2>Step three, drop an iframe where you want the tool</h2>
+<p>In Kajabi, use a <strong>Custom Code</strong> block on the page or lesson. One block per tool.</p>
+
+<div class="snip">
+  <div class="hd"><h3>Mastery OS <span class="badge">plan, gap finder, exams</span></h3><button class="btn" type="button" data-copy="s-os">Copy</button></div>
+  <pre><code id="s-os">&lt;iframe
+  data-cvrn-embed
+  src="BASEcvrn-mastery-os.html"
+  title="CVRN Mastery OS"
+  style="width:100%;border:0;height:1400px;display:block"
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"&gt;&lt;/iframe&gt;</code></pre>
+</div>
+
+<div class="snip">
+  <div class="hd"><h3>ECG Learning Lab <span class="badge">live monitor</span></h3><button class="btn" type="button" data-copy="s-ecg">Copy</button></div>
+  <pre><code id="s-ecg">&lt;iframe
+  data-cvrn-embed
+  src="BASEecg-lab.html"
+  title="ECG Learning Lab"
+  style="width:100%;border:0;height:1600px;display:block"
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"&gt;&lt;/iframe&gt;</code></pre>
+</div>
+
+<div class="snip">
+  <div class="hd"><h3>Study Notes <span class="badge">expandable</span></h3><button class="btn" type="button" data-copy="s-notes">Copy</button></div>
+  <pre><code id="s-notes">&lt;iframe
+  data-cvrn-embed
+  src="BASEstudy-notes.html"
+  title="CVRN Study Notes"
+  style="width:100%;border:0;height:1200px;display:block"
+  loading="lazy"
+  referrerpolicy="no-referrer-when-downgrade"&gt;&lt;/iframe&gt;</code></pre>
+</div>
+
+<h3>Deep links</h3>
+<p>The Mastery OS accepts a topic parameter, which is what the QR codes in the study notes use. Swap the domain code for any of D1 through D14.</p>
+<div class="snip">
+  <div class="hd"><h3>Heart failure question bank, opened directly</h3><button class="btn" type="button" data-copy="s-topic">Copy</button></div>
+  <pre><code id="s-topic">&lt;iframe
+  data-cvrn-embed
+  src="BASEcvrn-mastery-os.html?topic=D6"
+  title="Heart failure question bank"
+  style="width:100%;border:0;height:1200px;display:block"
+  loading="lazy"&gt;&lt;/iframe&gt;</code></pre>
+</div>
+
+<h2>Reference</h2>
+<table>
+  <thead><tr><th>Tool</th><th>File</th><th>Message id</th><th>Starting height</th></tr></thead>
+  <tbody>
+    <tr><td>Mastery OS</td><td>cvrn-mastery-os.html</td><td>cvrn-mastery-os</td><td>1400px</td></tr>
+    <tr><td>ECG Learning Lab</td><td>ecg-lab.html</td><td>cvrn-ecg-lab</td><td>1600px</td></tr>
+    <tr><td>Study Notes</td><td>study-notes.html</td><td>cvrn-study-notes</td><td>1200px</td></tr>
+  </tbody>
+</table>
+<p>The starting height is only what shows before the first message arrives. Set it close to the real height so the page does not visibly jump if a learner is on a slow connection.</p>
+
+<div class="note">
+  <h4>Things that will bite you</h4>
+  <p><strong>Mixed content.</strong> The host page and the tool must both be https, or the browser blocks the frame silently.</p>
+  <p><strong>Origin allow list.</strong> If the height never updates, the origin in <code class="inline">ALLOWED_ORIGINS</code> does not match where the tools are actually served. It must be scheme plus host with no trailing slash, for example <code class="inline">https://drsrennie-stack.github.io</code>.</p>
+  <p><strong>Storage.</strong> Progress, plans, and read state are saved in the browser under the iframe's own origin, not the host page's. A learner who studies on the Kajabi page and then opens the tool directly will see two separate sets of progress.</p>
+  <p><strong>Links out.</strong> The study tool cards use <code class="inline">target="_top"</code>, so clicking one navigates the whole Kajabi page rather than loading a tool inside a tool.</p>
+  <p><strong>Printing.</strong> Browsers print the host page, not the framed document. For the study notes, give learners a direct link alongside the embed so Print or Save as PDF produces the full document.</p>
+</div>
+
+<h2>Live check</h2>
+<p>This page runs the resizer on itself. If the frame below sizes to its content with no inner scrollbar, the pair is working.</p>
+<iframe data-cvrn-embed src="study-notes.html" title="Live embed test, CVRN Study Notes"
+  style="width:100%;border:1px solid var(--rule-soft);border-radius:4px;height:700px;display:block"></iframe>
+
+</main>
+
+<footer>
+  <p>CVRN Embed Kit. Prepared by Dr. Sharilyn Rennie for the ECG &amp; CVRN Review Course, MedMasters Collaborative.</p>
+</footer>
+</div>
+
+<script src="cvrn-embed.js" defer></script>
+<script>
+(function(){
+  "use strict";
+  var base = document.getElementById('base');
+  var blocks = Array.prototype.slice.call(document.querySelectorAll('pre code'));
+  var originals = blocks.map(function(b){ return b.textContent; });
+
+  function render(){
+    var v = base.value.trim();
+    if(v && v.slice(-1) !== '/') v += '/';
+    blocks.forEach(function(b,i){ b.textContent = originals[i].split('BASE').join(v); });
+  }
+  base.addEventListener('input', render);
+  render();
+
+  document.querySelectorAll('[data-copy]').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var el = document.getElementById(btn.getAttribute('data-copy'));
+      var txt = el.textContent;
+      function done(){
+        btn.textContent = 'Copied';
+        btn.setAttribute('data-done','1');
+        setTimeout(function(){ btn.textContent='Copy'; btn.removeAttribute('data-done'); }, 1600);
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(txt).then(done, fallback);
+      } else { fallback(); }
+      function fallback(){
+        var ta=document.createElement('textarea');
+        ta.value=txt; ta.style.position='fixed'; ta.style.left='-9999px';
+        document.body.appendChild(ta); ta.select();
+        try{ document.execCommand('copy'); done(); }catch(e){}
+        document.body.removeChild(ta);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
