@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ECG Learning Lab | MedMasters Collaborative</title>
+<meta name="description" content="Live ECG monitor with freeze and caliper measurement, 12-lead pattern viewer, and DOK-tiered practice. Part of the ECG and CVRN Review Course.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Cardiovascular house theme: oxblood base, arterial trace */
+  --base:#1B060B; --deepest:#120307; --panel:#2A0C13; --panel-2:#37121B;
+  --line:#5C2130; --line-soft:#421622;
+  --ink:#FCEEF0; --ink-soft:#E4C4CB; --ink-mute:#C0949E;
+  --gold:#C9A14A; --gold-hi:#E4BD68; --terra:#C4705C; --terra-hi:#E39684;
+  --trace:#FF8296; --trace-dim:#8A3A48;
+  --alert:#FFB27A; --paced:#8FD0FF;
+  --grid-fine:rgba(255,130,150,.085); --grid-bold:rgba(255,130,150,.20);
+  --radius:14px;
+  --shadow-rest:0 1px 3px rgba(0,0,0,.35);
+  --shadow-hover:0 8px 20px rgba(0,0,0,.45);
+}
+html[data-paper="on"]{
+  --base:#F7F0EF; --deepest:#EFE4E3; --panel:#FFFFFF; --panel-2:#FBF8F4;
+  --line:#DCC8C8; --line-soft:#EBDCDC;
+  --ink:#161C28; --ink-soft:#3D4759; --ink-mute:#5C6478;
+  --trace:#101418; --trace-dim:#9AA3B0;
+  --grid-fine:rgba(196,60,72,.22); --grid-bold:rgba(196,60,72,.45);
+  --shadow-rest:0 1px 3px rgba(0,0,0,.10);
+  --shadow-hover:0 8px 16px rgba(0,0,0,.14);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--base); color:var(--ink);
+  font-family:'Plus Jakarta Sans',system-ui,-apple-system,Segoe UI,sans-serif;
+  font-size:16px; line-height:1.55; -webkit-font-smoothing:antialiased;
+}
+.skip{position:absolute;left:-9999px;top:0;background:var(--gold);color:#141414;padding:12px 18px;border-radius:0 0 10px 0;font-weight:700;z-index:999}
+.skip:focus{left:0}
+:focus-visible{outline:3px solid var(--gold-hi);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding:28px 20px 64px}
+
+.eyebrow{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra-hi);font-weight:700;margin:0 0 10px}
+html[data-paper="on"] .eyebrow{color:#8C1D2E}
+h1{font-size:clamp(28px,4vw,40px);font-weight:800;margin:0 0 6px;letter-spacing:-.02em}
+.subhead{font-family:'Plus Jakarta Sans';font-weight:600;font-size:19px;color:var(--terra-hi);margin:0 0 8px}
+html[data-paper="on"] .subhead{color:#8C1D2E}
+.usage{color:var(--ink-soft);max-width:70ch;margin:0 0 26px;font-size:15px}
+h2{font-size:20px;font-weight:700;margin:0 0 4px;letter-spacing:-.01em}
+h3{font-size:15px;font-weight:700;margin:0 0 8px;letter-spacing:-.01em}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-rest);padding:20px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.tab{background:transparent;border:1px solid var(--line);color:var(--ink-soft);font-family:inherit;font-size:14px;font-weight:600;padding:9px 16px;border-radius:999px;cursor:pointer;transition:background 180ms ease,color 180ms ease,border-color 180ms ease}
+.tab:hover{border-color:var(--gold);color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--gold);border-color:var(--gold);color:#141414}
+.panel[hidden]{display:none}
+
+.toolbar{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;margin:0 0 16px}
+.field{display:flex;flex-direction:column;gap:6px;min-width:150px}
+.field label{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+select,input[type="text"],input[type="number"]{
+  background:var(--panel-2);border:1px solid var(--line);color:var(--ink);
+  font-family:inherit;font-size:14px;padding:9px 11px;border-radius:9px;min-height:42px;width:100%
+}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+button.act{
+  background:var(--panel-2);border:1px solid var(--line);color:var(--ink);
+  font-family:inherit;font-size:14px;font-weight:600;padding:10px 16px;border-radius:9px;cursor:pointer;min-height:42px;
+  transition:transform 200ms ease,box-shadow 200ms ease,border-color 200ms ease,background 200ms ease
+}
+button.act:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+button.act[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#141414}
+button.primary{background:var(--gold);border-color:var(--gold);color:#141414}
+button.primary:hover{background:var(--gold-hi);border-color:var(--gold-hi)}
+
+.monitorShell{display:grid;grid-template-columns:1fr 190px;gap:14px}
+@media(max-width:860px){.monitorShell{grid-template-columns:1fr}}
+.screen{position:relative;background:var(--deepest);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+html[data-paper="on"] .screen{background:#FFFBF7}
+.screen canvas{display:block;width:100%;height:auto;touch-action:none}
+.leadTag{position:absolute;top:10px;left:14px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;letter-spacing:.12em;color:var(--trace);text-transform:uppercase}
+.calTag{position:absolute;top:10px;right:14px;font-family:'DM Sans',sans-serif;font-size:11px;color:var(--ink-mute);letter-spacing:.08em}
+.frozen{position:absolute;top:36px;left:14px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);display:none}
+.screen[data-frozen="1"] .frozen{display:block}
+
+.vitals{display:flex;flex-direction:column;gap:10px}
+.vital{background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+.vital .lab{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.vital .val{font-size:27px;font-weight:800;line-height:1.15;letter-spacing:-.02em}
+.vital .unit{font-size:12px;font-weight:600;color:var(--ink-mute);margin-left:4px}
+.v-hr .val{color:var(--trace)}
+.v-spo2 .val{color:var(--paced)}
+.v-bp .val{color:var(--terra-hi)}
+html[data-paper="on"] .v-hr .val{color:#8C1D2E}
+html[data-paper="on"] .v-spo2 .val{color:#1F5C8C}
+html[data-paper="on"] .v-bp .val{color:#8C1D2E}
+
+.readout{margin-top:14px;background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:14px 16px}
+.readout dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px 18px;margin:0}
+.readout dt{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700;margin:0 0 2px}
+.readout dd{margin:0;font-size:20px;font-weight:700;letter-spacing:-.01em}
+.hint{color:var(--ink-mute);font-size:13px;margin:10px 0 0}
+
+.leadGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media(max-width:900px){.leadGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.leadGrid{grid-template-columns:1fr}}
+.leadCell{position:relative;background:var(--deepest);border:1px solid var(--line-soft);border-radius:9px;overflow:hidden}
+html[data-paper="on"] .leadCell{background:#FFFBF7}
+.leadCell canvas{display:block;width:100%;height:auto}
+.leadCell .nm{position:absolute;top:6px;left:9px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;color:var(--trace);letter-spacing:.08em}
+html[data-paper="on"] .leadCell .nm{color:#101418}
+.stripCell{margin-top:8px}
+
+.q{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:18px;margin-top:16px}
+.qstem{font-size:16px;font-weight:600;margin:0 0 14px;line-height:1.5}
+.opts{display:flex;flex-direction:column;gap:9px;margin:0;padding:0;list-style:none}
+.opt{display:flex;gap:11px;align-items:flex-start;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;transition:transform 200ms ease,box-shadow 200ms ease,border-color 200ms ease}
+.opt:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+.opt input{margin:3px 0 0;accent-color:var(--gold);width:18px;height:18px;flex:0 0 auto}
+.opt span{font-size:15px}
+.confRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.confRow .lab{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.fb{margin-top:14px;border-radius:10px;padding:14px 16px;font-size:15px;line-height:1.55;border:1px solid var(--line);background:var(--panel)}
+.fb[data-k="right"]{border-color:var(--gold)}
+.fb[data-k="wrong"]{border-color:var(--terra)}
+.fb[data-k="misc"]{border-color:var(--alert)}
+.fb strong{display:block;margin-bottom:5px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;font-family:'DM Sans',sans-serif}
+.measGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:0 0 12px}
+
+.mastery{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.mCard{background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:14px}
+.mCard[data-state="locked"]{border-style:dashed;border-color:var(--ink-mute);opacity:.62}
+.mCard[data-state="unlocked"]{border-color:var(--gold)}
+.mCard[data-state="done"]{border-color:var(--trace);background:rgba(255,130,150,.09)}
+html[data-paper="on"] .mCard[data-state="done"]{border-color:#8C1D2E;background:rgba(140,29,46,.08)}
+.mCard h3{margin:0 0 3px;font-size:14px}
+.mCard .st{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.bar{height:7px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;background:var(--gold);border-radius:99px;transition:width 400ms ease}
+.mCard[data-state="done"] .bar i{background:var(--trace)}
+html[data-paper="on"] .mCard[data-state="done"] .bar i{background:#8C1D2E}
+
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.note{font-size:13px;color:var(--ink-mute);margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--ink-mute);font-size:13px}
+@media(prefers-reduced-motion:reduce){*{transition-duration:1ms !important;animation-duration:1ms !important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<div class="wrap">
+<header>
+  <p class="eyebrow">ECG &amp; CVRN Review Course &middot; MedMasters Collaborative</p>
+  <h1>ECG Learning Lab</h1>
+  <p class="subhead">Live monitor, freeze and measure, 12-lead patterns</p>
+  <p class="usage">Run a rhythm on the monitor, freeze the sweep when you see something, then drop calipers on the strip and measure it. The 12-lead viewer renders the same generated beat across all twelve leads so you can see how one event looks from twelve angles. Practice runs in four depth levels, from naming a rhythm to managing a patient whose rhythm is changing.</p>
+</header>
+
+<main id="main">
+
+<div class="tabs" role="tablist" aria-label="Lab sections">
+  <button class="tab" role="tab" id="tab-mon" aria-controls="p-mon" aria-selected="true">Monitor</button>
+  <button class="tab" role="tab" id="tab-12" aria-controls="p-12" aria-selected="false">12-Lead</button>
+  <button class="tab" role="tab" id="tab-pr" aria-controls="p-pr" aria-selected="false">Practice</button>
+  <button class="tab" role="tab" id="tab-ms" aria-controls="p-ms" aria-selected="false">Mastery</button>
+  <button class="act" id="paperBtn" aria-pressed="false" style="margin-left:auto">Paper view</button>
+</div>
+
+<!-- ============ MONITOR ============ -->
+<section class="panel" id="p-mon" role="tabpanel" aria-labelledby="tab-mon">
+  <div class="toolbar">
+    <div class="field">
+      <label for="rhySel">Rhythm</label>
+      <select id="rhySel"></select>
+    </div>
+    <div class="field" style="min-width:120px">
+      <label for="rateIn">Rate override</label>
+      <input type="number" id="rateIn" min="20" max="250" step="1" placeholder="auto">
+    </div>
+    <div class="field" style="min-width:120px">
+      <label for="gainSel">Gain</label>
+      <select id="gainSel">
+        <option value="0.5">Half (5 mm/mV)</option>
+        <option value="1" selected>Standard (10 mm/mV)</option>
+        <option value="2">Double (20 mm/mV)</option>
+      </select>
+    </div>
+    <div class="btnrow">
+      <button class="act primary" id="runBtn" aria-pressed="true">Freeze</button>
+      <button class="act" id="calBtn" aria-pressed="false">Calipers</button>
+      <button class="act" id="clrBtn">Clear sweep</button>
+    </div>
+  </div>
+
+  <div class="monitorShell">
+    <div class="screen" id="screen" data-frozen="0">
+      <canvas id="mon" width="1600" height="520" role="img" aria-label="Live electrocardiogram monitor strip"></canvas>
+      <span class="leadTag" id="leadTag">Lead II</span>
+      <span class="calTag">25 mm/s</span>
+      <span class="frozen">Frozen</span>
+    </div>
+    <div class="vitals">
+      <div class="vital v-hr"><span class="lab">HR</span><div><span class="val" id="vHR">75</span><span class="unit">bpm</span></div></div>
+      <div class="vital v-spo2"><span class="lab">SpO2</span><div><span class="val" id="vSp">97</span><span class="unit">%</span></div></div>
+      <div class="vital v-bp"><span class="lab">NIBP</span><div><span class="val" id="vBP" style="font-size:22px">118/72</span></div></div>
+      <div class="vital"><span class="lab">Rhythm</span><div style="font-size:14px;font-weight:700;margin-top:3px" id="vRh">Normal sinus</div></div>
+    </div>
+  </div>
+
+  <div class="readout">
+    <h3>Caliper measurement</h3>
+    <dl aria-live="polite" id="measOut">
+      <div><dt>Interval</dt><dd id="mMs">&mdash;</dd></div>
+      <div><dt>Small boxes</dt><dd id="mBox">&mdash;</dd></div>
+      <div><dt>Rate if R to R</dt><dd id="mRate">&mdash;</dd></div>
+      <div><dt>Amplitude</dt><dd id="mMv">&mdash;</dd></div>
+    </dl>
+    <p class="hint" id="calHint">Turn calipers on, then drag either marker across the frozen strip. Keyboard: tab to a marker, arrow keys move it, hold shift for fine steps.</p>
+  </div>
+  <p class="note">One small box is 40 ms at 25 mm per second. One large box is 200 ms. At standard gain, 10 mm of height is 1 mV.</p>
+</section>
+
+<!-- ============ 12-LEAD ============ -->
+<section class="panel" id="p-12" role="tabpanel" aria-labelledby="tab-12" hidden>
+  <div class="toolbar">
+    <div class="field" style="min-width:250px">
+      <label for="patSel">Pattern</label>
+      <select id="patSel"></select>
+    </div>
+    <div class="btnrow">
+      <button class="act" id="showFind" aria-expanded="false" aria-controls="findBox">Show findings</button>
+    </div>
+  </div>
+  <div class="leadGrid" id="leadGrid"></div>
+  <div class="leadCell stripCell">
+    <canvas id="rhythmStrip" width="1600" height="200" role="img" aria-label="Rhythm strip, lead two"></canvas>
+    <span class="nm">II</span>
+  </div>
+  <div class="q" id="findBox" hidden>
+    <h3 id="findTitle">Findings</h3>
+    <p class="qstem" id="findBody" style="font-weight:400"></p>
+  </div>
+  <p class="note">Tracings here are synthesized from a vector model so the teaching pattern is clean and repeatable. They show what a pattern looks like, not what a specific patient looked like. Before any high-stakes item goes live, swap in a real de-identified tracing.</p>
+</section>
+
+<!-- ============ PRACTICE ============ -->
+<section class="panel" id="p-pr" role="tabpanel" aria-labelledby="tab-pr" hidden>
+  <div class="toolbar">
+    <div class="field" style="min-width:300px">
+      <label for="dokSel">Depth level</label>
+      <select id="dokSel">
+        <option value="1">DOK 1 &mdash; Name it. Recognition from the strip.</option>
+        <option value="2" selected>DOK 2 &mdash; Measure it. Calipers and intervals.</option>
+        <option value="3">DOK 3 &mdash; Decide. Rhythm plus patient.</option>
+        <option value="4">DOK 4 &mdash; Manage. A case that changes on you.</option>
+      </select>
+    </div>
+    <div class="btnrow"><button class="act primary" id="newQ">New question</button></div>
+  </div>
+
+  <div class="screen" id="pScreen" data-frozen="1" style="margin-bottom:4px">
+    <canvas id="pMon" width="1600" height="380" role="img" aria-label="Practice electrocardiogram strip"></canvas>
+    <span class="leadTag" id="pLeadTag">Lead II</span>
+    <span class="calTag">25 mm/s &middot; 10 mm/mV</span>
+  </div>
+  <div class="btnrow" style="margin:10px 0 0">
+    <button class="act" id="pCalBtn" aria-pressed="false">Calipers</button>
+    <span class="hint" id="pMeas" aria-live="polite" style="align-self:center;margin:0">&mdash;</span>
+  </div>
+
+  <div class="q" id="qBox">
+    <p class="qstem" id="qStem">Press New question to begin.</p>
+    <div id="qBody"></div>
+    <div class="confRow" id="confRow" hidden>
+      <span class="lab">How sure are you?</span>
+      <button class="act" data-conf="1" aria-pressed="false">Sure</button>
+      <button class="act" data-conf="0" aria-pressed="false">Not sure</button>
+      <button class="act primary" id="submitQ">Submit</button>
+    </div>
+    <div class="fb" id="fb" hidden></div>
+  </div>
+</section>
+
+<!-- ============ MASTERY ============ -->
+<section class="panel" id="p-ms" role="tabpanel" aria-labelledby="tab-ms" hidden>
+  <h2>ECG spine mastery</h2>
+  <p class="usage" style="margin-bottom:18px">These five strands are the ECG spine from the competency framework. They write to the same browser store Mastery OS reads, so progress here shows up on the main dashboard.</p>
+  <div class="mastery" id="mastery"></div>
+  <div class="btnrow" style="margin-top:20px"><button class="act" id="resetProg">Reset lab progress</button></div>
+  <p class="note" id="storeNote">Progress is stored in this browser only. Nothing is sent anywhere and no identifying information is recorded.</p>
+</section>
+
+</main>
+
+<footer>
+  <p>ECG Learning Lab, prototype v0.1. Prepared by Dr. Sharilyn Rennie for the ECG &amp; CVRN Review Course. Teaching tool only, not for clinical decision making.</p>
+</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ============================================================
+   1. WAVEFORM ENGINE
+   Beats are sums of Gaussians. Every morphology is a list of
+   {a: amplitude mV, mu: seconds from anchor, sig: width}.
+   ============================================================ */
+var G = {
+  p:        [{a:0.13,mu:0,sig:0.026}],
+  pInv:     [{a:-0.11,mu:0,sig:0.024}],
+  pFlat:    [{a:0.03,mu:0,sig:0.030}],
+  pTall:    [{a:0.26,mu:0,sig:0.026}],
+  qrs:      [{a:-0.07,mu:0.000,sig:0.008},{a:1.10,mu:0.028,sig:0.0105},{a:-0.26,mu:0.058,sig:0.012}],
+  qrsWide:  [{a:-0.18,mu:0.000,sig:0.019},{a:1.35,mu:0.052,sig:0.028},{a:-0.55,mu:0.120,sig:0.032}],
+  qrsVent:  [{a:-0.30,mu:0.000,sig:0.022},{a:1.55,mu:0.058,sig:0.031},{a:-0.85,mu:0.135,sig:0.036}],
+  qrsJunc:  [{a:-0.05,mu:0.000,sig:0.008},{a:0.98,mu:0.026,sig:0.0105},{a:-0.22,mu:0.055,sig:0.012}],
+  t:        [{a:0.30,mu:0,sig:0.047}],
+  tInv:     [{a:-0.32,mu:0,sig:0.047}],
+  tPeak:    [{a:0.78,mu:0,sig:0.028}],
+  tFlat:    [{a:0.10,mu:0,sig:0.050}]
+};
+function gsum(dt, set, scale){
+  var v=0, i, g;
+  for(i=0;i<set.length;i++){ g=set[i]; v += g.a*Math.exp(-((dt-g.mu)*(dt-g.mu))/(2*g.sig*g.sig)); }
+  return v*(scale==null?1:scale);
+}
+
+/* A beat: {t (s, P anchor or QRS anchor), pm, qm, tm, pr, qt, scale, spike} */
+function beatValue(t, b){
+  var v = 0;
+  if(b.pm){ v += gsum(t-b.t, G[b.pm], b.pScale||1); }
+  var q0 = b.t + (b.pm ? b.pr : 0);
+  v += gsum(t-q0, G[b.qm], b.scale||1);
+  if(b.tm){ v += gsum(t-(q0+b.qt), G[b.tm], b.tScale||1); }
+  if(b.st){ /* ST shift held between QRS end and T peak */
+    var s0=q0+0.09, s1=q0+b.qt;
+    if(t>s0 && t<s1){ v += b.st*Math.min(1,(t-s0)/0.03)*Math.min(1,(s1-t)/0.05); }
+  }
+  if(b.spike && t>=q0-0.012 && t<q0-0.002){ v += 1.3; }
+  return v;
+}
+
+/* ---- Rhythm definitions ---- */
+var RHYTHMS = {
+  nsr:      {name:'Normal sinus rhythm', rate:75, vit:[97,'118/72'], build:sinusBuilder({})},
+  brady:    {name:'Sinus bradycardia', rate:45, vit:[96,'104/62'], build:sinusBuilder({})},
+  tach:     {name:'Sinus tachycardia', rate:126, vit:[95,'96/58'], build:sinusBuilder({})},
+  arrhy:    {name:'Sinus arrhythmia', rate:70, vit:[98,'116/70'], build:sinusBuilder({resp:0.16})},
+  avb1:     {name:'First degree AV block', rate:68, vit:[97,'120/74'], build:sinusBuilder({pr:0.30})},
+  wenck:    {name:'Second degree AV block, Mobitz I', rate:62, vit:[96,'108/64'], build:wenckebach},
+  mobitz2:  {name:'Second degree AV block, Mobitz II', rate:70, vit:[95,'98/60'], build:mobitzII},
+  chb:      {name:'Third degree AV block', rate:38, vit:[93,'86/50'], build:completeBlock},
+  afib:     {name:'Atrial fibrillation', rate:110, vit:[95,'104/66'], build:afib},
+  aflut:    {name:'Atrial flutter, 2 to 1', rate:150, vit:[94,'98/62'], build:aflutter},
+  svt:      {name:'Supraventricular tachycardia', rate:186, vit:[93,'88/56'], build:svt},
+  junc:     {name:'Junctional rhythm', rate:48, vit:[96,'100/60'], build:junctional},
+  pvc:      {name:'Sinus rhythm with PVCs', rate:76, vit:[96,'114/70'], build:pvcs},
+  bigem:    {name:'Ventricular bigeminy', rate:78, vit:[94,'100/62'], build:bigeminy},
+  vt:       {name:'Monomorphic ventricular tachycardia', rate:172, vit:[88,'72/40'], build:vtach},
+  torsade:  {name:'Torsades de pointes', rate:230, vit:[80,'--/--'], build:torsades},
+  vfib:     {name:'Ventricular fibrillation', rate:0, vit:[0,'--/--'], build:vfib},
+  asys:     {name:'Asystole', rate:0, vit:[0,'--/--'], build:asystole},
+  paced:    {name:'Ventricular paced rhythm', rate:70, vit:[96,'116/70'], build:pacedR},
+  hyperk:   {name:'Hyperkalemia pattern', rate:64, vit:[95,'110/68'], build:sinusBuilder({pm:'pFlat',tm:'tPeak',qm:'qrsWide'})}
+};
+
+function sinusBuilder(o){
+  return function(list, t, rate, st){
+    var rr = 60/rate;
+    if(o.resp){ rr = rr*(1 + o.resp*Math.sin(t*0.9)); }
+    list.push({t:t, pm:o.pm||'p', qm:o.qm||'qrs', tm:o.tm||'t', pr:o.pr||0.16, qt:0.30, st:st});
+    return t + rr;
+  };
+}
+function wenckebach(list,t,rate,st){
+  var rr=60/rate; var n = wenckebach.n = ((wenckebach.n||0));
+  var prs=[0.16,0.22,0.30,null];
+  var pr = prs[n%4];
+  if(pr===null){ list.push({t:t, pm:'p', qm:null, tm:null, pr:0, qt:0, drop:true}); }
+  else { list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:pr, qt:0.30, st:st}); }
+  wenckebach.n=n+1; return t+rr;
+}
+function mobitzII(list,t,rate,st){
+  var rr=60/rate; var n = mobitzII.n = ((mobitzII.n||0));
+  if(n%3===2){ list.push({t:t, pm:'p', qm:null, tm:null, pr:0, qt:0, drop:true}); }
+  else { list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.18, qt:0.30, st:st}); }
+  mobitzII.n=n+1; return t+rr;
+}
+function completeBlock(list,t,rate,st){
+  /* atria at 88, ventricles at 38, independent */
+  var vrr=60/38, arr=60/88, k;
+  list.push({t:t, pm:null, qm:'qrsWide', tm:'tInv', pr:0, qt:0.36, scale:0.85});
+  for(k=0;k<Math.ceil(vrr/arr);k++){ list.push({t:t+0.10+k*arr, pm:'p', qm:null, tm:null, pr:0, qt:0, pOnly:true}); }
+  return t+vrr;
+}
+function afib(list,t,rate,st){
+  var base=60/rate, rr = base*(0.62 + Math.random()*0.78);
+  list.push({t:t, pm:null, qm:'qrs', tm:'t', pr:0, qt:0.30, st:st, fib:true});
+  return t+rr;
+}
+function aflutter(list,t,rate,st){
+  var rr=60/rate, k;
+  list.push({t:t, pm:null, qm:'qrs', tm:'tFlat', pr:0, qt:0.28, st:st, flut:true});
+  return t+rr;
+}
+function svt(list,t,rate,st){
+  list.push({t:t, pm:null, qm:'qrs', tm:'tFlat', pr:0, qt:0.22, st:st});
+  return t+60/rate;
+}
+function junctional(list,t,rate,st){
+  list.push({t:t, pm:'pInv', qm:'qrsJunc', tm:'t', pr:0.09, qt:0.30, st:st});
+  return t+60/rate;
+}
+function pvcs(list,t,rate,st){
+  var rr=60/rate, n=pvcs.n=((pvcs.n||0));
+  if(n>0 && n%5===0){
+    list.push({t:t, pm:null, qm:'qrsVent', tm:'tInv', pr:0, qt:0.34, scale:0.95});
+    pvcs.n=n+1; return t+rr*1.85;
+  }
+  list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.16, qt:0.30, st:st});
+  pvcs.n=n+1; return t+rr;
+}
+function bigeminy(list,t,rate,st){
+  var rr=60/rate, n=bigeminy.n=((bigeminy.n||0));
+  if(n%2===1){
+    list.push({t:t, pm:null, qm:'qrsVent', tm:'tInv', pr:0, qt:0.34, scale:0.95});
+    bigeminy.n=n+1; return t+rr*1.25;
+  }
+  list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.16, qt:0.30, st:st});
+  bigeminy.n=n+1; return t+rr*0.78;
+}
+function vtach(list,t,rate,st){
+  list.push({t:t, pm:null, qm:'qrsVent', tm:'tInv', pr:0, qt:0.26, scale:1.0});
+  return t+60/rate;
+}
+function torsades(list,t,rate,st){
+  var n=torsades.n=((torsades.n||0));
+  var amp = 0.35 + 0.75*Math.abs(Math.sin(n*0.30));
+  list.push({t:t, pm:null, qm:'qrsVent', tm:null, pr:0, qt:0.22, scale:amp*(n%2?-1:1)});
+  torsades.n=n+1; return t+60/rate;
+}
+function vfib(list,t){ list.push({t:t, chaos:true}); return t+0.30; }
+function asystole(list,t){ list.push({t:t, flat:true}); return t+0.50; }
+function pacedR(list,t,rate,st){
+  list.push({t:t, pm:null, qm:'qrsWide', tm:'tInv', pr:0, qt:0.36, spike:true, scale:0.92});
+  return t+60/rate;
+}
+
+/* ---- Rhythm stream: lazily generates beats, samples continuous mV ---- */
+function Stream(key, rateOverride){
+  this.key=key; this.def=RHYTHMS[key];
+  this.rate = rateOverride || this.def.rate;
+  this.beats=[]; this.tNext=0;
+  wenckebach.n=mobitzII.n=pvcs.n=bigeminy.n=torsades.n=0;
+  this.seed = 1;
+}
+Stream.prototype.ensure=function(t){
+  var guard=0;
+  while(this.tNext < t+2.5 && guard++<400){
+    this.tNext = this.def.build(this.beats, this.tNext, this.rate, 0);
+  }
+  while(this.beats.length && this.beats[0].t < t-3){ this.beats.shift(); }
+};
+Stream.prototype.sample=function(t){
+  this.ensure(t);
+  var v=0,i,b;
+  for(i=0;i<this.beats.length;i++){
+    b=this.beats[i];
+    if(b.flat) continue;
+    if(b.chaos){
+      if(t>=b.t && t<b.t+0.30){
+        v += 0.42*Math.sin(t*2*Math.PI*5.4)*Math.sin(t*2*Math.PI*2.1+1.1)
+           + 0.22*Math.sin(t*2*Math.PI*9.7+0.6);
+      }
+      continue;
+    }
+    if(t < b.t-0.30 || t > b.t+0.95) continue;
+    if(b.pOnly){ v += gsum(t-b.t, G.p, 1); continue; }
+    if(b.drop){ v += gsum(t-b.t, G.p, 1); continue; }
+    v += beatValue(t,b);
+  }
+  if(this.key==='afib'){ v += 0.055*Math.sin(t*2*Math.PI*7.3)+0.04*Math.sin(t*2*Math.PI*11.9+2); }
+  if(this.key==='aflut'){
+    /* sawtooth flutter waves at 300/min */
+    var ph=(t*5)%1; v += 0.20*(ph<0.72 ? (ph/0.72) : (1-(ph-0.72)/0.28)) - 0.10;
+  }
+  return v + 0.006*Math.sin(t*137.5);  /* trace of baseline noise */
+}
+
+/* ============================================================
+   2. MONITOR RENDERER
+   ============================================================ */
+function Monitor(canvas, opts){
+  this.c=canvas; this.x=canvas.getContext('2d');
+  this.pxPerMm = canvas.width/ (opts.mmWide||250);   /* 250 mm = 10 s at 25 mm/s */
+  this.pxPerSec = this.pxPerMm*25;
+  this.midY = canvas.height*0.55;
+  this.gain = 1;
+  this.t = 0; this.px = 0;
+  this.stream = new Stream(opts.rhythm||'nsr');
+  this.running = !!opts.autorun;
+  this.last = null;
+  this.lastY = this.midY;
+  this.sweep = opts.sweep !== false;
+  this.grid();
+}
+Monitor.prototype.grid=function(){
+  var x=this.x, c=this.c, mm=this.pxPerMm, i;
+  x.clearRect(0,0,c.width,c.height);
+  var cs=getComputedStyle(document.documentElement);
+  x.fillStyle = cs.getPropertyValue('--deepest').trim() || '#120307';
+  if(document.documentElement.getAttribute('data-paper')==='on') x.fillStyle='#FFFBF7';
+  x.fillRect(0,0,c.width,c.height);
+  var fine=cs.getPropertyValue('--grid-fine').trim(), bold=cs.getPropertyValue('--grid-bold').trim();
+  x.lineWidth=1;
+  for(i=0;i*mm<=c.width;i++){ x.strokeStyle = (i%5===0)?bold:fine; x.beginPath(); x.moveTo(i*mm+0.5,0); x.lineTo(i*mm+0.5,c.height); x.stroke(); }
+  for(i=0;i*mm<=c.height;i++){ x.strokeStyle = (i%5===0)?bold:fine; x.beginPath(); x.moveTo(0,i*mm+0.5); x.lineTo(c.width,i*mm+0.5); x.stroke(); }
+};
+Monitor.prototype.traceColor=function(){
+  return getComputedStyle(document.documentElement).getPropertyValue('--trace').trim()||'#FF8296';
+};
+Monitor.prototype.step=function(dt){
+  if(!this.running) return;
+  var x=this.x, c=this.c;
+  var adv = dt*this.pxPerSec;
+  var target = this.px + adv;
+  x.lineWidth = 2.1; x.strokeStyle=this.traceColor(); x.lineCap='round'; x.lineJoin='round';
+  x.beginPath(); x.moveTo(this.px, this.lastY);
+  var p;
+  for(p=this.px; p<target; p+=1){
+    var pp = p % c.width;
+    if(pp < 1 && p>this.px){ /* wrapped */ x.stroke(); this.px=0; this.t += (p-this.px)/this.pxPerSec; }
+    var tt = this.t + (p-this.px)/this.pxPerSec;
+    var mv = this.stream.sample(tt);
+    var y = this.midY - mv*10*this.pxPerMm*this.gain;
+    x.lineTo(pp, y); this.lastY=y;
+  }
+  x.stroke();
+  this.t += (target-this.px)/this.pxPerSec;
+  this.px = target;
+  if(this.px >= c.width){ this.px = 0; }
+  /* erase bar ahead */
+  var bw = this.pxPerMm*9;
+  this.eraseBand(this.px, bw);
+};
+Monitor.prototype.eraseBand=function(from, w){
+  var x=this.x, c=this.c, mm=this.pxPerMm, i;
+  var cs=getComputedStyle(document.documentElement);
+  var bg = document.documentElement.getAttribute('data-paper')==='on' ? '#FFFBF7' : (cs.getPropertyValue('--deepest').trim()||'#120307');
+  x.save(); x.beginPath(); x.rect(from,0,w,c.height); x.clip();
+  x.fillStyle=bg; x.fillRect(from,0,w,c.height);
+  var fine=cs.getPropertyValue('--grid-fine').trim(), bold=cs.getPropertyValue('--grid-bold').trim();
+  x.lineWidth=1;
+  var i0=Math.floor(from/mm), i1=Math.ceil((from+w)/mm);
+  for(i=i0;i<=i1;i++){ x.strokeStyle=(i%5===0)?bold:fine; x.beginPath(); x.moveTo(i*mm+0.5,0); x.lineTo(i*mm+0.5,c.height); x.stroke(); }
+  for(i=0;i*mm<=c.height;i++){ x.strokeStyle=(i%5===0)?bold:fine; x.beginPath(); x.moveTo(from,i*mm+0.5); x.lineTo(from+w,i*mm+0.5); x.stroke(); }
+  x.restore();
+};
+/* Static full-width render, used for practice strips and after rhythm change */
+Monitor.prototype.renderStatic=function(seconds){
+  var x=this.x, c=this.c, p;
+  this.grid();
+  this.stream.ensure(seconds+3);
+  x.lineWidth=2.1; x.strokeStyle=this.traceColor(); x.lineCap='round'; x.lineJoin='round';
+  x.beginPath();
+  for(p=0;p<c.width;p++){
+    var tt = 1.0 + p/this.pxPerSec;
+    var y = this.midY - this.stream.sample(tt)*10*this.pxPerMm*this.gain;
+    if(p===0) x.moveTo(p,y); else x.lineTo(p,y);
+  }
+  x.stroke();
+  this.px=0; this.t=0;
+};
+
+/* ============================================================
+   3. CALIPERS
+   ============================================================ */
+function Calipers(screenEl, canvas, monitor, onChange){
+  this.el=screenEl; this.c=canvas; this.m=monitor; this.onChange=onChange;
+  this.on=false; this.a=canvas.width*0.32; this.b=canvas.width*0.46;
+  this.drag=null; this.layer=null; this.build();
+}
+Calipers.prototype.build=function(){
+  var self=this;
+  var lay=document.createElement('div');
+  lay.style.cssText='position:absolute;inset:0;pointer-events:none;display:none';
+  ['a','b'].forEach(function(k,idx){
+    var h=document.createElement('button');
+    h.type='button';
+    h.setAttribute('aria-label', (idx===0?'First':'Second')+' caliper marker. Use arrow keys to move.');
+    h.dataset.k=k;
+    h.style.cssText='position:absolute;top:0;bottom:0;width:26px;margin-left:-13px;background:transparent;border:0;cursor:ew-resize;pointer-events:auto;padding:0';
+    var bar=document.createElement('span');
+    bar.style.cssText='position:absolute;left:12px;top:0;bottom:0;width:2px;background:var(--gold);display:block';
+    var knob=document.createElement('span');
+    knob.style.cssText='position:absolute;left:5px;top:8px;width:16px;height:16px;border-radius:50%;background:var(--gold);display:block';
+    h.appendChild(bar); h.appendChild(knob);
+    lay.appendChild(h);
+    self['h'+k]=h;
+    h.addEventListener('keydown', function(e){
+      var step = e.shiftKey ? 1 : 6;
+      if(e.key==='ArrowLeft'){ self[k]=Math.max(0,self[k]-step); e.preventDefault(); self.draw(); }
+      if(e.key==='ArrowRight'){ self[k]=Math.min(self.c.width,self[k]+step); e.preventDefault(); self.draw(); }
+    });
+    h.addEventListener('pointerdown', function(e){ self.drag=k; h.setPointerCapture(e.pointerId); e.preventDefault(); });
+    h.addEventListener('pointermove', function(e){
+      if(self.drag!==k) return;
+      var r=self.el.getBoundingClientRect();
+      self[k] = Math.max(0, Math.min(self.c.width, (e.clientX-r.left)/r.width*self.c.width));
+      self.draw();
+    });
+    h.addEventListener('pointerup', function(){ self.drag=null; });
+  });
+  var band=document.createElement('span');
+  band.style.cssText='position:absolute;top:0;bottom:0;background:rgba(201,161,74,.14);display:block;pointer-events:none';
+  lay.appendChild(band); this.band=band;
+  this.el.appendChild(lay); this.layer=lay;
+};
+Calipers.prototype.toggle=function(v){
+  this.on = (v==null)? !this.on : v;
+  this.layer.style.display = this.on ? 'block':'none';
+  if(this.on) this.draw(); else this.onChange(null);
+};
+Calipers.prototype.draw=function(){
+  var w=this.c.width;
+  this.ha.style.left = (this.a/w*100)+'%';
+  this.hb.style.left = (this.b/w*100)+'%';
+  var lo=Math.min(this.a,this.b), hi=Math.max(this.a,this.b);
+  this.band.style.left=(lo/w*100)+'%';
+  this.band.style.width=((hi-lo)/w*100)+'%';
+  var px = hi-lo;
+  var mm = px/this.m.pxPerMm;
+  var ms = mm/25*1000;
+  this.onChange({px:px, mm:mm, ms:ms, boxes:mm, rate: ms>0? 60000/ms : 0});
+};
+
+/* ============================================================
+   4. 12-LEAD MODEL
+   Per-lead scale factors plus ST offsets. Not vector-exact; it
+   is a teaching model tuned so each pattern reads correctly.
+   ============================================================ */
+var LEADS = ['I','II','III','aVR','aVL','aVF','V1','V2','V3','V4','V5','V6'];
+function baseLead(){
+  return { I:{q:0.72,p:0.80,t:0.85,st:0}, II:{q:1.00,p:1.00,t:1.00,st:0}, III:{q:0.52,p:0.55,t:0.60,st:0},
+    aVR:{q:-0.85,p:-0.80,t:-0.80,st:0}, aVL:{q:0.40,p:0.35,t:0.45,st:0}, aVF:{q:0.74,p:0.72,t:0.78,st:0},
+    V1:{q:-0.52,p:0.30,t:0.30,st:0}, V2:{q:-0.30,p:0.42,t:0.75,st:0}, V3:{q:0.45,p:0.48,t:0.90,st:0},
+    V4:{q:1.15,p:0.50,t:1.00,st:0}, V5:{q:1.02,p:0.48,t:0.92,st:0}, V6:{q:0.82,p:0.45,t:0.80,st:0} };
+}
+function shift(m, keys, dst, dt){ keys.forEach(function(k){ m[k].st += dst; if(dt!=null) m[k].t = dt; }); return m; }
+
+var PATTERNS = {
+  normal:{name:'Normal 12-lead', rate:72, qm:'qrs',
+    lead:function(){ return baseLead(); },
+    find:'Rate 72, sinus rhythm, normal axis. PR 0.16, QRS 0.08, QTc within range. R wave progression is orderly with transition around V3 to V4. No ST elevation or depression, T waves upright except aVR.'},
+  antstemi:{name:'Anterior STEMI', rate:96, qm:'qrs',
+    lead:function(){ var m=baseLead(); shift(m,['V1','V2','V3','V4'],0.42); m.V2.t=1.5; m.V3.t=1.4; shift(m,['II','III','aVF'],-0.12); return m; },
+    find:'ST elevation across V1 through V4 with reciprocal depression inferiorly. This is a proximal to mid LAD occlusion until proven otherwise. The anterior wall and much of the septum are at risk, so watch for pump failure and new conduction block, not just pain relief.'},
+  infstemi:{name:'Inferior STEMI', rate:52, qm:'qrs',
+    lead:function(){ var m=baseLead(); shift(m,['II','III','aVF'],0.44); m.III.q=0.75; shift(m,['I','aVL'],-0.16); return m; },
+    find:'ST elevation in II, III, and aVF with reciprocal depression in I and aVL, and a bradycardic rate. ST elevation greater in III than II points to the right coronary artery. Get right-sided leads. If V4R shows elevation, nitrates and other preload reducers become dangerous.'},
+  latstemi:{name:'Lateral STEMI', rate:88, qm:'qrs',
+    lead:function(){ var m=baseLead(); shift(m,['I','aVL','V5','V6'],0.38); shift(m,['III','aVF'],-0.14); return m; },
+    find:'ST elevation in I, aVL, V5, and V6 with inferior reciprocal change. Circumflex territory. Lateral infarcts are the ones most often called non-diagnostic on first look, so the reciprocal depression is what earns the activation.'},
+  posterior:{name:'Posterior MI', rate:78, qm:'qrs',
+    lead:function(){ var m=baseLead(); m.V1.q=0.55; m.V2.q=0.75; shift(m,['V1','V2','V3'],-0.34); m.V1.t=-0.5; m.V2.t=-0.5; return m; },
+    find:'Tall R waves and ST depression in V1 through V3 with upright T waves. This is a mirror image, not anterior ischemia. Place posterior leads V7 through V9. Elevation there confirms a posterior infarct and makes this a reperfusion case.'},
+  lbbb:{name:'Left bundle branch block', rate:74, qm:'qrsWide',
+    lead:function(){ var m=baseLead(); m.V1.q=-1.05; m.V2.q=-0.95; m.V5.q=1.25; m.V6.q=1.10; m.I.q=0.95;
+      shift(m,['V1','V2','V3'],0.24); shift(m,['I','aVL','V5','V6'],-0.16); m.V5.t=-0.7; m.V6.t=-0.7; return m; },
+    find:'QRS wider than 0.12 with a broad monophasic R in I, V5, and V6 and a deep QS in V1. ST and T changes are discordant, which is expected. Do not read ischemia off discordance alone. Apply Sgarbossa: concordant elevation of 1 mm, concordant depression in V1 to V3, or excessive discordance.'},
+  rbbb:{name:'Right bundle branch block', rate:80, qm:'qrsWide',
+    lead:function(){ var m=baseLead(); m.V1.q=0.95; m.V2.q=0.60; m.V6.q=0.55; m.I.q=0.50; m.V1.t=-0.6; return m; },
+    find:'QRS wider than 0.12 with an rSR prime in V1 and a broad slurred S in I and V6. T wave inversion in the right precordial leads is expected. Unlike left bundle branch block, ST analysis in the other leads stays interpretable.'},
+  lvh:{name:'Left ventricular hypertrophy with strain', rate:70, qm:'qrs',
+    lead:function(){ var m=baseLead(); m.V1.q=-1.35; m.V2.q=-1.25; m.V5.q=1.75; m.V6.q=1.55; m.aVL.q=0.95;
+      shift(m,['V5','V6','I','aVL'],-0.20); m.V5.t=-0.85; m.V6.t=-0.85; m.aVL.t=-0.6; return m; },
+    find:'Voltage criteria met with a downsloping ST depression and asymmetric T inversion in the lateral leads. That is strain, not acute ischemia, but hypertrophy raises the false positive rate on any ST reading, so the clinical picture and a prior tracing carry more weight than usual.'},
+  hyperk:{name:'Hyperkalemia', rate:60, qm:'qrsWide',
+    lead:function(){ var m=baseLead(); LEADS.forEach(function(l){ m[l].p*=0.18; m[l].t*=2.3; }); return m; },
+    find:'Peaked narrow-based T waves with flattened P waves and a widening QRS. This is a progression, not a snapshot: peaked T, then P loss and PR prolongation, then sine wave. Treat the ECG, not the lab turnaround time. Calcium first for membrane stability.'},
+  pericard:{name:'Acute pericarditis', rate:98, qm:'qrs',
+    lead:function(){ var m=baseLead(); LEADS.forEach(function(l){ if(l!=='aVR'&&l!=='V1') m[l].st+=0.18; }); m.aVR.st-=0.20; return m; },
+    find:'Diffuse concave ST elevation across nearly every lead with reciprocal depression only in aVR, plus PR segment depression. The absence of a coronary territory is the point. Elevation that ignores anatomy is usually pericardial.'},
+  afibrvr:{name:'Atrial fibrillation with rapid response', rate:142, qm:'qrs',
+    lead:function(){ var m=baseLead(); LEADS.forEach(function(l){ m[l].p=0; }); return m; },
+    find:'Irregularly irregular with no discernible P waves and a fibrillatory baseline. Rate near 140. Decide stability first, then rate control versus rhythm control, then anticoagulation based on duration and stroke risk.'},
+  wpw:{name:'Pre-excitation, WPW pattern', rate:76, qm:'qrs',
+    lead:function(){ var m=baseLead(); LEADS.forEach(function(l){ m[l].delta=true; }); return m; },
+    find:'Short PR with a slurred upstroke into the QRS, the delta wave, and a widened complex. The accessory pathway matters most when atrial fibrillation arrives. AV nodal blocking agents can accelerate conduction down the accessory pathway, which is the classic tested trap.'}
+};
+
+/* ============================================================
+   5. APP
+   ============================================================ */
+var el = function(id){ return document.getElementById(id); };
+var STORE='cvrn-progress';
+var STRANDS=[
+  {id:'ecg-e1', name:'Waveform literacy', can:'Identify every waveform component and measure each interval accurately.', dok:2, need:[]},
+  {id:'ecg-e2', name:'Rhythm diagnosis', can:'Name any rhythm from a strip and state what makes it that rhythm and not its lookalike.', dok:2, need:['ecg-e1']},
+  {id:'ecg-e3', name:'12-lead ischemia', can:'Localize injury to a territory, name the likely culprit vessel, and separate a STEMI from its mimics.', dok:3, need:['ecg-e1']},
+  {id:'ecg-e4', name:'Paced and device tracings', can:'Confirm capture and sensing, and identify each mode of pacemaker malfunction.', dok:3, need:['ecg-e2']},
+  {id:'ecg-e5', name:'Tracing to patient', can:'Decide what a tracing means for this patient right now and act in the correct order.', dok:4, need:['ecg-e2','ecg-e3']}
+];
+
+function loadStore(){ try{ return JSON.parse(localStorage.getItem(STORE)||'{}'); }catch(e){ return {}; } }
+function saveStore(s){ try{ localStorage.setItem(STORE, JSON.stringify(s)); }catch(e){} }
+function record(id, correct, confident){
+  var s=loadStore(), e=s[id]||{attempts:0,correct:0,misconceptions:0};
+  e.attempts++; if(correct) e.correct++;
+  if(!correct && confident) e.misconceptions=(e.misconceptions||0)+1;
+  e.reviewedAt=new Date().toISOString().slice(0,10);
+  var acc = e.correct/e.attempts;
+  e.strength = Math.max(0, acc - (e.misconceptions||0)*0.08);
+  var days = e.strength>0.85?7:e.strength>0.6?3:1;
+  e.nextRecall = new Date(Date.now()+days*864e5).toISOString().slice(0,10);
+  s[id]=e; saveStore(s); renderMastery();
+}
+
+/* ---- tabs ---- */
+var tabs=[['tab-mon','p-mon'],['tab-12','p-12'],['tab-pr','p-pr'],['tab-ms','p-ms']];
+tabs.forEach(function(pair){
+  el(pair[0]).addEventListener('click', function(){
+    tabs.forEach(function(p){
+      var sel = p[0]===pair[0];
+      el(p[0]).setAttribute('aria-selected', sel?'true':'false');
+      el(p[1]).hidden = !sel;
+    });
+    if(pair[0]==='tab-12') draw12();
+    if(pair[0]==='tab-ms') renderMastery();
+  });
+});
+el('paperBtn').addEventListener('click', function(){
+  var on = document.documentElement.getAttribute('data-paper')==='on';
+  document.documentElement.setAttribute('data-paper', on?'off':'on');
+  this.setAttribute('aria-pressed', on?'false':'true');
+  this.textContent = on ? 'Paper view' : 'Monitor view';
+  mon.grid(); if(!running) mon.renderStatic(10);
+  pmon.renderStatic(10); draw12();
+});
+
+/* ---- monitor ---- */
+var sel=el('rhySel');
+Object.keys(RHYTHMS).forEach(function(k){
+  var o=document.createElement('option'); o.value=k; o.textContent=RHYTHMS[k].name; sel.appendChild(o);
+});
+var mon = new Monitor(el('mon'), {rhythm:'nsr', autorun:true, mmWide:250});
+var running=true, lastTs=null;
+var cal = new Calipers(el('screen'), el('mon'), mon, function(d){
+  if(!d){ el('mMs').textContent='—'; el('mBox').textContent='—'; el('mRate').textContent='—'; el('mMv').textContent='—'; return; }
+  el('mMs').textContent = Math.round(d.ms)+' ms';
+  el('mBox').textContent = (d.boxes).toFixed(1)+' mm';
+  el('mRate').textContent = d.ms>60 ? Math.round(d.rate)+' bpm' : '—';
+  el('mMv').textContent = (d.mm/10).toFixed(2)+' mV wide-equiv';
+});
+
+function setRhythm(k){
+  var r = parseInt(el('rateIn').value,10);
+  mon.stream = new Stream(k, (r && r>=20 && r<=250) ? r : null);
+  mon.gain = parseFloat(el('gainSel').value);
+  mon.grid(); mon.t=0; mon.px=0; mon.lastY=mon.midY;
+  el('vRh').textContent = RHYTHMS[k].name;
+  el('vHR').textContent = RHYTHMS[k].rate ? (mon.stream.rate + (k==='afib'?'':'')) : '--';
+  el('vSp').textContent = RHYTHMS[k].vit[0] || '--';
+  el('vBP').textContent = RHYTHMS[k].vit[1];
+  if(!running) mon.renderStatic(10);
+}
+sel.addEventListener('change', function(){ setRhythm(this.value); });
+el('rateIn').addEventListener('change', function(){ setRhythm(sel.value); });
+el('gainSel').addEventListener('change', function(){ mon.gain=parseFloat(this.value); if(!running) mon.renderStatic(10); });
+el('runBtn').addEventListener('click', function(){
+  running=!running; mon.running=running;
+  this.textContent = running ? 'Freeze':'Run';
+  this.setAttribute('aria-pressed', running?'true':'false');
+  el('screen').setAttribute('data-frozen', running?'0':'1');
+  if(!running && !cal.on){ el('calHint').textContent='Strip frozen. Turn calipers on to measure it.'; }
+});
+el('calBtn').addEventListener('click', function(){
+  cal.toggle(); this.setAttribute('aria-pressed', cal.on?'true':'false');
+  if(cal.on && running){ el('runBtn').click(); }
+});
+el('clrBtn').addEventListener('click', function(){ mon.grid(); mon.px=0; mon.lastY=mon.midY; });
+
+function loop(ts){
+  if(lastTs==null) lastTs=ts;
+  var dt=Math.min(0.05,(ts-lastTs)/1000); lastTs=ts;
+  mon.step(dt);
+  requestAnimationFrame(loop);
+}
+var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(reduce){ running=false; mon.running=false; el('runBtn').textContent='Run'; el('screen').setAttribute('data-frozen','1'); mon.renderStatic(10); }
+else { requestAnimationFrame(loop); }
+setRhythm('nsr'); mon.running=running;
+
+/* ---- 12-lead ---- */
+var patSel=el('patSel');
+Object.keys(PATTERNS).forEach(function(k){
+  var o=document.createElement('option'); o.value=k; o.textContent=PATTERNS[k].name; patSel.appendChild(o);
+});
+function drawLead(canvas, name, cfg, pat){
+  var x=canvas.getContext('2d'), c=canvas, i;
+  var mm = c.width/62;                       /* about 2.5 s per panel */
+  var mid=c.height*0.55, p;
+  var docPaper = document.documentElement.getAttribute('data-paper')==='on';
+  var cs=getComputedStyle(document.documentElement);
+  x.fillStyle = docPaper?'#FFFBF7':(cs.getPropertyValue('--deepest').trim()||'#120307');
+  x.fillRect(0,0,c.width,c.height);
+  var fine=cs.getPropertyValue('--grid-fine').trim(), bold=cs.getPropertyValue('--grid-bold').trim();
+  x.lineWidth=1;
+  for(i=0;i*mm<=c.width;i++){ x.strokeStyle=(i%5===0)?bold:fine; x.beginPath(); x.moveTo(i*mm+.5,0); x.lineTo(i*mm+.5,c.height); x.stroke(); }
+  for(i=0;i*mm<=c.height;i++){ x.strokeStyle=(i%5===0)?bold:fine; x.beginPath(); x.moveTo(0,i*mm+.5); x.lineTo(c.width,i*mm+.5); x.stroke(); }
+
+  var rr=60/pat.rate, pxs=mm*25;
+  x.lineWidth=1.9; x.strokeStyle=cs.getPropertyValue('--trace').trim()||'#FF8296';
+  x.lineCap='round'; x.lineJoin='round'; x.beginPath();
+  for(p=0;p<c.width;p++){
+    var t = p/pxs, v=0, n;
+    for(n=-1;n<6;n++){
+      var t0 = n*rr + 0.18;
+      var b = {t:t0, pm: cfg.p!==0 ? (cfg.p<0?'pInv':'p') : null, qm:pat.qm, tm: cfg.t<0?'tInv':'t',
+               pr: cfg.delta?0.09:0.16, qt:0.32, scale:cfg.q, pScale:Math.abs(cfg.p), tScale:Math.abs(cfg.t), st:cfg.st};
+      if(t>t0-0.35 && t<t0+0.95) v += beatValue(t,b);
+      if(cfg.delta && t>t0+0.09-0.03 && t<t0+0.09+0.03){ v += cfg.q*0.22*((t-(t0+0.06))/0.06); }
+    }
+    var y = mid - v*10*mm;
+    if(p===0) x.moveTo(p,y); else x.lineTo(p,y);
+  }
+  x.stroke();
+}
+function draw12(){
+  var pat = PATTERNS[patSel.value], leads = pat.lead();
+  var grid=el('leadGrid');
+  if(grid.children.length!==12){
+    grid.innerHTML='';
+    LEADS.forEach(function(L){
+      var d=document.createElement('div'); d.className='leadCell';
+      d.innerHTML='<canvas width="420" height="200" role="img" aria-label="Lead '+L+'"></canvas><span class="nm">'+L+'</span>';
+      grid.appendChild(d);
+    });
+  }
+  LEADS.forEach(function(L,i){
+    drawLead(grid.children[i].querySelector('canvas'), L, leads[L], pat);
+  });
+  drawLead(el('rhythmStrip'),'II', leads.II, pat);
+  el('findTitle').textContent = pat.name;
+  el('findBody').textContent = pat.find;
+}
+patSel.addEventListener('change', function(){ draw12(); el('findBox').hidden=true; el('showFind').setAttribute('aria-expanded','false'); el('showFind').textContent='Show findings'; });
+el('showFind').addEventListener('click', function(){
+  var open = el('findBox').hidden===false;
+  el('findBox').hidden = open;
+  this.setAttribute('aria-expanded', open?'false':'true');
+  this.textContent = open ? 'Show findings':'Hide findings';
+});
+
+/* ---- practice ---- */
+var pmon = new Monitor(el('pMon'), {rhythm:'nsr', autorun:false, mmWide:250});
+pmon.gain=1;
+var pcal = new Calipers(el('pScreen'), el('pMon'), pmon, function(d){
+  el('pMeas').textContent = d ? (Math.round(d.ms)+' ms  |  '+d.boxes.toFixed(1)+' mm  |  '+(d.ms>60?Math.round(d.rate)+' bpm':'—')) : '—';
+});
+el('pCalBtn').addEventListener('click', function(){ pcal.toggle(); this.setAttribute('aria-pressed', pcal.on?'true':'false'); });
+
+var Q=null, chosen=null, conf=null;
+
+var BANK1=[
+  {r:'afib', a:'Atrial fibrillation', d:['Atrial flutter','Multifocal atrial tachycardia','Sinus arrhythmia'],
+   why:'Irregularly irregular with no organized P waves and a fibrillatory baseline. Flutter is regular or regularly irregular with sawtooth waves at about 300 per minute. Multifocal atrial tachycardia has P waves, just three or more shapes of them.', s:'ecg-e2'},
+  {r:'aflut', a:'Atrial flutter with 2 to 1 conduction', d:['Sinus tachycardia','Supraventricular tachycardia','Atrial fibrillation'],
+   why:'A regular ventricular rate near 150 should always make you look for flutter waves hiding in the T wave. Flutter at 300 with 2 to 1 block lands at 150 almost every time.', s:'ecg-e2'},
+  {r:'wenck', a:'Second degree AV block, Mobitz I', d:['Second degree AV block, Mobitz II','First degree AV block','Third degree AV block'],
+   why:'The PR interval lengthens beat to beat until a QRS drops, then the cycle resets. Mobitz II holds the PR constant and drops without warning, which is why it is the one that needs pacing readiness.', s:'ecg-e2'},
+  {r:'chb', a:'Third degree AV block', d:['Second degree AV block, Mobitz II','Junctional escape rhythm','Sinus bradycardia'],
+   why:'P waves march out at their own rate and QRS complexes march out at a slower rate, with no fixed relationship between them. That AV dissociation is the finding, not the slow rate.', s:'ecg-e2'},
+  {r:'vt', a:'Monomorphic ventricular tachycardia', d:['Supraventricular tachycardia with aberrancy','Atrial flutter','Accelerated idioventricular rhythm'],
+   why:'Wide, regular, fast, and uniform. In an adult with known structural heart disease a wide complex tachycardia is ventricular tachycardia until proven otherwise, and treating it as SVT is the error that costs the most.', s:'ecg-e2'},
+  {r:'torsade', a:'Torsades de pointes', d:['Ventricular fibrillation','Monomorphic ventricular tachycardia','Atrial fibrillation with aberrancy'],
+   why:'Polymorphic ventricular tachycardia with the axis twisting around the baseline. It sits on a prolonged QT, so the treatment thought is magnesium and removing the offending drug, not just the defibrillator.', s:'ecg-e2'},
+  {r:'paced', a:'Ventricular paced rhythm', d:['Left bundle branch block','Idioventricular rhythm','Third degree AV block'],
+   why:'A sharp pacing spike immediately precedes each wide QRS. Without the spike this would read as left bundle branch block, which is exactly why paced rhythm and LBBB share the same ischemia problem.', s:'ecg-e4'},
+  {r:'bigem', a:'Ventricular bigeminy', d:['Ventricular trigeminy','Atrial fibrillation','Sinus rhythm with couplets'],
+   why:'Every other beat is a wide premature ventricular complex with a compensatory pause. Bigeminy is every second beat, trigeminy every third.', s:'ecg-e2'},
+  {r:'junc', a:'Junctional rhythm', d:['Sinus bradycardia','Idioventricular rhythm','First degree AV block'],
+   why:'Narrow QRS at about 40 to 60 with an inverted P wave sitting close to, inside, or just after the QRS. Narrow means it came from above the ventricles, and the inverted P means retrograde atrial activation.', s:'ecg-e2'},
+  {r:'hyperk', a:'Hyperkalemia pattern', d:['Acute pericarditis','Early repolarization','Anterior ischemia'],
+   why:'Tall narrow-based peaked T waves with a flattened P and a widening QRS. Pericarditis gives you ST elevation, not T peaking, and it does not widen the QRS.', s:'ecg-e1'}
+];
+var BANK2=[
+  {r:'nsr', ask:'Measure the PR interval on this strip.', field:'PR', unit:'ms', target:160, tol:25,
+   why:'The PR interval runs from the start of the P wave to the start of the QRS. Normal is 120 to 200 ms, which is three to five small boxes. Measure from onset to onset, not peak to peak.', s:'ecg-e1'},
+  {r:'avb1', ask:'Measure the PR interval and decide whether it is normal.', field:'PR', unit:'ms', target:300, tol:35,
+   why:'This PR exceeds 200 ms with every P followed by a QRS, which is first degree AV block. It is a conduction delay, not a dropped beat, and it usually needs monitoring rather than intervention.', s:'ecg-e1'},
+  {r:'nsr', ask:'Measure the R to R interval and calculate the rate.', field:'Rate', unit:'bpm', target:75, tol:10,
+   why:'Rate equals 60000 divided by the R to R interval in milliseconds. At 800 ms that is 75. The sequence method gets you there faster on a regular rhythm, but calipers are what you trust when it is irregular.', s:'ecg-e1'},
+  {r:'brady', ask:'Measure the rate on this strip.', field:'Rate', unit:'bpm', target:45, tol:8,
+   why:'Under 60 with an otherwise normal complex is sinus bradycardia. The number alone does not decide anything. Whether the patient is symptomatic does.', s:'ecg-e1'},
+  {r:'hyperk', ask:'Measure the QRS duration.', field:'QRS', unit:'ms', target:150, tol:30,
+   why:'QRS runs from the first deflection off baseline to the return. Over 120 ms is wide. Here the widening is metabolic, so the correction is potassium management, not a device.', s:'ecg-e1'},
+  {r:'tach', ask:'Measure the rate.', field:'Rate', unit:'bpm', target:126, tol:15,
+   why:'Sinus tachycardia is a response, not a diagnosis. Find the driver: pain, fever, hypovolemia, hypoxia, anxiety, or drug effect. Rate controlling a compensatory tachycardia removes the compensation.', s:'ecg-e1'}
+];
+var BANK3=[
+  {r:'vt', stem:'A 68 year old with a prior anterior MI is on the monitor. He is awake, talking to you, blood pressure 82 over 48, and reports chest pressure. The strip is below.',
+   a:'Synchronized cardioversion after sedation', d:['Defibrillate immediately','Adenosine 6 mg rapid IV push','Observe and repeat the ECG in 15 minutes'],
+   why:'Wide complex tachycardia with a pulse and signs of instability, hypotension plus ischemic chest pain, calls for synchronized cardioversion. Defibrillation is for pulseless rhythms. Adenosine is for regular narrow complex tachycardia and can be harmful here.', s:'ecg-e5'},
+  {r:'chb', stem:'A 74 year old woman is dizzy and pale. Blood pressure 78 over 44, skin cool. She has had no medication changes.',
+   a:'Prepare for transcutaneous pacing while giving atropine', d:['Give a 1 liter fluid bolus and reassess','Withhold treatment since she is awake','Start a dopamine drip as the only intervention'],
+   why:'Symptomatic third degree block with hypoperfusion. Atropine is reasonable to try but often fails in high-grade block because the escape is below the AV node, so pacing readiness happens at the same time, not after atropine disappoints.', s:'ecg-e5'},
+  {r:'afib', stem:'A 60 year old man reports palpitations that started this morning. Blood pressure 128 over 76, alert, no chest pain, no shortness of breath.',
+   a:'Rate control and evaluate stroke risk and duration before any rhythm decision', d:['Immediate synchronized cardioversion','Adenosine 6 mg rapid IV push','Defibrillate at 200 joules'],
+   why:'He is stable, so there is time. Cardioverting atrial fibrillation of uncertain or greater than 48 hour duration without anticoagulation or a clear atrium risks embolic stroke. Adenosine does not convert atrial fibrillation.', s:'ecg-e5'},
+  {r:'torsade', stem:'A patient on a QT prolonging antiemetic and an antiarrhythmic becomes unresponsive with a pulse present initially, then loses it. Magnesium level pending.',
+   a:'Defibrillate and give magnesium sulfate, and stop the offending agents', d:['Amiodarone bolus','Synchronized cardioversion','Adenosine push'],
+   why:'Pulseless polymorphic ventricular tachycardia is defibrillated. Magnesium treats the substrate. Amiodarone prolongs the QT further and makes torsades worse, which is the distinction being tested.', s:'ecg-e5'},
+  {r:'paced', stem:'A patient with a permanent pacemaker is scheduled for surgery using electrocautery. The surgical team asks what to expect.',
+   a:'Electromagnetic interference may inhibit pacing, so the plan includes magnet or reprogramming and continuous monitoring',
+   d:['Cautery has no effect on modern devices','A magnet will disable the pacemaker entirely','The device should be removed before surgery'],
+   why:'Cautery can be oversensed as intrinsic activity and inhibit output. A magnet puts a pacemaker into asynchronous pacing, which is not the same as disabling it, and in an ICD a magnet suspends tachytherapy without changing pacing. Knowing which device you have in front of you is the whole answer.', s:'ecg-e4'}
+];
+var BANK4=[
+  {r:'infstemi12', stem:'A 58 year old presents with nausea and substernal pressure. The 12-lead shows ST elevation in II, III, and aVF, greater in III than II. Blood pressure 96 over 58, heart rate 52, lungs clear. A colleague is drawing up nitroglycerin.',
+   a:'Hold the nitroglycerin, obtain right-sided leads, and give a fluid challenge if V4R confirms right ventricular involvement',
+   d:['Give the nitroglycerin as ordered since there is ongoing chest pain','Give a beta blocker to reduce myocardial oxygen demand','Withhold all treatment until troponin results return'],
+   why:'Inferior STEMI with elevation greater in III than II points to the right coronary artery, and right ventricular infarction is preload dependent. Nitrates drop preload and can cause abrupt hypotension. Confirm with V4R first, then support volume. Beta blockade in a bradycardic hypotensive inferior MI is the second trap in the same case.', s:'ecg-e5'},
+  {r:'lbbb12', stem:'A patient arrives with 40 minutes of chest pressure. The 12-lead shows a QRS of 0.14 with a broad R in V6 and a deep QS in V1. There is 1 mm of ST elevation in V2 that is concordant with the QRS.',
+   a:'Treat as a STEMI equivalent and activate the cath lab, since concordant elevation meets Sgarbossa criteria',
+   d:['Left bundle branch block makes the ECG uninterpretable, so wait for serial troponins','The ST changes are expected discordance and need no action','Give fibrinolytics without further evaluation since the tracing is unreadable'],
+   why:'Left bundle branch block does not make ischemia invisible, it makes it harder. Concordant ST elevation of 1 mm or more is the most specific Sgarbossa criterion. Calling any wide complex uninterpretable is how these patients get delayed.', s:'ecg-e3'}
+];
+
+function pickQ(){
+  var dok = el('dokSel').value;
+  chosen=null; conf=null;
+  el('fb').hidden=true; el('confRow').hidden=false;
+  Array.prototype.forEach.call(el('confRow').querySelectorAll('[data-conf]'), function(b){ b.setAttribute('aria-pressed','false'); });
+  var body=el('qBody'); body.innerHTML='';
+
+  if(dok==='1'){
+    var q = BANK1[Math.floor(Math.random()*BANK1.length)];
+    Q={type:1, q:q, correct:q.a, s:q.s};
+    el('pLeadTag').textContent='Lead II';
+    pmon.stream=new Stream(q.r); pmon.renderStatic(10);
+    el('qStem').textContent='Identify the rhythm on the strip above.';
+    body.appendChild(optionList(shuffle([q.a].concat(q.d))));
+  }
+  else if(dok==='2'){
+    var q2 = BANK2[Math.floor(Math.random()*BANK2.length)];
+    Q={type:2, q:q2, correct:q2.target, s:q2.s};
+    pmon.stream=new Stream(q2.r); pmon.renderStatic(10);
+    el('qStem').textContent=q2.ask+' Use the calipers, then enter your value.';
+    var wrap=document.createElement('div'); wrap.className='measGrid';
+    wrap.innerHTML='<div class="field"><label for="ansNum">'+q2.field+' in '+q2.unit+'</label><input type="number" id="ansNum" step="1"></div>';
+    body.appendChild(wrap);
+    if(!pcal.on){ pcal.toggle(true); el('pCalBtn').setAttribute('aria-pressed','true'); }
+  }
+  else if(dok==='3'){
+    var q3 = BANK3[Math.floor(Math.random()*BANK3.length)];
+    Q={type:3, q:q3, correct:q3.a, s:q3.s};
+    pmon.stream=new Stream(q3.r); pmon.renderStatic(10);
+    el('qStem').textContent=q3.stem;
+    body.appendChild(optionList(shuffle([q3.a].concat(q3.d))));
+  }
+  else {
+    var q4 = BANK4[Math.floor(Math.random()*BANK4.length)];
+    Q={type:4, q:q4, correct:q4.a, s:q4.s};
+    pmon.stream=new Stream(q4.r==='infstemi12'?'brady':'paced'); pmon.renderStatic(10);
+    el('qStem').textContent=q4.stem+' The 12-lead is described in the stem; open the 12-Lead tab and select the matching pattern to see it.';
+    body.appendChild(optionList(shuffle([q4.a].concat(q4.d))));
+  }
+}
+function shuffle(a){ var i,j,t; for(i=a.length-1;i>0;i--){ j=Math.floor(Math.random()*(i+1)); t=a[i];a[i]=a[j];a[j]=t; } return a; }
+function optionList(opts){
+  var ul=document.createElement('ul'); ul.className='opts';
+  opts.forEach(function(o,i){
+    var li=document.createElement('li');
+    var lab=document.createElement('label'); lab.className='opt';
+    lab.innerHTML='<input type="radio" name="qopt" value="'+i+'"><span>'+o+'</span>';
+    lab.querySelector('input').addEventListener('change', function(){ chosen=o; });
+    li.appendChild(lab); ul.appendChild(li);
+  });
+  return ul;
+}
+Array.prototype.forEach.call(el('confRow').querySelectorAll('[data-conf]'), function(b){
+  b.addEventListener('click', function(){
+    conf = this.dataset.conf==='1';
+    Array.prototype.forEach.call(el('confRow').querySelectorAll('[data-conf]'), function(x){ x.setAttribute('aria-pressed','false'); });
+    this.setAttribute('aria-pressed','true');
+  });
+});
+el('newQ').addEventListener('click', pickQ);
+el('submitQ').addEventListener('click', function(){
+  if(!Q) return;
+  var ok=false, given='';
+  if(Q.type===2){
+    var v = parseFloat((el('ansNum')||{}).value);
+    if(isNaN(v)){ flash('Enter a value first.'); return; }
+    given = v+' '+Q.q.unit;
+    ok = Math.abs(v-Q.correct) <= Q.q.tol;
+  } else {
+    if(chosen==null){ flash('Choose an answer first.'); return; }
+    given = chosen; ok = (chosen===Q.correct);
+  }
+  if(conf==null){ flash('Mark how sure you are. That is what makes the dashboard useful.'); return; }
+  var fb=el('fb'); fb.hidden=false;
+  var kind = ok ? 'right' : (conf ? 'misc':'wrong');
+  fb.setAttribute('data-k', kind);
+  var head = ok ? 'Correct' : (conf ? 'Confident and incorrect, flagged' : 'Not correct');
+  var extra = '';
+  if(!ok && conf){ extra = ' You were sure about this one, so it is flagged as a misconception. Those are the items that survive studying, which is why they get priority in your review queue.'; }
+  var target = Q.type===2 ? (Q.correct+' '+Q.q.unit+', accepted within '+Q.q.tol+' '+Q.q.unit) : Q.correct;
+  fb.innerHTML='<strong>'+head+'</strong>'+
+    (ok?'':'<p style="margin:0 0 8px">You answered: '+given+'. Expected: '+target+'.</p>')+
+    '<p style="margin:0">'+(Q.q.why||'')+extra+'</p>';
+  record(Q.s, ok, conf);
+  el('confRow').hidden=true;
+  fb.focus && fb.focus();
+});
+function flash(msg){
+  var fb=el('fb'); fb.hidden=false; fb.setAttribute('data-k','wrong');
+  fb.innerHTML='<strong>Hold on</strong><p style="margin:0">'+msg+'</p>';
+}
+
+/* ---- mastery ---- */
+function renderMastery(){
+  var s=loadStore(), host=el('mastery'); host.innerHTML='';
+  STRANDS.forEach(function(st){
+    var e=s[st.id];
+    var pct = e ? Math.round((e.strength||0)*100) : 0;
+    var unlocked = st.need.every(function(n){ var x=s[n]; return x && (x.strength||0)>=0.5; });
+    var state = !unlocked ? 'locked' : (pct>=85 ? 'done':'unlocked');
+    var stateLabel = state==='locked'?'Locked':state==='done'?'Holding':'In progress';
+    var d=document.createElement('div'); d.className='mCard'; d.setAttribute('data-state',state);
+    d.innerHTML='<span class="st">'+stateLabel+'</span><h3>'+st.name+'</h3>'+
+      '<p style="margin:0;font-size:13px;color:var(--ink-soft);line-height:1.5">'+st.can+'</p>'+
+      '<div class="bar"><i style="width:'+pct+'%"></i></div>'+
+      '<p style="margin:8px 0 0;font-size:12px;color:var(--ink-mute)">'+
+        (e? (e.correct+' of '+e.attempts+' correct'+((e.misconceptions)?', '+e.misconceptions+' flagged':'')+' &middot; next review '+e.nextRecall) : 'Not started')+
+      '</p>';
+    host.appendChild(d);
+  });
+}
+el('resetProg').addEventListener('click', function(){
+  try{ localStorage.removeItem(STORE); }catch(e){}
+  renderMastery();
+});
+renderMastery();
+draw12();
+pmon.renderStatic(10);
+
+/* ---- iframe height sender ---- */
+function sendHeight(){
+  var h = document.documentElement.scrollHeight;
+  try{ window.parent.postMessage({ id:'ecg-lab', height:h }, '*'); }catch(e){}
+}
+if(window.ResizeObserver){ new ResizeObserver(sendHeight).observe(document.body); }
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+
+})();
+</script>
+</body>
+</html>

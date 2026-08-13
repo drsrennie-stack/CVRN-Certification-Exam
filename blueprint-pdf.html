@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CVRN and CV-BC Exam Blueprint</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+@page{ size:letter; margin:0.7in 0.7in 0.85in; }
+:root{
+  --navy:#1E3D4C; --navy-deep:#142a36; --navy-tint:#EDF1F3;
+  --gold:#B8924A; --terra:#C2734D; --terra-dark:#A0522D;
+  --white:#FFFFFF; --offwhite:#FAFAF9; --rule:#DDE4E7; --mute:#5C6E78;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--offwhite);color:var(--navy);
+  font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:10.2pt;line-height:1.52;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{padding:0 0 8pt;page-break-after:always}
+.page:last-child{page-break-after:auto}
+.eyebrow{font-family:'DM Sans',sans-serif;font-size:8pt;letter-spacing:.16em;text-transform:uppercase;color:var(--terra-dark);font-weight:700;margin:0 0 8pt}
+h1{font-size:27pt;font-weight:800;letter-spacing:-.02em;margin:0 0 4pt;line-height:1.1}
+h2{font-size:14pt;font-weight:600;color:var(--terra-dark);margin:0 0 14pt;letter-spacing:-.01em}
+h3{font-size:12.5pt;font-weight:800;color:var(--navy);margin:20pt 0 7pt;letter-spacing:-.01em;padding-bottom:5pt;border-bottom:1px solid var(--rule)}
+h4{font-size:10.5pt;font-weight:700;color:var(--terra-dark);margin:13pt 0 5pt}
+p{margin:0 0 8pt}
+.lede{font-size:11pt;color:var(--mute);max-width:46em;margin-bottom:16pt}
+.card{background:var(--white);border:1px solid var(--rule);border-radius:9pt;padding:14pt 16pt;margin:0 0 11pt;
+  box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.card.k{border-color:var(--gold)}
+.card h4{margin-top:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:11pt}
+table{width:100%;border-collapse:collapse;font-size:9.4pt;margin:0 0 10pt;background:var(--white)}
+caption{caption-side:top;text-align:left;font-family:'DM Sans',sans-serif;font-size:8pt;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--mute);font-weight:700;padding:0 0 6pt}
+th{background:var(--navy);color:var(--white);text-align:left;padding:7pt 9pt;font-size:8.2pt;
+  letter-spacing:.09em;text-transform:uppercase;font-weight:700;font-family:'DM Sans',sans-serif}
+td{padding:6.5pt 9pt;border-bottom:1px solid var(--rule);vertical-align:top}
+tr:last-child td{border-bottom:0}
+tbody tr:nth-child(even) td{background:var(--navy-tint)}
+td.n,th.n{text-align:right;white-space:nowrap}
+.tot td{font-weight:800;background:var(--navy-tint) !important;border-top:1.5px solid var(--navy)}
+.tag{display:inline-block;font-family:'DM Sans',sans-serif;font-size:7.4pt;font-weight:700;letter-spacing:.08em;
+  text-transform:uppercase;padding:2pt 7pt;border-radius:99pt;border:1px solid var(--gold);color:#7A6021;white-space:nowrap}
+.tag.t{border-color:var(--terra);color:var(--terra-dark)}
+.tag.n{border-color:var(--navy);color:var(--navy)}
+ul,ol{margin:0 0 9pt;padding-left:17pt}
+li{margin-bottom:3.5pt}
+.meta{font-size:8.6pt;color:var(--mute);border-top:1px solid var(--rule);padding-top:8pt;margin-top:18pt}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:3pt 12pt;font-size:9.4pt;margin:0}
+.kv dt{font-family:'DM Sans',sans-serif;font-size:8pt;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:700;padding-top:2pt}
+.kv dd{margin:0;font-weight:600}
+.big{font-size:22pt;font-weight:800;color:var(--gold);line-height:1.1}
+.statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:9pt;margin:0 0 14pt}
+.stat{background:var(--white);border:1px solid var(--rule);border-radius:9pt;padding:11pt 12pt;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.stat .l{font-family:'DM Sans',sans-serif;font-size:7.4pt;letter-spacing:.11em;text-transform:uppercase;color:var(--mute);font-weight:700}
+.stat .v{font-size:19pt;font-weight:800;color:var(--navy);line-height:1.2}
+.stat .s{font-size:8pt;color:var(--mute)}
+.warn{background:var(--white);border:1px solid var(--terra);border-radius:9pt;padding:13pt 15pt;margin:0 0 12pt;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.warn h4{color:var(--terra-dark);margin-top:0}
+.footer{position:fixed;bottom:0.35in;left:0;right:0;font-size:7.8pt;color:var(--mute);
+  font-family:'DM Sans',sans-serif;letter-spacing:.06em;display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+
+<!-- ================= PAGE 1 ================= -->
+<section class="page">
+  <p class="eyebrow">ECG &amp; CVRN Review Course &middot; MedMasters Collaborative</p>
+  <h1>Cardiovascular Nursing Certification Blueprint</h1>
+  <h2>Target credential: ABCM CVRN-BC. Secondary alignment: ANCC CV-BC.</h2>
+
+  <p class="lede">The course is built for the <strong>ABCM CVRN-BC</strong>. A second cardiovascular nursing credential, the ANCC CV-BC, is routinely confused with it, including in study guide marketing, and it tests the same subject matter through a completely different frame. Both blueprints are set out here from primary sources. Every competency in the course carries tags for both, so the ANCC frame stays available as a secondary readiness lens without a second build.</p>
+
+  <div class="grid2">
+    <div class="card k">
+      <h4>ABCM CVRN-BC <span class="tag" style="border-color:#1E3D4C;color:#1E3D4C">target</span></h4>
+      <dl class="kv">
+        <dt>Body</dt><dd>American Board of Cardiovascular Medicine</dd>
+        <dt>Frame</dt><dd>Clinical content categories</dd>
+        <dt>Levels</dt><dd>Level I non-acute, Level II acute</dd>
+        <dt>Length</dt><dd>150 items Level I, 200 items Level II</dd>
+        <dt>Organized by</dt><dd>Disease and modality</dd>
+      </dl>
+    </div>
+    <div class="card k">
+      <h4>ANCC CV-BC <span class="tag">secondary</span></h4>
+      <dl class="kv">
+        <dt>Body</dt><dd>American Nurses Credentialing Center</dd>
+        <dt>Frame</dt><dd>Nursing process</dd>
+        <dt>Levels</dt><dd>Single credential</dd>
+        <dt>Length</dt><dd>150 items, 125 scored, 25 pretest</dd>
+        <dt>Organized by</dt><dd>What the nurse does, not what the patient has</dd>
+      </dl>
+    </div>
+  </div>
+
+  <div class="warn">
+    <h4>Why the distinction is load bearing</h4>
+    <p style="margin:0">A candidate sitting the ANCC exam who studies only from an ABCM-shaped review will know the pathophysiology and still lose points, because 60 percent of the ANCC score comes from planning, implementation, and patient education rather than from recognizing disease. A candidate sitting the ABCM exam who studies only from an ANCC-shaped review will have the reverse problem. The content overlaps almost completely. The weighting does not.</p>
+  </div>
+
+  <h3>Same content, different centers of gravity</h3>
+  <table>
+    <caption>Where the points sit</caption>
+    <thead><tr><th style="width:30%">Emphasis</th><th>ABCM CVRN-BC</th><th>ANCC CV-BC</th></tr></thead>
+    <tbody>
+      <tr><td>Recognizing and understanding disease</td><td>Dominant. Categories are named for conditions and modalities.</td><td>22 percent, inside Assessment and Diagnosis.</td></tr>
+      <tr><td>Choosing and carrying out interventions</td><td>Distributed inside each clinical category.</td><td>35 percent, its own category.</td></tr>
+      <tr><td>Evaluating response and adjusting</td><td>Distributed, largely implicit.</td><td>18 percent, its own category.</td></tr>
+      <tr><td>Teaching patients and communities</td><td>Minor, inside secondary prevention.</td><td>25 percent, its own category.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="meta">Prepared by Dr. Sharilyn Rennie &middot; MedMasters Collaborative &middot; August 13, 2026. Sources: ANCC Cardiac-Vascular Nursing Board Certification Test Content Outline, effective December 5, 2024, last updated November 1, 2024. ABCM published exam category list, abcmcertification.com/exams, retrieved August 13, 2026.</p>
+</section>
+
+<!-- ================= PAGE 2 ================= -->
+<section class="page">
+  <p class="eyebrow">Blueprint one</p>
+  <h1 style="font-size:20pt">ABCM CVRN-BC</h1>
+  <h2 style="font-size:12pt">Clinical content categories, Level I and Level II</h2>
+
+  <p>Level II is a superset of Level I. A Level I candidate is examined on seven categories and a Level II candidate on all fourteen, so a single course can serve both by gating the acute-care half behind the target level rather than building two courses.</p>
+
+  <table>
+    <caption>Level I, non-acute care, 150 items, weights sum to 100 across seven categories</caption>
+    <thead><tr><th style="width:34pt">#</th><th>Category</th><th class="n">Weight</th><th class="n">Source</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Bedside Assessment</td><td class="n">10%</td><td class="n"><span class="tag t">estimate</span></td></tr>
+      <tr><td>2</td><td>Basic ECG Essentials</td><td class="n">14%</td><td class="n"><span class="tag t">estimate</span></td></tr>
+      <tr><td>3</td><td>Coronary Artery Disease</td><td class="n">22%</td><td class="n"><span class="tag">reported</span></td></tr>
+      <tr><td>4</td><td>Hypertension</td><td class="n">12%</td><td class="n"><span class="tag t">estimate</span></td></tr>
+      <tr><td>5</td><td>Cardiomyopathy</td><td class="n">9%</td><td class="n"><span class="tag t">estimate</span></td></tr>
+      <tr><td>6</td><td>Heart Failure</td><td class="n">20%</td><td class="n"><span class="tag">reported</span></td></tr>
+      <tr><td>7</td><td>Non-Invasive and Interventional Cardiology</td><td class="n">13%</td><td class="n"><span class="tag t">estimate</span></td></tr>
+      <tr class="tot"><td></td><td>Total</td><td class="n">100%</td><td class="n"></td></tr>
+    </tbody>
+  </table>
+
+  <table>
+    <caption>Level II, acute care, 200 items, all fourteen categories, weights sum to 100</caption>
+    <thead><tr><th style="width:34pt">#</th><th>Category</th><th class="n">Weight</th><th>What it covers</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Bedside Assessment</td><td class="n">6%</td><td>History, precordial and vascular exam, escalation</td></tr>
+      <tr><td>2</td><td>Basic ECG Essentials</td><td class="n">8%</td><td>Rate, rhythm, blocks, lethal rhythm response</td></tr>
+      <tr><td>3</td><td>Coronary Artery Disease</td><td class="n">14%</td><td>ACS spectrum, biomarkers, reperfusion, prevention</td></tr>
+      <tr><td>4</td><td>Hypertension</td><td class="n">6%</td><td>Measurement, pharmacology, urgency and emergency</td></tr>
+      <tr><td>5</td><td>Cardiomyopathy</td><td class="n">5%</td><td>Types, obstruction physiology, SCD risk</td></tr>
+      <tr><td>6</td><td>Heart Failure</td><td class="n">13%</td><td>Staging, GDMT, decompensation, self-care</td></tr>
+      <tr><td>7</td><td>Non-Invasive and Interventional</td><td class="n">7%</td><td>Test selection, cath and PCI, post-procedure, contrast</td></tr>
+      <tr><td>8</td><td>Heart Sounds and Valvular Disorders</td><td class="n">5%</td><td>Auscultation, murmurs and maneuvers, valve lesions</td></tr>
+      <tr><td>9</td><td>12-Lead ECG Essentials</td><td class="n">8%</td><td>Axis, blocks, localization, STEMI equivalents and mimics</td></tr>
+      <tr><td>10</td><td>Principles of Oxygenation</td><td class="n">4%</td><td>Delivery and consumption, ABG, devices, PEEP effects</td></tr>
+      <tr><td>11</td><td>Hemodynamic Monitoring</td><td class="n">7%</td><td>Lines and waveforms, derived values, shock profiles</td></tr>
+      <tr><td>12</td><td>Cardiac Assist Device Therapy</td><td class="n">4%</td><td>Balloon pump timing, VAD, ECMO, emergencies</td></tr>
+      <tr><td>13</td><td>Pacemaker Interpretation</td><td class="n">5%</td><td>Codes and modes, capture and sensing, malfunction, ICD</td></tr>
+      <tr><td>14</td><td>Cardiovascular Pharmacology</td><td class="n">8%</td><td>Antithrombotics, antiarrhythmics, vasoactives, GDMT</td></tr>
+      <tr class="tot"><td></td><td>Total</td><td class="n">100%</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <h4>Outstanding request</h4>
+    <p style="margin:0">ABCM publishes the category list but not a full percentage table. Coronary artery disease at 22 percent and heart failure at 20 percent are the Level I figures currently in hand and they anchor the rest. Every other weight above is an estimate, allocated by clinical load and objective count, and each carries a <code>weightSource</code> flag in the competency registry so the whole set can be replaced in one pass without touching content. ABCM provides a detailed study list on request by email. That request should go out before the item bank is locked, because weighting drives both how practice exam forms are assembled and how the weakness queue ranks what to study next.</p>
+  </div>
+</section>
+
+<!-- ================= PAGE 3 ================= -->
+<section class="page">
+  <p class="eyebrow">Blueprint two</p>
+  <h1 style="font-size:20pt">ANCC CV-BC</h1>
+  <h2 style="font-size:12pt">Test content outline, effective December 5, 2024</h2>
+
+  <div class="statrow">
+    <div class="stat"><span class="l">Total items</span><div class="v">150</div><span class="s">on the form</span></div>
+    <div class="stat"><span class="l">Scored</span><div class="v">125</div><span class="s">score is based on these</span></div>
+    <div class="stat"><span class="l">Pretest</span><div class="v">25</div><span class="s">unscored, indistinguishable</span></div>
+    <div class="stat"><span class="l">Categories</span><div class="v">4</div><span class="s">by nursing process</span></div>
+  </div>
+
+  <table>
+    <caption>Scored item distribution</caption>
+    <thead><tr><th style="width:36pt">#</th><th>Content domain</th><th class="n">Items</th><th class="n">Percent</th></tr></thead>
+    <tbody>
+      <tr><td>I</td><td>Assessment and Diagnosis</td><td class="n">27</td><td class="n">22%</td></tr>
+      <tr><td>II</td><td>Planning and Implementation</td><td class="n">44</td><td class="n">35%</td></tr>
+      <tr><td>III</td><td>Evaluation and Modification</td><td class="n">23</td><td class="n">18%</td></tr>
+      <tr><td>IV</td><td>Patient and Community Education</td><td class="n">31</td><td class="n">25%</td></tr>
+      <tr class="tot"><td></td><td>Total</td><td class="n">125</td><td class="n">100%</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin-top:14pt">Subject areas within each domain</h3>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>I. Assessment and Diagnosis &middot; 22%</h4>
+      <p style="font-size:9pt;margin:0 0 4pt"><strong>Knowledge.</strong> Anatomy and physiology. Pathophysiology. Nursing diagnosis identification.</p>
+      <p style="font-size:9pt;margin:0"><strong>Skill.</strong> Patient interview including history, chief complaint, and social determinants of health. Cardiac-vascular assessment techniques and tools such as Doppler and stroke scale. Data collection and interpretation covering diagnostic tests, laboratory results, and cardiac rhythms.</p>
+    </div>
+    <div class="card">
+      <h4>II. Planning and Implementation &middot; 35%</h4>
+      <p style="font-size:9pt;margin:0 0 4pt"><strong>Knowledge.</strong> Evidence-based practice guidelines including ACC and AHA guidelines and quality measures. Scope and standards of practice. Legal and ethical considerations including informed consent and advance directives. Invasive and non-invasive procedures. Surgeries including bypass and transplant. Pharmacologic therapies. Non-pharmacologic and complementary therapies. Risk-reduction measures including VTE prophylaxis and infection prevention.</p>
+      <p style="font-size:9pt;margin:0"><strong>Skill.</strong> Prioritization and care coordination including interdisciplinary teams and discharge planning. Interventions including targeted temperature management and cardioversion.</p>
+    </div>
+    <div class="card">
+      <h4>III. Evaluation and Modification &middot; 18%</h4>
+      <p style="font-size:9pt;margin:0 0 4pt"><strong>Knowledge.</strong> Expected outcomes. Drug interactions, both drug to drug and drug to food.</p>
+      <p style="font-size:9pt;margin:0"><strong>Skill.</strong> Recognition and treatment of adverse reactions and events such as heparin-induced thrombocytopenia and hypotension. Recognition and treatment of urgent conditions such as pseudoaneurysm and hypertensive crisis. Recognition and treatment of emergent conditions such as pulmonary emboli and stroke.</p>
+    </div>
+    <div class="card">
+      <h4>IV. Patient and Community Education &middot; 25%</h4>
+      <p style="font-size:9pt;margin:0 0 4pt"><strong>Knowledge.</strong> Cardiac-vascular risk factors. Chronic disease management. Education topics covering procedures and medications. Self-management strategies such as daily weights and blood pressure logs. Community resources such as cardiac rehabilitation and anticoagulation clinics.</p>
+      <p style="font-size:9pt;margin:0"><strong>Skill.</strong> Individualized education planning and implementation addressing barriers and health literacy. Outpatient monitoring including remote telemetry and point-of-care testing. Health promotion including wellness counseling and health fairs.</p>
+    </div>
+  </div>
+
+  <p class="meta">Reproduced from the ANCC Cardiac-Vascular Nursing Board Certification Test Content Outline, effective December 5, 2024, last updated November 1, 2024. Examples in the outline are stated to be non-exhaustive and not ranked by importance.</p>
+</section>
+
+<!-- ================= PAGE 4 ================= -->
+<section class="page">
+  <p class="eyebrow">Reconciliation</p>
+  <h1 style="font-size:20pt">The crosswalk</h1>
+  <h2 style="font-size:12pt">Secondary alignment to the ANCC nursing-process frame</h2>
+
+  <p class="lede">The course is built on clinical content domains, which map one to one onto the ABCM categories. Every competency additionally carries an ANCC tag, so the dashboard can report a second readiness figure against the nursing-process frame using the same evidence. This is not a second course. It is a second reading of the same performance, and it is what lets the dashboard say "ready for CVRN-BC, thin on ANCC Domain IV" without any extra work from the learner.</p>
+
+  <table>
+    <caption>Course domain to ANCC domain</caption>
+    <thead><tr><th>Course content domain</th><th>Primary ANCC domain</th><th>Also feeds</th></tr></thead>
+    <tbody>
+      <tr><td>D1 Bedside Assessment</td><td>I. Assessment and Diagnosis</td><td>IV. Education</td></tr>
+      <tr><td>D2 Basic ECG Essentials</td><td>I. Assessment and Diagnosis</td><td>III. Evaluation</td></tr>
+      <tr><td>D3 Coronary Artery Disease</td><td>II. Planning and Implementation</td><td>I, III, IV</td></tr>
+      <tr><td>D4 Hypertension</td><td>IV. Patient and Community Education</td><td>II, III</td></tr>
+      <tr><td>D5 Cardiomyopathy</td><td>I. Assessment and Diagnosis</td><td>II, IV</td></tr>
+      <tr><td>D6 Heart Failure</td><td>II. Planning and Implementation</td><td>III, IV</td></tr>
+      <tr><td>D7 Non-Invasive and Interventional Cardiology</td><td>II. Planning and Implementation</td><td>III</td></tr>
+      <tr><td>D8 Heart Sounds and Valvular Disorders</td><td>I. Assessment and Diagnosis</td><td>II</td></tr>
+      <tr><td>D9 12-Lead ECG Essentials</td><td>I. Assessment and Diagnosis</td><td>III</td></tr>
+      <tr><td>D10 Principles of Oxygenation</td><td>II. Planning and Implementation</td><td>III</td></tr>
+      <tr><td>D11 Hemodynamic Monitoring</td><td>III. Evaluation and Modification</td><td>I, II</td></tr>
+      <tr><td>D12 Cardiac Assist Device Therapy</td><td>II. Planning and Implementation</td><td>III</td></tr>
+      <tr><td>D13 Pacemaker Interpretation</td><td>III. Evaluation and Modification</td><td>II, IV</td></tr>
+      <tr><td>D14 Cardiovascular Pharmacology</td><td>II. Planning and Implementation</td><td>III, IV</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <h4>The gap this exposes</h4>
+    <p style="margin:0">Eight of seventy-eight competencies map to ANCC Domain IV, which carries 25 percent of that exam. That is fine for the CVRN-BC target, where patient teaching sits inside secondary prevention rather than standing alone. It means the ANCC readiness figure will read low until a dedicated education and health promotion strand is added, covering health literacy, teaching barriers, community resources, outpatient monitoring, and wellness counseling. Left as is, the secondary figure is honest about a real gap rather than hiding it.</p>
+  </div>
+</section>
+
+<!-- ================= PAGE 5: FAILURE PATTERN ================= -->
+<section class="page">
+  <p class="eyebrow">Design driver</p>
+  <h1 style="font-size:20pt">The failure pattern</h1>
+  <h2 style="font-size:12pt">What experienced cardiac nurses get wrong on these exams</h2>
+
+  <p class="lede">The most common way a strong bedside nurse fails is not a knowledge deficit in the usual sense. It is over-reliance on day-to-day cardiac experience in two areas that reward something practice does not routinely require. The pattern is named in ANCC terms below because that is where the weights make it starkest, at 60 percent of that score. The second of the two carries directly into the CVRN-BC target, where guideline reasoning is distributed through every clinical category rather than isolated in one.</p>
+
+  <div class="card k">
+    <h4>Blind spot one &middot; Patient and Community Education <span class="tag">ANCC 25%</span></h4>
+    <p style="margin:0 0 6pt">The second largest block, and the one inpatient-focused candidates encounter least. It tests outpatient cardiac rehabilitation, anticoagulation clinic teaching, daily weight and blood pressure self-monitoring, health literacy, and community-level risk factor reduction. A nurse who spends every shift on a cardiac floor may go years without touching most of this, because it lives downstream of discharge.</p>
+    <p style="margin:0"><strong>What the course does about it.</strong> Education is built as its own strand with its own dashboard tile, not folded into disease domains as an afterthought. It gets scored practice at the same depth as ECG. A learner whose readiness is high everywhere else and low here sees exactly that, which is the whole point of separating the tile.</p>
+  </div>
+
+  <div class="card k">
+    <h4>Blind spot two &middot; Guideline pathways <span class="tag">ANCC 35%</span> <span class="tag" style="border-color:#1E3D4C;color:#1E3D4C">carries into CVRN-BC</span></h4>
+    <p style="margin:0 0 6pt">The explicit ACC and AHA guideline pathways for STEMI and NSTEMI, heart failure, hypertension, and atrial fibrillation anticoagulation. Working nurses apply these constantly without ever having studied them as pathways. They know what happens on their unit. The exam asks what the guideline says and why, including the decision points their institution has already made for them in a protocol. On the CVRN-BC this is not a separate category, it is threaded through coronary artery disease and heart failure, which together carry 42 percent of Level I.</p>
+    <p style="margin:0"><strong>What the course does about it.</strong> Guideline-pathway items are written to surface the decision rule rather than the local habit: why this threshold, what changes the answer, what the alternative pathway is when the first is contraindicated. Where a protocol normally hides a choice, the item exposes the choice.</p>
+  </div>
+
+  <h3>How this changes the build</h3>
+  <table>
+    <thead><tr><th>Implication</th><th>Change</th></tr></thead>
+    <tbody>
+      <tr><td>Experience inflates self-assessment</td><td>The gap finder does not trust self-rating alone. Pass one collects it, pass two tests the heaviest domains regardless of how the learner rated them, because self-assessment is reliable about known unknowns and unreliable about everything else.</td></tr>
+      <tr><td>Education is under-practiced, not under-known</td><td>Education competencies get scored items and spaced review, not reading pages. The strand carries the same DOK ladder as the clinical domains.</td></tr>
+      <tr><td>Guideline reasoning is invisible in practice</td><td>Planning and implementation items are written at DOK 3, asking for the decision and its justification, rather than DOK 1 recall of a protocol step.</td></tr>
+      <tr><td>Confidence is the risk factor</td><td>Confident and incorrect responses are flagged separately and given the highest review priority. This is the population most likely to generate them.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="meta">This page reflects the instructional design decision to weight the course against the observed failure pattern rather than against subject familiarity. Prepared by Dr. Sharilyn Rennie.</p>
+</section>
+
+<!-- ================= PAGE 5 ================= -->
+<section class="page">
+  <p class="eyebrow">Architecture</p>
+  <h1 style="font-size:20pt">Competency structure</h1>
+  <h2 style="font-size:12pt">How the blueprint becomes a course</h2>
+
+  <div class="statrow">
+    <div class="stat"><span class="l">Domains</span><div class="v">14</div><span class="s">7 at Level I</span></div>
+    <div class="stat"><span class="l">Competencies</span><div class="v">78</div><span class="s">37 at Level I</span></div>
+    <div class="stat"><span class="l">Objectives</span><div class="v">311</div><span class="s">147 at Level I</span></div>
+    <div class="stat"><span class="l">ECG strands</span><div class="v">5</div><span class="s">parallel spine</span></div>
+  </div>
+
+  <h3>Three tiers</h3>
+  <table>
+    <thead><tr><th>Tier</th><th>ID</th><th>What it is</th><th>What it drives</th></tr></thead>
+    <tbody>
+      <tr><td>Domain</td><td>D6</td><td>A blueprint category</td><td>Dashboard tile, exam form proportions</td></tr>
+      <tr><td>Competency</td><td>D6.C4</td><td>A study unit, one session</td><td>What a learner navigates and schedules</td></tr>
+      <tr><td>Objective</td><td>D6.C4.O2</td><td>One observable behavior</td><td>What each item is tagged to, and the level the dashboard diagnoses</td></tr>
+    </tbody>
+  </table>
+
+  <h3>The ECG spine</h3>
+  <p>ECG runs as a parallel strand rather than three scattered categories, because interpretation is a compounding skill and it is where candidates lose the most points. The spine does not duplicate objectives, it re-indexes them, so one mastery score is read through two lenses.</p>
+  <table>
+    <thead><tr><th>Strand</th><th>Name</th><th>Sourced from</th><th>Cross-links into</th></tr></thead>
+    <tbody>
+      <tr><td>E1</td><td>Waveform literacy</td><td>D2</td><td>D14</td></tr>
+      <tr><td>E2</td><td>Rhythm diagnosis under time pressure</td><td>D2</td><td>D5, D6, D12</td></tr>
+      <tr><td>E3</td><td>12-lead ischemia and localization</td><td>D9</td><td>D3, D7</td></tr>
+      <tr><td>E4</td><td>Paced and device tracings</td><td>D13</td><td>D12</td></tr>
+      <tr><td>E5</td><td>Tracing to patient integration</td><td>D9, D2</td><td>D1, D8, D10, D11</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Depth and mastery</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>Four depth levels</h4>
+      <p style="font-size:9pt;margin:0">DOK 1 recall. DOK 2 application, the level most certification items sit at. DOK 3 analysis, deciding and justifying with a patient attached. DOK 4 synthesis across changing data. A competency is not marked mastered until its DOK 3 objectives clear, which is what keeps the dashboard honest about the difference between recognizing a rhythm and managing the patient in it.</p>
+    </div>
+    <div class="card">
+      <h4>Four mastery states</h4>
+      <p style="font-size:9pt;margin:0">Mastered, Fragile, Gap, and Untested, driven by confidence-scored responses. Answering incorrectly while confident carries its own flag and the highest review priority, because a learner who knows they do not know something will study it, and a learner who is certain of something wrong will walk past it every time.</p>
+    </div>
+  </div>
+
+  <h3>Decisions still open</h3>
+  <ol>
+    <li><strong>Settled.</strong> The course targets the ABCM CVRN-BC. ANCC CV-BC remains a tagged secondary lens on the dashboard, and adding the education strand would make it a full second target if that is ever wanted.</li>
+    <li><strong>ABCM category weights.</strong> Request the detailed study list by email. Two of seven Level I weights are confirmed; the rest are flagged estimates and swap out in one pass.</li>
+    <li><strong>Items per objective.</strong> Four gives diagnostic resolution. Six gives a practice exam pool as well. At 311 objectives this is the number that sets the authoring workload.</li>
+    <li><strong>Practice exam pool depth.</strong> Forms run either as a 30-item quick check or at full length, 150 items for Level I and 200 for Level II. Ten full-length Level II forms would require 2,000 reserved items, which is not the realistic target. A pool of roughly 600 reserved items supports ten honest quick checks plus two full-length forms. Sixty are authored.</li>
+    <li><strong>Whether DOK 4 uses drawing-based synthesis</strong> the way the anatomy courses do, and what the capture mechanism is in a self-paced online setting.</li>
+  </ol>
+
+  <p class="meta">Prepared by Dr. Sharilyn Rennie &middot; MedMasters Collaborative &middot; ECG &amp; CVRN Review Course &middot; Competency framework v0.1 &middot; August 13, 2026</p>
+</section>
+
+</body>
+</html>

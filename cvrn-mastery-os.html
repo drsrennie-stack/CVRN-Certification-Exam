@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVRN Mastery OS | MedMasters Collaborative</title>
+<meta name="description" content="Goal-paced CVRN-BC review. Set your exam date, run the gap finder, and the system builds the route: targeted study, spaced recall, and ten scored practice exams.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --base:#1B060B; --deepest:#120307; --panel:#2A0C13; --panel-2:#37121B; --panel-3:#431722;
+  --line:#5C2130; --line-soft:#421622;
+  --ink:#FCEEF0; --ink-soft:#E4C4CB; --ink-mute:#C0949E;
+  --gold:#C9A14A; --gold-hi:#E4BD68; --terra:#C4705C; --terra-hi:#E39684;
+  --pulse:#FF8296; --alert:#FFB27A;
+  --radius:14px;
+  --shadow-rest:0 1px 3px rgba(0,0,0,.4);
+  --shadow-hover:0 8px 20px rgba(0,0,0,.5);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--base);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.skip{position:absolute;left:-9999px;background:var(--gold);color:#141414;padding:12px 18px;border-radius:0 0 10px 0;font-weight:700;z-index:999}
+.skip:focus{left:0;top:0}
+:focus-visible{outline:3px solid var(--gold-hi);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1120px;margin:0 auto;padding:28px 20px 72px}
+.eyebrow{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra-hi);font-weight:700;margin:0 0 10px}
+h1{font-size:clamp(28px,4vw,40px);font-weight:800;margin:0 0 6px;letter-spacing:-.02em}
+.subhead{font-weight:600;font-size:19px;color:var(--terra-hi);margin:0 0 8px}
+.lede{color:var(--ink-soft);max-width:72ch;margin:0 0 26px;font-size:15px}
+h2{font-size:22px;font-weight:700;margin:0 0 6px;letter-spacing:-.015em}
+h3{font-size:15px;font-weight:700;margin:0 0 8px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-rest);padding:22px;margin-bottom:16px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px;border-bottom:1px solid var(--line);padding-bottom:14px}
+.tab{background:transparent;border:1px solid var(--line);color:var(--ink-soft);font-family:inherit;font-size:14px;font-weight:600;padding:9px 16px;border-radius:999px;cursor:pointer;transition:background 180ms,color 180ms,border-color 180ms}
+.tab:hover{border-color:var(--gold);color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--gold);border-color:var(--gold);color:#141414}
+.panel[hidden]{display:none}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+select,input,textarea{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:15px;padding:10px 12px;border-radius:9px;min-height:44px;width:100%}
+button.act{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:14px;font-weight:600;padding:11px 18px;border-radius:9px;cursor:pointer;min-height:44px;transition:transform 200ms,box-shadow 200ms,border-color 200ms,background 200ms}
+button.act:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+button.primary{background:var(--gold);border-color:var(--gold);color:#141414}
+button.primary:hover{background:var(--gold-hi);border-color:var(--gold-hi)}
+button.act[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#141414}
+.btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.stat{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px 17px}
+.stat .lab{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.stat .val{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.15;color:var(--gold-hi)}
+.stat .sub{font-size:12px;color:var(--ink-mute)}
+.verdict{border-radius:12px;padding:16px 18px;border:1px solid var(--line);background:var(--panel-2);margin-top:14px}
+.verdict[data-k="ok"]{border-color:var(--gold)}
+.verdict[data-k="tight"]{border-color:var(--alert)}
+.verdict[data-k="short"]{border-color:var(--pulse)}
+.verdict strong{display:block;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;background:var(--gold);border-radius:99px;transition:width 400ms ease}
+.dTile{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px;transition:transform 200ms,box-shadow 200ms,border-color 200ms}
+.dTile:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+.dTile[data-state="locked"]{border-style:dashed;border-color:var(--ink-mute);opacity:.6}
+.dTile[data-state="unlocked"]{border-color:var(--gold)}
+.dTile[data-state="done"]{border-color:var(--pulse);background:rgba(255,130,150,.08)}
+.dTile .st{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.dTile h3{margin:2px 0 4px;font-size:14px}
+.dTile p{margin:0;font-size:12px;color:var(--ink-mute)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft)}
+th{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.pill{display:inline-block;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid var(--line)}
+.pill[data-k="gap"]{border-color:var(--pulse);color:var(--pulse)}
+.pill[data-k="misc"]{border-color:var(--alert);color:var(--alert)}
+.pill[data-k="fragile"]{border-color:var(--gold);color:var(--gold-hi)}
+.pill[data-k="mastered"]{border-color:var(--ink-mute);color:var(--ink-mute)}
+.rate{display:flex;gap:6px;flex-wrap:wrap}
+.rate button{flex:1;min-width:64px;background:var(--panel);border:1px solid var(--line);color:var(--ink-soft);font-family:inherit;font-size:13px;font-weight:600;padding:9px 6px;border-radius:9px;cursor:pointer;min-height:44px}
+.rate button[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#141414}
+.gapRow{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px 17px;margin-bottom:11px}
+.gapRow h3{margin:0 0 3px}
+.gapRow p{margin:0 0 11px;font-size:13px;color:var(--ink-soft)}
+.opts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}
+.opt{display:flex;gap:11px;align-items:flex-start;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;transition:transform 200ms,box-shadow 200ms,border-color 200ms}
+.opt:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+.opt input{margin:3px 0 0;accent-color:var(--gold);width:18px;height:18px;flex:0 0 auto}
+.fb{margin-top:14px;border-radius:10px;padding:14px 16px;border:1px solid var(--line);background:var(--panel-2);font-size:14px}
+.fb[data-k="right"]{border-color:var(--gold)}
+.fb[data-k="wrong"]{border-color:var(--pulse)}
+.note{font-size:13px;color:var(--ink-mute);margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--ink-mute);font-size:13px}
+@media(prefers-reduced-motion:reduce){*{transition-duration:1ms !important;animation-duration:1ms !important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+<div class="wrap">
+<header>
+  <p class="eyebrow">ECG &amp; CVRN Review Course &middot; MedMasters Collaborative</p>
+  <h1>CVRN Mastery OS</h1>
+  <p class="subhead">ABCM CVRN-BC. You choose the destination, the system chooses the route.</p>
+  <p class="lede">Tell it when your exam is and how much time you actually have. It works out the pace, runs a gap finder across every competency on the blueprint, then routes your study toward what is weakest and most heavily weighted first. Ten scored practice exams sit in a separate item pool so a score is an estimate, not a memory test.</p>
+</header>
+
+<main id="main">
+<div class="tabs" role="tablist" aria-label="Sections">
+  <button class="tab" role="tab" id="t-set" aria-controls="p-set" aria-selected="true">Setup</button>
+  <button class="tab" role="tab" id="t-gap" aria-controls="p-gap" aria-selected="false">Gap finder</button>
+  <button class="tab" role="tab" id="t-now" aria-controls="p-now" aria-selected="false">Right now</button>
+  <button class="tab" role="tab" id="t-dash" aria-controls="p-dash" aria-selected="false">Dashboard</button>
+  <button class="tab" role="tab" id="t-ex" aria-controls="p-ex" aria-selected="false">Practice exams</button>
+</div>
+
+<!-- SETUP -->
+<section class="panel" id="p-set" role="tabpanel" aria-labelledby="t-set">
+  <div class="card">
+    <h2>Set the target</h2>
+    <p class="lede" style="margin-bottom:18px">Everything downstream is computed from these five answers. Change them any time and the plan recalculates.</p>
+    <div class="grid2">
+      <div>
+        <div class="field">
+          <label for="lvl">Which exam are you sitting?</label>
+          <select id="lvl">
+            <option value="1">ABCM CVRN-BC Level I, Non-Acute Care, 150 items</option>
+            <option value="2" selected>ABCM CVRN-BC Level II, Acute Care, 200 items</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="edate">Approximate exam date</label>
+          <input type="date" id="edate">
+        </div>
+        <div class="field">
+          <label for="days">Days per week you can study</label>
+          <select id="days"><option>2</option><option>3</option><option selected>4</option><option>5</option><option>6</option><option>7</option></select>
+        </div>
+      </div>
+      <div>
+        <div class="field">
+          <label for="mins">Minutes per study day</label>
+          <select id="mins"><option>20</option><option>30</option><option selected>45</option><option>60</option><option>90</option><option>120</option></select>
+        </div>
+        <div class="field">
+          <label for="exp">Where are you starting from?</label>
+          <select id="exp">
+            <option value="0.15">New to cardiac, or returning after time away</option>
+            <option value="0.35" selected>Working cardiac or step-down, comfortable with basics</option>
+            <option value="0.55">Experienced ICU or cath lab, reviewing for the credential</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="goal">Target score</label>
+          <select id="goal">
+            <option value="0.75">Pass comfortably, around 75 percent</option>
+            <option value="0.85" selected>Strong pass, around 85 percent</option>
+            <option value="0.92">Top band, above 90 percent</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="btnrow"><button class="act primary" id="calcBtn">Build my plan</button><button class="act" id="wipeBtn">Reset everything</button></div>
+  </div>
+
+  <div class="card" id="planCard" hidden>
+    <h2>Your plan</h2>
+    <div class="grid3" style="margin-top:14px">
+      <div class="stat"><span class="lab">Days to exam</span><div class="val" id="sDays">—</div><span class="sub" id="sDate"></span></div>
+      <div class="stat"><span class="lab">Study time available</span><div class="val" id="sAvail">—</div><span class="sub">hours before exam day</span></div>
+      <div class="stat"><span class="lab">Content time needed</span><div class="val" id="sNeed">—</div><span class="sub" id="sNeedSub">hours at your starting point</span></div>
+      <div class="stat"><span class="lab">Required pace</span><div class="val" id="sPace">—</div><span class="sub">competencies per study day</span></div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+    <h3 style="margin-top:22px">Week by week</h3>
+    <div style="overflow-x:auto"><table id="weekTbl"><thead><tr><th>Week</th><th>Focus</th><th>Competencies</th><th>Recall</th><th>Milestone</th></tr></thead><tbody></tbody></table></div>
+    <p class="note">The pace assumes first-pass learning plus spaced review. Roughly 65 percent of your minutes go to new competencies and 35 percent to review, because content you learned in week one is worth nothing on exam day if it is not retrieved again before then.</p>
+  </div>
+</section>
+
+<!-- GAP FINDER -->
+<section class="panel" id="p-gap" role="tabpanel" aria-labelledby="t-gap" hidden>
+  <div class="card">
+    <h2>Gap finder</h2>
+    <p class="lede">Two passes. First you rate yourself across every domain on the blueprint, which takes about three minutes. Then the system builds a short diagnostic from the domains you rated lowest and from the heaviest-weighted domains regardless of your rating, because self-assessment is reliable about what you know you do not know and unreliable about the rest.</p>
+    <div class="btnrow">
+      <button class="act primary" id="gapStart">Start pass one, self-rating</button>
+      <button class="act" id="gapDiag">Run pass two, diagnostic</button>
+    </div>
+  </div>
+  <div id="gapHost"></div>
+</section>
+
+<!-- RIGHT NOW -->
+<section class="panel" id="p-now" role="tabpanel" aria-labelledby="t-now" hidden>
+  <div class="card">
+    <h2>Right now</h2>
+    <p class="lede" id="nowLede">Finish setup and run the gap finder, then this becomes the only screen you need.</p>
+    <div id="nowHost"></div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section class="panel" id="p-dash" role="tabpanel" aria-labelledby="t-dash" hidden>
+  <div class="card">
+    <h2>Readiness</h2>
+    <div class="grid3" style="margin-top:14px">
+      <div class="stat"><span class="lab">Estimated readiness</span><div class="val" id="rdVal">—</div><span class="sub" id="rdSub">weighted across the blueprint</span></div>
+      <div class="stat"><span class="lab">Competencies touched</span><div class="val" id="rdTouch">—</div><span class="sub" id="rdTouchSub"></span></div>
+      <div class="stat"><span class="lab">Flagged misconceptions</span><div class="val" id="rdMisc">—</div><span class="sub">confident and wrong</span></div>
+      <div class="stat"><span class="lab">ANCC CV-BC read</span><div class="val" id="rdAncc">—</div><span class="sub" id="rdAnccSub">secondary lens, same evidence</span></div>
+    </div>
+    <div class="bar" style="margin-top:16px"><i id="rdBar" style="width:0%"></i></div>
+  </div>
+  <div class="card">
+    <h2>Weakness queue</h2>
+    <p class="lede">Ranked by blueprint weight, how badly it is missed, how long since you touched it, and whether other competencies depend on it. The top row is what to do next.</p>
+    <div style="overflow-x:auto"><table id="weakTbl"><thead><tr><th>Priority</th><th>Competency</th><th>Domain</th><th>State</th><th>Weight</th></tr></thead><tbody></tbody></table></div>
+  </div>
+  <div class="card">
+    <h2>Domains</h2>
+    <div class="grid3" id="domHost" style="margin-top:14px"></div>
+  </div>
+</section>
+
+<!-- EXAMS -->
+<section class="panel" id="p-ex" role="tabpanel" aria-labelledby="t-ex" hidden>
+  <div class="card">
+    <h2>Practice exams</h2>
+    <p class="lede">Ten forms, each assembled proportional to the ABCM CVRN-BC blueprint from a pool reserved for exams only. No item appears in the practice or recall decks, and no item repeats across forms, so each score is an independent estimate. A full-length form is the honest estimate; the 30-item quick check is for a mid-week read.</p>
+    <div class="field" style="max-width:440px;margin-top:8px">
+      <label for="formMode">Form length</label>
+      <select id="formMode">
+        <option value="quick">Quick check, 30 items</option>
+        <option value="full">Full length, matches the real form</option>
+      </select>
+    </div>
+    <div class="grid3" id="formHost" style="margin-top:16px"></div>
+    <div id="poolNote" class="note"></div>
+  </div>
+  <div class="card" id="examCard" hidden>
+    <h2 id="examTitle">Form</h2>
+    <div id="examHost"></div>
+  </div>
+</section>
+</main>
+
+<footer><p>CVRN Mastery OS, prototype v0.1. Prepared by Dr. Sharilyn Rennie for the ECG &amp; CVRN Review Course. Progress is stored in this browser only. No names, identifiers, or scores leave this device.</p></footer>
+</div>
+
+<script src="cvrn-competencies.js"></script>
+<script src="cvrn-exam-bank.js"></script>
+<script>
+(function(){
+"use strict";
+var el=function(i){return document.getElementById(i);};
+var C = window.CVRN_COMPETENCIES||[];
+var POOL = window.CVRN_EXAM_POOL||[];
+var SKEY='cvrn-setup', PKEY='cvrn-progress', XKEY='cvrn-exams';
+var DOMS={};
+C.forEach(function(c){ if(!DOMS[c.domain]) DOMS[c.domain]={id:c.domain,name:c.domainName,weight:c.domainWeight,weightL1:c.weightL1,weightL2:c.weightL2,level:c.level,comps:[]}; DOMS[c.domain].comps.push(c); });
+var DOMLIST=Object.keys(DOMS).sort(function(a,b){return parseInt(a.slice(1))-parseInt(b.slice(1));}).map(function(k){return DOMS[k];});
+
+function load(k,d){ try{ return JSON.parse(localStorage.getItem(k)||'null')||d; }catch(e){ return d; } }
+function save(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+var S = load(SKEY,{level:2,date:'',days:4,mins:45,exp:0.35,goal:0.85,formMode:'quick'});
+var P = load(PKEY,{});
+var X = load(XKEY,{});
+
+/* tabs */
+var TABS=[['t-set','p-set'],['t-gap','p-gap'],['t-now','p-now'],['t-dash','p-dash'],['t-ex','p-ex']];
+TABS.forEach(function(pr){ el(pr[0]).addEventListener('click',function(){
+  TABS.forEach(function(q){ var s=q[0]===pr[0]; el(q[0]).setAttribute('aria-selected',s?'true':'false'); el(q[1]).hidden=!s; });
+  if(pr[0]==='t-dash') renderDash();
+  if(pr[0]==='t-now') renderNow();
+  if(pr[0]==='t-ex') renderForms();
+});});
+
+/* ---------- SETUP + PACING ---------- */
+function LV(){ return parseInt(S.level,10); }
+function wt(c){ var w = LV()===1 ? c.weightL1 : c.weightL2; return (w==null? (c.domainWeight||5) : w); }
+function domWt(d){ var w = LV()===1 ? d.weightL1 : d.weightL2; return (w==null? d.weight : w); }
+function inScope(){ return C.filter(function(c){ return c.level<=LV(); }); }
+function readForm(){
+  S.level=parseInt(el('lvl').value,10); S.date=el('edate').value;
+  S.days=parseInt(el('days').value,10); S.mins=parseInt(el('mins').value,10);
+  S.exp=parseFloat(el('exp').value); S.goal=parseFloat(el('goal').value);
+  save(SKEY,S);
+}
+function fillForm(){
+  el('lvl').value=S.level; el('edate').value=S.date||'';
+  el('days').value=S.days; el('mins').value=S.mins;
+  el('exp').value=S.exp; el('goal').value=S.goal;
+}
+function daysToExam(){
+  if(!S.date) return null;
+  var d=new Date(S.date+'T12:00:00'), n=new Date();
+  return Math.max(0, Math.round((d-n)/864e5));
+}
+function plan(){
+  var scope=inScope();
+  var dte=daysToExam();
+  var studyDays = dte==null ? null : Math.floor(dte/7*S.days);
+  var availMin = studyDays==null? null : studyDays*S.mins;
+  /* content minutes, discounted by starting experience, inflated by score goal */
+  var raw = scope.reduce(function(a,c){ return a+c.est; },0);
+  var needMin = Math.round(raw * (1-S.exp*0.55) * (0.72 + S.goal*0.55));
+  return {scope:scope, dte:dte, studyDays:studyDays, availMin:availMin, needMin:needMin, raw:raw};
+}
+function renderPlan(){
+  var p=plan();
+  el('planCard').hidden=false;
+  el('sDays').textContent = p.dte==null?'—':p.dte;
+  el('sDate').textContent = p.dte==null?'set an exam date':(p.studyDays+' study days at '+S.days+' per week');
+  el('sAvail').textContent = p.availMin==null?'—':Math.round(p.availMin/60);
+  el('sNeed').textContent = Math.round(p.needMin/60);
+  el('sNeedSub').textContent = p.scope.length+' competencies in scope';
+  var pace = (p.studyDays&&p.studyDays>0)? (p.scope.length/p.studyDays) : 0;
+  el('sPace').textContent = pace? pace.toFixed(1):'—';
+
+  var v=el('verdict');
+  if(p.availMin==null){ v.setAttribute('data-k','tight'); v.innerHTML='<strong>Set a date</strong><p style="margin:0">Enter your approximate exam date and the pace calculation turns on. Everything else works without it, but the schedule is the part that keeps people honest.</p>'; }
+  else {
+    var ratio=p.availMin/p.needMin;
+    if(ratio>=1.15){ v.setAttribute('data-k','ok'); v.innerHTML='<strong>The plan fits</strong><p style="margin:0">You have about '+Math.round(p.availMin/60)+' hours available against roughly '+Math.round(p.needMin/60)+' hours of content. That leaves margin for the weak areas the gap finder turns up, which is exactly what the margin is for. Hold the schedule and you will finish with review time left.</p>'; }
+    else if(ratio>=0.85){ v.setAttribute('data-k','tight'); v.innerHTML='<strong>Tight but workable</strong><p style="margin:0">About '+Math.round(p.availMin/60)+' hours available against '+Math.round(p.needMin/60)+' needed. There is no slack for a bad week. Two options: add one study day per week, or accept that low-weight competencies get a lighter pass. The system will prioritize by blueprint weight either way, so the trimming happens in the right place.</p>'; }
+    else {
+      v.setAttribute('data-k','short');
+      var addDays = Math.ceil((p.needMin-p.availMin)/S.mins);
+      var addWk = Math.ceil(addDays/(p.dte/7||1));
+      v.innerHTML='<strong>Short by a meaningful margin</strong><p style="margin:0 0 8px">You have about '+Math.round(p.availMin/60)+' hours against '+Math.round(p.needMin/60)+' needed. That gap is real and it will not close by studying harder on the days you already have.</p><p style="margin:0">Three honest ways to close it: add about '+addWk+' more study day'+(addWk===1?'':'s')+' per week, move the exam date out, or sit Level I first if you are currently targeting Level II. Nothing here will pretend the current plan works.</p>';
+    }
+  }
+  renderWeeks(p);
+}
+function renderWeeks(p){
+  var tb=el('weekTbl').querySelector('tbody'); tb.innerHTML='';
+  if(!p.dte){ tb.innerHTML='<tr><td colspan="5">Set an exam date to see the week by week route.</td></tr>'; return; }
+  var weeks=Math.max(1,Math.ceil(p.dte/7));
+  var ordered = p.scope.slice().sort(function(a,b){ return wt(b)-wt(a) || a.domain.localeCompare(b.domain); });
+  var per = Math.ceil(ordered.length/Math.max(1,weeks-1));
+  var i=0, w;
+  for(w=1;w<=weeks;w++){
+    var tr=document.createElement('tr');
+    if(w===weeks){
+      tr.innerHTML='<td>'+w+'</td><td>Consolidation</td><td>No new content</td><td>All flagged items plus full review</td><td>Practice exams 9 and 10, then rest the day before</td>';
+    } else {
+      var chunk=ordered.slice(i,i+per); i+=per;
+      var doms={}; chunk.forEach(function(c){ doms[c.domainName]=1; });
+      var focus=Object.keys(doms).slice(0,2).join(', ')+(Object.keys(doms).length>2?', and more':'');
+      var mile = (w%2===0) ? ('Practice exam '+Math.min(10,Math.floor(w/2))) : 'Weakness queue sweep';
+      tr.innerHTML='<td>'+w+'</td><td>'+(focus||'Review')+'</td><td>'+chunk.length+'</td><td>Due items from weeks 1 to '+Math.max(1,w-1)+'</td><td>'+mile+'</td>';
+    }
+    tb.appendChild(tr);
+  }
+}
+el('calcBtn').addEventListener('click',function(){ readForm(); renderPlan(); renderForms(); });
+el('wipeBtn').addEventListener('click',function(){
+  if(!confirm('Clear your plan, gap finder results, progress, and exam scores from this browser?')) return;
+  [SKEY,PKEY,XKEY].forEach(function(k){ try{localStorage.removeItem(k);}catch(e){} });
+  P={}; X={}; S={level:2,date:'',days:4,mins:45,exp:0.35,goal:0.85,formMode:'quick'}; fillForm(); el('planCard').hidden=true;
+});
+
+/* ---------- GAP FINDER ---------- */
+function ent(id){ return P[id] || {attempts:0,correct:0,misconceptions:0,selfRate:null,strength:null}; }
+function put(id,e){ P[id]=e; save(PKEY,P); }
+
+el('gapStart').addEventListener('click',function(){
+  var host=el('gapHost'); host.innerHTML='';
+  var card=document.createElement('div'); card.className='card';
+  card.innerHTML='<h2>Pass one: rate yourself by domain</h2><p class="lede">Be blunt. Overrating here just delays the diagnostic finding it.</p>';
+  DOMLIST.filter(function(d){return d.level<=S.level;}).forEach(function(d){
+    var row=document.createElement('div'); row.className='gapRow';
+    row.innerHTML='<h3>'+d.id+'. '+d.name+'</h3><p>'+d.comps.length+' competencies &middot; blueprint weight '+d.weight+'</p>';
+    var rr=document.createElement('div'); rr.className='rate';
+    [['0','No idea'],['1','Shaky'],['2','Mostly solid'],['3','Could teach it']].forEach(function(o){
+      var b=document.createElement('button'); b.type='button'; b.textContent=o[1];
+      b.setAttribute('aria-pressed', String(ent('dom:'+d.id).selfRate)===o[0] ? 'true':'false');
+      b.addEventListener('click',function(){
+        Array.prototype.forEach.call(rr.children,function(x){x.setAttribute('aria-pressed','false');});
+        b.setAttribute('aria-pressed','true');
+        var e=ent('dom:'+d.id); e.selfRate=parseInt(o[0],10); put('dom:'+d.id,e);
+        d.comps.forEach(function(c){ var ce=ent(c.id); if(ce.attempts===0){ ce.selfRate=e.selfRate; put(c.id,ce); } });
+      });
+      rr.appendChild(b);
+    });
+    row.appendChild(rr); card.appendChild(row);
+  });
+  var b=document.createElement('button'); b.className='act primary'; b.textContent='Save ratings and build the diagnostic';
+  b.addEventListener('click',function(){ el('gapDiag').click(); });
+  card.appendChild(b);
+  host.appendChild(card);
+});
+
+var DIAG=null;
+el('gapDiag').addEventListener('click',function(){
+  /* Build a diagnostic: weakest self-rated domains plus the heaviest domains regardless of rating */
+  var doms=DOMLIST.filter(function(d){return d.level<=S.level;});
+  var scored=doms.map(function(d){
+    var r=ent('dom:'+d.id).selfRate; if(r==null) r=1;
+    return {d:d, pri: domWt(d)*(3-r+0.5)};
+  }).sort(function(a,b){return b.pri-a.pri;});
+  var picked=[], seen={};
+  scored.forEach(function(s){
+    var items=POOL.filter(function(q){ return q.d===s.d.id && !seen[q.id]; });
+    items.slice(0, picked.length<10?2:1).forEach(function(q){ seen[q.id]=1; picked.push(q); });
+  });
+  picked=picked.slice(0,18);
+  if(!picked.length){ el('gapHost').innerHTML='<div class="card"><h2>Diagnostic not available yet</h2><p class="lede">No items in the pool match the domains in scope. Add items to cvrn-exam-bank.js and this builds itself.</p></div>'; return; }
+  DIAG={items:picked, i:0, correct:0, byDom:{}};
+  runDiag();
+});
+function runDiag(){
+  var host=el('gapHost');
+  if(DIAG.i>=DIAG.items.length){ return diagReport(); }
+  var q=DIAG.items[DIAG.i];
+  host.innerHTML='';
+  var card=document.createElement('div'); card.className='card';
+  card.innerHTML='<p class="eyebrow">Diagnostic &middot; item '+(DIAG.i+1)+' of '+DIAG.items.length+' &middot; '+DOMS[q.d].name+'</p><h2 style="font-size:18px;font-weight:600;line-height:1.5">'+q.q+'</h2>';
+  var ul=document.createElement('ul'); ul.className='opts'; var pick=null;
+  q.o.forEach(function(o,i){
+    var li=document.createElement('li'); var lab=document.createElement('label'); lab.className='opt';
+    lab.innerHTML='<input type="radio" name="dq"><span>'+o+'</span>';
+    lab.querySelector('input').addEventListener('change',function(){ pick=i; });
+    li.appendChild(lab); ul.appendChild(li);
+  });
+  card.appendChild(ul);
+  var row=document.createElement('div'); row.className='btnrow';
+  var sure=null;
+  [['Sure',1],['Not sure',0]].forEach(function(o){
+    var b=document.createElement('button'); b.className='act'; b.textContent=o[0];
+    b.addEventListener('click',function(){ sure=o[1]; Array.prototype.forEach.call(row.children,function(x){x.setAttribute('aria-pressed','false');}); b.setAttribute('aria-pressed','true'); });
+    row.appendChild(b);
+  });
+  var nx=document.createElement('button'); nx.className='act primary'; nx.textContent='Submit';
+  nx.addEventListener('click',function(){
+    if(pick==null){ alert('Choose an answer.'); return; }
+    if(sure==null){ alert('Mark how sure you are. That is what separates a gap from a misconception.'); return; }
+    var ok = pick===q.a;
+    if(ok) DIAG.correct++;
+    DIAG.byDom[q.d]=DIAG.byDom[q.d]||{n:0,c:0}; DIAG.byDom[q.d].n++; if(ok) DIAG.byDom[q.d].c++;
+    var e=ent(q.c); e.attempts++; if(ok) e.correct++; if(!ok&&sure) e.misconceptions++;
+    e.reviewedAt=new Date().toISOString().slice(0,10);
+    e.strength=Math.max(0, e.correct/e.attempts - e.misconceptions*0.08);
+    e.nextRecall=new Date(Date.now()+(e.strength>0.85?7:e.strength>0.6?3:1)*864e5).toISOString().slice(0,10);
+    put(q.c,e);
+    var fb=document.createElement('div'); fb.className='fb'; fb.setAttribute('data-k', ok?'right':'wrong');
+    fb.innerHTML='<strong>'+(ok?'Correct':(sure?'Confident and incorrect, flagged as a misconception':'Not correct'))+'</strong><p style="margin:6px 0 0">'+q.why+'</p>';
+    card.appendChild(fb);
+    nx.textContent='Next'; nx.onclick=function(){ DIAG.i++; runDiag(); };
+  });
+  row.appendChild(nx); card.appendChild(row);
+  host.appendChild(card);
+}
+function diagReport(){
+  var host=el('gapHost'); host.innerHTML='';
+  var card=document.createElement('div'); card.className='card';
+  var pct=Math.round(DIAG.correct/DIAG.items.length*100);
+  card.innerHTML='<h2>Gap finder result</h2><p class="lede">'+DIAG.correct+' of '+DIAG.items.length+' correct, '+pct+' percent. This is a diagnostic, not a score estimate. It is a small sample chosen to find weak spots, so it reads lower than a full form for most people.</p>';
+  var tbl=document.createElement('table');
+  tbl.innerHTML='<thead><tr><th>Domain</th><th>Sampled</th><th>Correct</th><th>Read</th></tr></thead>';
+  var tb=document.createElement('tbody');
+  Object.keys(DIAG.byDom).sort().forEach(function(d){
+    var r=DIAG.byDom[d], f=r.c/r.n;
+    var read = f>=0.8?'Holding':f>=0.5?'Fragile':'Priority';
+    var k = f>=0.8?'mastered':f>=0.5?'fragile':'gap';
+    tb.innerHTML+='<tr><td>'+DOMS[d].name+'</td><td>'+r.n+'</td><td>'+r.c+'</td><td><span class="pill" data-k="'+k+'">'+read+'</span></td></tr>';
+  });
+  tbl.appendChild(tb); card.appendChild(tbl);
+  var b=document.createElement('button'); b.className='act primary'; b.style.marginTop='16px'; b.textContent='Send this to my plan';
+  b.addEventListener('click',function(){ el('t-now').click(); });
+  card.appendChild(b);
+  card.insertAdjacentHTML('beforeend','<p class="note">Sample sizes here are small by design. A domain read from two items tells you where to look first, not how you will score. The practice exams do the scoring.</p>');
+  host.appendChild(card);
+}
+
+/* ---------- PRIORITY ENGINE ---------- */
+function stateOf(c){
+  var e=P[c.id];
+  if(!e || (!e.attempts && e.selfRate==null)) return {k:'untested',label:'Untested',score:0};
+  if(!e.attempts){ var r=e.selfRate; return {k: r<=1?'gap':'fragile', label: r<=1?'Self-rated gap':'Self-rated fragile', score:(r||0)/3*0.5}; }
+  var s=e.strength!=null?e.strength:(e.correct/e.attempts);
+  if(e.misconceptions>0 && s<0.85) return {k:'misc',label:'Misconception',score:s};
+  if(s>=0.85) return {k:'mastered',label:'Mastered',score:s};
+  if(s>=0.5) return {k:'fragile',label:'Fragile',score:s};
+  return {k:'gap',label:'Gap',score:s};
+}
+var SEV={misc:1.0,gap:0.8,fragile:0.4,untested:0.65,mastered:0.05};
+function decay(c){
+  var e=P[c.id]; if(!e||!e.reviewedAt) return 1;
+  var d=(Date.now()-new Date(e.reviewedAt+'T12:00:00'))/864e5;
+  return Math.min(1.6, 1 + d/21);
+}
+function priority(c){
+  var st=stateOf(c);
+  var lift = c.dok>=3 ? 1.15 : 1.0;
+  return (wt(c)/14)*SEV[st.k]*decay(c)*lift;
+}
+function ranked(){
+  return inScope().map(function(c){ return {c:c, p:priority(c), st:stateOf(c)}; })
+    .sort(function(a,b){ return b.p-a.p; });
+}
+
+/* ---------- RIGHT NOW ---------- */
+function renderNow(){
+  var host=el('nowHost'); host.innerHTML='';
+  var p=plan(), r=ranked();
+  if(!S.date){ el('nowLede').textContent='Set your exam date on the Setup tab first. Without it there is no pace to hold you to.'; }
+  else { el('nowLede').textContent = p.dte+' days out. Today is '+(p.studyDays>0? Math.max(1,Math.round(inScope().length/p.studyDays)) : 3)+' competencies plus your due review.'; }
+  var top=r.slice(0,4);
+  top.forEach(function(x,i){
+    var d=document.createElement('div'); d.className='gapRow';
+    d.innerHTML='<span class="pill" data-k="'+x.st.k+'">'+x.st.label+'</span>'+
+      '<h3 style="margin-top:8px">'+(i===0?'Start here: ':'')+x.c.name+'</h3>'+
+      '<p>'+x.c.domainName+' &middot; about '+x.c.est+' minutes &middot; '+x.c.objectives.length+' objectives</p>'+
+      '<p style="color:var(--ink-soft)">'+x.c.can+'</p>';
+    host.appendChild(d);
+  });
+  var note=document.createElement('p'); note.className='note';
+  note.textContent='This list is regenerated every time you open it. It changes when you answer questions, and it drifts back toward review when you have not touched something in a while.';
+  host.appendChild(note);
+}
+
+/* ---------- DASHBOARD ---------- */
+function renderDash(){
+  var scope=inScope();
+  var wsum=0, wtot=0, touched=0, misc=0;
+  scope.forEach(function(c){
+    var st=stateOf(c); var e=P[c.id];
+    if(e&&e.attempts){ touched++; misc+=(e.misconceptions||0); }
+    var w=wt(c); wtot+=w; wsum+=w*(e&&e.attempts?st.score:0);
+  });
+  var rd = wtot? Math.round(wsum/wtot*100):0;
+  el('rdVal').textContent=rd+'%'; el('rdBar').style.width=rd+'%';
+  el('rdTouch').textContent=touched; el('rdTouchSub').textContent='of '+scope.length+' in scope';
+  el('rdMisc').textContent=misc;
+  el('rdSub').textContent = touched < scope.length*0.3 ? 'low confidence, too little evidence yet' : 'weighted across the CVRN-BC blueprint';
+  var aw={},ac={};
+  scope.forEach(function(c){ var k=c.anccPrimary||'I', e=P[c.id];
+    aw[k]=(aw[k]||0)+1; ac[k]=(ac[k]||0)+(e&&e.attempts?stateOf(c).score:0); });
+  var AW={I:22,II:35,III:18,IV:25}, at=0, as=0, thin=null;
+  Object.keys(AW).forEach(function(k){ var f=aw[k]? ac[k]/aw[k] : 0; at+=AW[k]; as+=AW[k]*f;
+    if(thin===null || f<thin.f) thin={k:k,f:f}; });
+  el('rdAncc').textContent = Math.round(as/at*100)+'%';
+  el('rdAnccSub').textContent = 'thinnest: Domain '+(thin?thin.k:'IV')+' of the nursing-process frame';
+
+  var tb=el('weakTbl').querySelector('tbody'); tb.innerHTML='';
+  ranked().slice(0,12).forEach(function(x,i){
+    tb.innerHTML+='<tr><td>'+(i+1)+'</td><td>'+x.c.name+'</td><td>'+x.c.domain+'</td><td><span class="pill" data-k="'+x.st.k+'">'+x.st.label+'</span></td><td>'+wt(x.c)+'%</td></tr>';
+  });
+
+  var dh=el('domHost'); dh.innerHTML='';
+  DOMLIST.forEach(function(d){
+    var inS = d.level<=S.level;
+    var vals=d.comps.map(function(c){ var e=P[c.id]; return e&&e.attempts? stateOf(c).score:null; }).filter(function(v){return v!=null;});
+    var pct = vals.length? Math.round(vals.reduce(function(a,b){return a+b;},0)/d.comps.length*100):0;
+    var state = !inS?'locked':(pct>=85?'done':'unlocked');
+    var lab = !inS?'Above your level':(pct>=85?'Holding':vals.length?'In progress':'Not started');
+    var t=document.createElement('div'); t.className='dTile'; t.setAttribute('data-state',state);
+    t.innerHTML='<span class="st">'+lab+'</span><h3>'+d.id+'. '+d.name+'</h3><p>'+(inS?domWt(d)+'% of the exam':'Level II only')+' &middot; '+d.comps.length+' competencies</p><div class="bar"><i style="width:'+pct+'%"></i></div>';
+    dh.appendChild(t);
+  });
+}
+
+/* ---------- PRACTICE EXAMS ---------- */
+var FORMS=10;
+function fullLen(){ return LV()===1 ? 150 : 200; }
+var FORM_SIZE=30;
+function setFormMode(m){ S.formMode=m; save(SKEY,S); renderForms(); }
+function buildForms(){
+  var scopeDoms=DOMLIST.filter(function(d){return d.level<=S.level;});
+  var wtot=scopeDoms.reduce(function(a,d){return a+domWt(d);},0);
+  /* deterministic partition: bucket pool by domain, deal round robin into forms */
+  var buckets={}; scopeDoms.forEach(function(d){ buckets[d.id]=POOL.filter(function(q){return q.d===d.id;}).slice(); });
+  var forms=[]; var f;
+  for(f=0;f<FORMS;f++) forms.push({n:f+1, items:[], want:{}, missing:0});
+  scopeDoms.forEach(function(d){
+    var slots=Math.max(1, Math.round(FORM_SIZE*domWt(d)/wtot));
+    var b=buckets[d.id], idx=0;
+    for(f=0;f<FORMS;f++){
+      forms[f].want[d.id]=slots;
+      var got=0;
+      while(got<slots && idx<b.length){ forms[f].items.push(b[idx++]); got++; }
+      forms[f].missing += (slots-got);
+    }
+  });
+  return forms;
+}
+function renderForms(){
+  FORM_SIZE = (S.formMode==='full')? fullLen() : 30;
+  var fmSel=el('formMode');
+  if(fmSel){ fmSel.value=S.formMode||'quick';
+    fmSel.options[1].textContent='Full length, '+fullLen()+' items, matches the real form'; }
+  var forms=buildForms(), host=el('formHost'); host.innerHTML='';
+  var built=0, need=0;
+  forms.forEach(function(fm){
+    built+=fm.items.length; need+=fm.items.length+fm.missing;
+    var done = X['f'+fm.n];
+    var ready = fm.missing===0;
+    var t=document.createElement('div'); t.className='dTile';
+    t.setAttribute('data-state', done?'done':(fm.items.length?'unlocked':'locked'));
+    t.innerHTML='<span class="st">'+(done? ('Scored '+done.pct+'%') : (ready?'Ready':(fm.items.length? fm.items.length+' of '+(fm.items.length+fm.missing)+' authored':'Not authored')))+'</span>'+
+      '<h3>Practice exam '+fm.n+'</h3><p>'+fm.items.length+' items available</p>';
+    if(fm.items.length){
+      var b=document.createElement('button'); b.className='act'; b.style.marginTop='10px';
+      b.textContent = done? 'Retake':'Start';
+      b.addEventListener('click',function(){ startExam(fm); });
+      t.appendChild(b);
+    }
+    host.appendChild(t);
+  });
+  el('poolNote').innerHTML='Pool status: '+POOL.length+' exam items authored. Ten forms at '+FORM_SIZE+' items each need '+ (FORMS*FORM_SIZE) +'. '+
+    'Currently '+built+' of '+need+' slots are filled, so '+(need-built)+' items remain to author. Forms show exactly what they have and never pad a short form with practice-bank items, because that is what would make a score estimate dishonest.';
+}
+var EX=null;
+function startExam(fm){
+  EX={fm:fm, i:0, ans:[], byDom:{}};
+  el('examCard').hidden=false; el('examTitle').textContent='Practice exam '+fm.n;
+  el('examCard').scrollIntoView({behavior:'smooth',block:'start'});
+  runExam();
+}
+function runExam(){
+  var host=el('examHost');
+  if(EX.i>=EX.fm.items.length) return examReport();
+  var q=EX.fm.items[EX.i];
+  host.innerHTML='';
+  var p=document.createElement('p'); p.className='eyebrow';
+  p.textContent='Item '+(EX.i+1)+' of '+EX.fm.items.length+' · '+DOMS[q.d].name;
+  var h=document.createElement('p'); h.style.cssText='font-size:17px;font-weight:600;line-height:1.5;margin:0 0 14px'; h.textContent=q.q;
+  host.appendChild(p); host.appendChild(h);
+  var ul=document.createElement('ul'); ul.className='opts'; var pick=null;
+  q.o.forEach(function(o,i){
+    var li=document.createElement('li'), lab=document.createElement('label'); lab.className='opt';
+    lab.innerHTML='<input type="radio" name="xq"><span>'+o+'</span>';
+    lab.querySelector('input').addEventListener('change',function(){ pick=i; });
+    li.appendChild(lab); ul.appendChild(li);
+  });
+  host.appendChild(ul);
+  var row=document.createElement('div'); row.className='btnrow';
+  var b=document.createElement('button'); b.className='act primary'; b.textContent = EX.i===EX.fm.items.length-1?'Finish':'Next';
+  b.addEventListener('click',function(){
+    if(pick==null){ alert('Choose an answer. Guessing is part of the estimate.'); return; }
+    var ok=pick===q.a;
+    EX.ans.push({q:q, pick:pick, ok:ok});
+    EX.byDom[q.d]=EX.byDom[q.d]||{n:0,c:0}; EX.byDom[q.d].n++; if(ok) EX.byDom[q.d].c++;
+    var e=ent(q.c); e.attempts++; if(ok) e.correct++;
+    e.reviewedAt=new Date().toISOString().slice(0,10);
+    e.strength=Math.max(0,e.correct/e.attempts-(e.misconceptions||0)*0.08);
+    put(q.c,e);
+    EX.i++; runExam();
+  });
+  row.appendChild(b); host.appendChild(row);
+}
+function examReport(){
+  var host=el('examHost'); host.innerHTML='';
+  var n=EX.ans.length, c=EX.ans.filter(function(a){return a.ok;}).length;
+  var pct=Math.round(c/n*100);
+  X['f'+EX.fm.n]={pct:pct, n:n, at:new Date().toISOString().slice(0,10)}; save(XKEY,X);
+  var partial = EX.fm.missing>0;
+  var d=document.createElement('div');
+  d.innerHTML='<h3 style="font-size:34px;margin:0">'+pct+'%</h3><p class="lede">'+c+' of '+n+' correct.'+
+    (partial? ' This form is '+EX.fm.items.length+' items rather than the full '+FORM_SIZE+', so treat the number as directional. Domain coverage is incomplete until the pool is filled.' : ' Full-length form, blueprint-proportional.')+'</p>';
+  var tbl=document.createElement('table');
+  tbl.innerHTML='<thead><tr><th>Domain</th><th>Items</th><th>Correct</th><th>Percent</th><th>Read</th></tr></thead>';
+  var tb=document.createElement('tbody');
+  Object.keys(EX.byDom).sort().forEach(function(k){
+    var r=EX.byDom[k], f=Math.round(r.c/r.n*100);
+    var kk = f>=80?'mastered':f>=60?'fragile':'gap';
+    var lab = f>=80?'Holding':f>=60?'Fragile':'Priority';
+    tb.innerHTML+='<tr><td>'+DOMS[k].name+'</td><td>'+r.n+'</td><td>'+r.c+'</td><td>'+f+'%</td><td><span class="pill" data-k="'+kk+'">'+lab+'</span></td></tr>';
+  });
+  tbl.appendChild(tb); d.appendChild(tbl);
+  var rv=document.createElement('div'); rv.style.marginTop='20px';
+  rv.innerHTML='<h3>Review the misses</h3>';
+  EX.ans.filter(function(a){return !a.ok;}).forEach(function(a){
+    var b=document.createElement('div'); b.className='fb'; b.setAttribute('data-k','wrong');
+    b.innerHTML='<strong>'+DOMS[a.q.d].name+'</strong><p style="margin:0 0 8px">'+a.q.q+'</p>'+
+      '<p style="margin:0 0 8px;color:var(--ink-mute)">You chose: '+a.q.o[a.pick]+'<br>Correct: '+a.q.o[a.q.a]+'</p>'+
+      '<p style="margin:0">'+a.q.why+'</p>';
+    rv.appendChild(b);
+  });
+  d.appendChild(rv);
+  var back=document.createElement('button'); back.className='act primary'; back.style.marginTop='18px'; back.textContent='Back to forms';
+  back.addEventListener('click',function(){ el('examCard').hidden=true; renderForms(); renderDash(); });
+  d.appendChild(back);
+  host.appendChild(d);
+}
+
+/* init */
+fillForm();
+el('formMode').addEventListener('change',function(){ setFormMode(this.value); });
+if(S.date) renderPlan();
+renderForms();
+
+/* iframe height sender */
+function sendHeight(){ try{ window.parent.postMessage({id:'cvrn-mastery-os',height:document.documentElement.scrollHeight},'*'); }catch(e){} }
+if(window.ResizeObserver) new ResizeObserver(sendHeight).observe(document.body);
+window.addEventListener('load',sendHeight); window.addEventListener('resize',sendHeight);
+})();
+</script>
+</body>
+</html>
