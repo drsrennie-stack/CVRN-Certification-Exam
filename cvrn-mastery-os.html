@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-dark="off">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,21 +10,33 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --base:#1B060B; --deepest:#120307; --panel:#2A0C13; --panel-2:#37121B; --panel-3:#431722;
-  --line:#5C2130; --line-soft:#421622;
-  --ink:#FCEEF0; --ink-soft:#E4C4CB; --ink-mute:#C0949E;
-  --gold:#C9A14A; --gold-hi:#E4BD68; --terra:#C4705C; --terra-hi:#E39684;
-  --pulse:#FF8296; --alert:#FFB27A;
+  /* Aligned to cardiacconductionsystem.html */
+  --base:#FFFFFF; --deepest:#06080F; --panel:#FFFFFF; --panel-2:#F8F8F8; --panel-3:#EEF1F5;
+  --line:rgba(11,21,48,.12); --line-soft:rgba(11,21,48,.07);
+  --ink:#0B1530; --ink-soft:#3A465F; --ink-mute:#5A6478;
+  --gold:#C9A14A; --gold-hi:#8A6B2E; --terra:#8B3A2E; --terra-hi:#8B3A2E;
+  --pulse:#8B3A2E; --alert:#A0452F;
+  --focus:#8A6B2E;
   --radius:14px;
-  --shadow-rest:0 1px 3px rgba(0,0,0,.4);
-  --shadow-hover:0 8px 20px rgba(0,0,0,.5);
+  --shadow-rest:0 1px 3px rgba(11,21,48,.08);
+  --shadow-hover:0 8px 16px rgba(11,21,48,.11);
+}
+html[data-dark="on"]{
+  --base:#060A18; --deepest:#06080F; --panel:#0B1530; --panel-2:#111C3A; --panel-3:#182549;
+  --line:rgba(255,255,255,.14); --line-soft:rgba(255,255,255,.08);
+  --ink:#EEF2FF; --ink-soft:#BCC6DD; --ink-mute:#8F9BB5;
+  --gold:#C9A14A; --gold-hi:#E8D4A8; --terra:#C98070; --terra-hi:#E8A08E;
+  --pulse:#EF5350; --alert:#FFD54F;
+  --focus:#E8D4A8;
+  --shadow-rest:0 1px 3px rgba(0,0,0,.35);
+  --shadow-hover:0 8px 20px rgba(0,0,0,.45);
 }
 *{box-sizing:border-box}
 html,body{margin:0;padding:0}
 body{background:var(--base);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
 .skip{position:absolute;left:-9999px;background:var(--gold);color:#141414;padding:12px 18px;border-radius:0 0 10px 0;font-weight:700;z-index:999}
 .skip:focus{left:0;top:0}
-:focus-visible{outline:3px solid var(--gold-hi);outline-offset:3px;border-radius:6px}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:6px}
 .wrap{max-width:1120px;margin:0 auto;padding:28px 20px 72px}
 .eyebrow{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra-hi);font-weight:700;margin:0 0 10px}
 h1{font-size:clamp(28px,4vw,40px);font-weight:800;margin:0 0 6px;letter-spacing:-.02em}
@@ -33,6 +45,8 @@ h1{font-size:clamp(28px,4vw,40px);font-weight:800;margin:0 0 6px;letter-spacing:
 h2{font-size:22px;font-weight:700;margin:0 0 6px;letter-spacing:-.015em}
 h3{font-size:15px;font-weight:700;margin:0 0 8px}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-rest);padding:22px;margin-bottom:16px}
+.stat,.dTile,.gapRow,.verdict,.opt,.fb{background:var(--panel);box-shadow:var(--shadow-rest)}
+.card .stat,.card .dTile,.card .gapRow,.card .verdict,.card .opt,.card .fb{background:var(--panel-2)}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
 @media(max-width:760px){.grid2{grid-template-columns:1fr}}
@@ -52,7 +66,7 @@ button.act[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);
 .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
 .stat{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px 17px}
 .stat .lab{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
-.stat .val{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.15;color:var(--gold-hi)}
+.stat .val{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.15;color:var(--ink)}
 .stat .sub{font-size:12px;color:var(--ink-mute)}
 .verdict{border-radius:12px;padding:16px 18px;border:1px solid var(--line);background:var(--panel-2);margin-top:14px}
 .verdict[data-k="ok"]{border-color:var(--gold)}
@@ -65,7 +79,7 @@ button.act[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);
 .dTile:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
 .dTile[data-state="locked"]{border-style:dashed;border-color:var(--ink-mute);opacity:.6}
 .dTile[data-state="unlocked"]{border-color:var(--gold)}
-.dTile[data-state="done"]{border-color:var(--pulse);background:rgba(255,130,150,.08)}
+.dTile[data-state="done"]{border-color:var(--ink);background:var(--panel-3)}
 .dTile .st{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
 .dTile h3{margin:2px 0 4px;font-size:14px}
 .dTile p{margin:0;font-size:12px;color:var(--ink-mute)}
@@ -75,7 +89,7 @@ th{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.1em;text-tran
 .pill{display:inline-block;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid var(--line)}
 .pill[data-k="gap"]{border-color:var(--pulse);color:var(--pulse)}
 .pill[data-k="misc"]{border-color:var(--alert);color:var(--alert)}
-.pill[data-k="fragile"]{border-color:var(--gold);color:var(--gold-hi)}
+.pill[data-k="fragile"]{border-color:var(--gold);color:var(--gold-hi);background:transparent}
 .pill[data-k="mastered"]{border-color:var(--ink-mute);color:var(--ink-mute)}
 .rate{display:flex;gap:6px;flex-wrap:wrap}
 .rate button{flex:1;min-width:64px;background:var(--panel);border:1px solid var(--line);color:var(--ink-soft);font-family:inherit;font-size:13px;font-weight:600;padding:9px 6px;border-radius:9px;cursor:pointer;min-height:44px}
@@ -93,6 +107,27 @@ th{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.1em;text-tran
 .note{font-size:13px;color:var(--ink-mute);margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--ink-mute);font-size:13px}
+
+/* ---- Study tools launcher ---- */
+.tools{margin-top:34px}
+.tools .hd{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra-hi);font-weight:700;margin:0 0 16px}
+.toolgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+.tcard{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;
+  background:#0B1530;border:1px solid #182549;border-radius:18px;padding:24px 20px 20px;
+  text-decoration:none;color:#EAF0FB;box-shadow:var(--shadow-rest);
+  transition:transform 200ms ease,box-shadow 200ms ease,border-color 200ms ease}
+.tcard:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover);border-color:#C9A14A}
+.tcard .ic{width:62px;height:62px;border-radius:17px;display:flex;align-items:center;justify-content:center;margin-bottom:2px}
+.tcard .ic svg{width:30px;height:30px;display:block}
+.tcard[data-c="gold"] .ic{background:linear-gradient(150deg,#E8D4A8,#C9A14A)}
+.tcard[data-c="terra"] .ic{background:linear-gradient(150deg,#B4614F,#8B3A2E)}
+.tcard[data-c="navy"] .ic{background:linear-gradient(150deg,#4FC3F7,#1F5C8C)}
+.tcard[data-c="deep"] .ic{background:linear-gradient(150deg,#8A97B4,#2A3960)}
+.tcard h3{font-size:19px;font-weight:800;margin:0;color:#FFFFFF;letter-spacing:-.01em}
+.tcard p{margin:0;font-size:13.5px;line-height:1.45;color:#BCC6DD;max-width:22ch}
+.tcard .go{margin-top:6px;font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#E8D4A8}
+.tcard[aria-current="page"]{border-color:#C9A14A}
+.tcard[aria-current="page"] .go{color:#8F9BB5}
 @media(prefers-reduced-motion:reduce){*{transition-duration:1ms !important;animation-duration:1ms !important}}
 </style>
 </head>
@@ -113,6 +148,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   <button class="tab" role="tab" id="t-now" aria-controls="p-now" aria-selected="false">Right now</button>
   <button class="tab" role="tab" id="t-dash" aria-controls="p-dash" aria-selected="false">Dashboard</button>
   <button class="tab" role="tab" id="t-ex" aria-controls="p-ex" aria-selected="false">Practice exams</button>
+  <button class="act" id="darkBtn" aria-pressed="false" style="margin-left:auto">Dark mode</button>
 </div>
 
 <!-- SETUP -->
@@ -246,6 +282,37 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 </section>
 </main>
 
+<section class="tools" aria-labelledby="toolsHd">
+  <p class="hd" id="toolsHd">Study tools</p>
+  <div class="toolgrid">
+    <a class="tcard" data-c="gold" href="cvrn-mastery-os.html" aria-current="page">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#101820" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4.5v15"/><path d="M12 6.5A3 3 0 0 0 6.6 8 2.7 2.7 0 0 0 5 12a2.7 2.7 0 0 0 1.6 4A3 3 0 0 0 12 17.5"/><path d="M12 6.5A3 3 0 0 1 17.4 8 2.7 2.7 0 0 1 19 12a2.7 2.7 0 0 1-1.6 4A3 3 0 0 1 12 17.5"/></svg></span>
+      <h3>Mastery OS</h3>
+      <p>Weak spots, today&rsquo;s plan, exam pace.</p>
+      <span class="go">You are here</span>
+    </a>
+    <a class="tcard" data-c="terra" href="ecg-lab.html">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#101820" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12h3l1.6-4 2.6 8.5L12.6 8l1.5 4h7.4"/></svg></span>
+      <h3>ECG Lab</h3>
+      <p>Rhythms and 12-leads. Freeze and measure.</p>
+      <span class="go">Open &rarr;</span>
+    </a>
+    <a class="tcard" data-c="navy" href="cvrn-mastery-os.html#p-gap">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#101820" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/><path d="M12 1.8v3M12 19.2v3M1.8 12h3M19.2 12h3"/></svg></span>
+      <h3>Gap Finder</h3>
+      <p>Find the holes before you study.</p>
+      <span class="go">Open &rarr;</span>
+    </a>
+    <a class="tcard" data-c="deep" href="cvrn-mastery-os.html#p-ex">
+      <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#101820" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2.5"/><path d="M9 4.5h6a1 1 0 0 1 1 1V7H8V5.5a1 1 0 0 1 1-1z"/><path d="M8.8 12.4l1.9 1.9 3.9-3.9"/><path d="M9 17.5h6"/></svg></span>
+      <h3>Practice Exams</h3>
+      <p>Ten scored forms. A real estimate.</p>
+      <span class="go">Open &rarr;</span>
+    </a>
+  </div>
+</section>
+
+
 <footer><p>CVRN Mastery OS, prototype v0.1. Prepared by Dr. Sharilyn Rennie for the ECG &amp; CVRN Review Course. Progress is stored in this browser only. No names, identifiers, or scores leave this device.</p></footer>
 </div>
 
@@ -267,6 +334,16 @@ function save(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} 
 var S = load(SKEY,{level:2,date:'',days:4,mins:45,exp:0.35,goal:0.85,formMode:'quick'});
 var P = load(PKEY,{});
 var X = load(XKEY,{});
+
+el('darkBtn').addEventListener('click',function(){
+  var on = document.documentElement.getAttribute('data-dark')==='on';
+  document.documentElement.setAttribute('data-dark', on?'off':'on');
+  this.setAttribute('aria-pressed', on?'false':'true');
+  this.textContent = on ? 'Dark mode' : 'Light mode';
+  try{ localStorage.setItem('cvrn-theme', on?'off':'on'); }catch(e){}
+});
+try{ var th=localStorage.getItem('cvrn-theme'); if(th==='on'){ document.documentElement.setAttribute('data-dark','on');
+  el('darkBtn').setAttribute('aria-pressed','true'); el('darkBtn').textContent='Light mode'; } }catch(e){}
 
 /* tabs */
 var TABS=[['t-set','p-set'],['t-gap','p-gap'],['t-now','p-now'],['t-dash','p-dash'],['t-ex','p-ex']];
