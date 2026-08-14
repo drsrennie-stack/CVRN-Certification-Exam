@@ -132,6 +132,33 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 .tcard[aria-current="page"]{border-color:#C9A14A}
 .tcard[aria-current="page"] .go{color:#8F9BB5}
 @media(prefers-reduced-motion:reduce){*{transition-duration:1ms !important;animation-duration:1ms !important}}
+
+/* ------------------------------------------------------------
+   Touch devices keep a stale hover on whatever element sat under
+   the last tap. On an answer list that shows up as a gold border
+   on one option before anything is chosen, which reads as a hint.
+   Hover styling is therefore limited to devices with a real
+   pointer, and selection gets its own explicit state.
+   ------------------------------------------------------------ */
+@media (hover:none),(pointer:coarse){
+  .tab:hover{border-color:var(--line);color:var(--ink-soft)}
+  button.act:hover{border-color:var(--line);transform:none;box-shadow:var(--shadow-rest)}
+  button.primary:hover{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
+  .dTile:hover{transform:none;box-shadow:var(--shadow-rest)}
+  .opt:hover{border-color:var(--line);transform:none;box-shadow:var(--shadow-rest)}
+  .tcard:hover{transform:none;box-shadow:var(--shadow-rest);border-color:var(--line)}
+}
+.opt.sel,.opt:has(input:checked){border-color:var(--gold);box-shadow:var(--shadow-hover)}
+.opt:focus-within{outline:2px solid var(--acc);outline-offset:2px}
+
+/* On a phone the tab row wrapped onto three lines and pushed the tool
+   below the fold. It scrolls sideways on one row instead. */
+@media (max-width:700px){
+  .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs .tab{white-space:nowrap;flex:0 0 auto}
+  .toolbar{flex-wrap:wrap}
+}
 </style>
 </head>
 <body>
@@ -340,6 +367,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 <script src="cvrn-competencies.js"></script>
 <script src="cvrn-exam-bank.js"></script>
 <script src="cvrn-diagnostic-bank.js"></script>
+<script src="cvrn-practice-bank.js"></script>
 <script>
 (function(){
 "use strict";
@@ -742,6 +770,155 @@ function ranked(){
 }
 
 /* ---------- RIGHT NOW ---------- */
+
+/* ============================================================
+   STUDY SESSION with a per-competency DOK ladder
+
+   Difficulty is not a global switch. It is earned one competency
+   at a time, which is the only version of progressive difficulty
+   that means anything. The rules:
+
+   1. Every competency starts at DOK 1 and 2, recall and application.
+   2. DOK 3 unlocks for a competency after at least 3 attempts at
+      DOK 1 or 2 in that competency at 70 percent or better.
+   3. DOK 4 unlocks only when the competency itself is at 70 percent
+      on DOK 3 AND at least one other competency in the same domain
+      has also reached that bar, because extended synthesis draws on
+      more than one competency by definition.
+
+   Items come from the practice and recall deck. Nothing here
+   touches the reserved exam pool.
+   ============================================================ */
+var PRPOOL = window.CVRN_PRACTICE_POOL || [];
+
+function dokStats(id){
+  var e=P[id]; return (e && e.byDok) || {};
+}
+function dokAcc(b, levels){
+  var n=0, c=0;
+  levels.forEach(function(k){ var r=b[k]; if(r){ n+=r.n||0; c+=r.c||0; } });
+  return n>=3 ? c/n : null;
+}
+function dokCeiling(c){
+  var b=dokStats(c.id);
+  var base=dokAcc(b,[1,2]);
+  if(base==null || base<0.7) return 2;
+  var three=dokAcc(b,[3]);
+  if(three==null || three<0.7) return 3;
+  var sib=inScope().filter(function(x){
+    if(x.domain!==c.domain || x.id===c.id) return false;
+    return (dokAcc(dokStats(x.id),[3])||0) >= 0.7;
+  });
+  return sib.length>=1 ? 4 : 3;
+}
+function ladderNote(c){
+  var ceil=dokCeiling(c), b=dokStats(c.id);
+  if(ceil===2){
+    var base=dokAcc(b,[1,2]);
+    if(base==null) return 'Recall and application first. Analysis unlocks after three questions here at 70 percent.';
+    return 'Analysis unlocks at 70 percent on the basics. You are at '+Math.round(base*100)+' percent.';
+  }
+  if(ceil===3){
+    var t=dokAcc(b,[3]);
+    if(t==null) return 'Analysis is unlocked. Extended synthesis needs 70 percent here plus a second competency in this domain at the same level.';
+    return 'Analysis at '+Math.round(t*100)+' percent. Extended synthesis needs 70 percent plus a second competency in this domain at the same level.';
+  }
+  return 'All four levels unlocked, including extended synthesis.';
+}
+
+function sessionItems(c, want){
+  var ceil=dokCeiling(c), e=P[c.id]||{}, seen=e.seen||[];
+  var pool=PRPOOL.filter(function(q){ return q.c===c.id && q.dok<=ceil; });
+  var fresh=pool.filter(function(q){ return seen.indexOf(q.id)<0; });
+  var use = fresh.length >= want ? fresh : fresh.concat(pool.filter(function(q){ return seen.indexOf(q.id)>=0; }));
+  use=use.slice(0, want);
+  use.sort(function(a,b){ return a.dok-b.dok; });
+  return use;
+}
+
+var SESS=null;
+function startSession(c){
+  var items=sessionItems(c, 8);
+  var host=el('nowHost');
+  if(!items.length){
+    host.innerHTML='<div class="card"><h2>No practice items yet for this competency</h2><p class="lede">'+c.name+
+      ' has no items in the practice deck at your current unlock level. Add items to cvrn-practice-bank.js and this builds itself.</p></div>';
+    return;
+  }
+  SESS={c:c, items:items, i:0, correct:0};
+  runSession();
+}
+function runSession(){
+  var host=el('nowHost');
+  if(SESS.i>=SESS.items.length) return sessionReport();
+  var q=SESS.items[SESS.i];
+  host.innerHTML='';
+  var card=document.createElement('div'); card.className='card';
+  card.innerHTML='<p class="eyebrow">'+SESS.c.name+' &middot; item '+(SESS.i+1)+' of '+SESS.items.length+' &middot; depth level '+q.dok+'</p>'+
+    '<h2 style="font-size:18px;font-weight:600;line-height:1.5">'+q.q+'</h2>';
+  var ul=document.createElement('ul'); ul.className='opts'; var pick=null;
+  q.o.forEach(function(o,i){
+    var li=document.createElement('li'), lab=document.createElement('label'); lab.className='opt';
+    lab.innerHTML='<input type="radio" name="sq"><span>'+o+'</span>';
+    lab.querySelector('input').addEventListener('change',function(){ pick=i; });
+    li.appendChild(lab); ul.appendChild(li);
+  });
+  card.appendChild(ul);
+  var row=document.createElement('div'); row.className='btnrow'; var sure=null;
+  [['Sure',1],['Not sure',0]].forEach(function(o){
+    var b=document.createElement('button'); b.className='act'; b.textContent=o[0];
+    b.addEventListener('click',function(){ sure=o[1];
+      Array.prototype.forEach.call(row.children,function(x){x.setAttribute('aria-pressed','false');});
+      b.setAttribute('aria-pressed','true'); });
+    row.appendChild(b);
+  });
+  var nx=document.createElement('button'); nx.className='act primary'; nx.textContent='Submit';
+  nx.addEventListener('click', function(){
+    if(pick==null){ alert('Choose an answer.'); return; }
+    if(sure==null){ alert('Mark how sure you are. Confident and wrong is treated differently from not knowing.'); return; }
+    var ok = pick===q.a;
+    if(ok) SESS.correct++;
+    var e=ent(q.c);
+    e.attempts++; if(ok) e.correct++; if(!ok&&sure) e.misconceptions=(e.misconceptions||0)+1;
+    e.byDok=e.byDok||{}; e.byDok[q.dok]=e.byDok[q.dok]||{n:0,c:0};
+    e.byDok[q.dok].n++; if(ok) e.byDok[q.dok].c++;
+    e.seen=e.seen||[]; if(e.seen.indexOf(q.id)<0) e.seen.push(q.id);
+    e.reviewedAt=new Date().toISOString().slice(0,10);
+    e.strength=Math.max(0, e.correct/e.attempts - (e.misconceptions||0)*0.08);
+    e.nextRecall=new Date(Date.now()+(e.strength>0.85?7:e.strength>0.6?3:1)*864e5).toISOString().slice(0,10);
+    put(q.c,e);
+    var fb=document.createElement('div'); fb.className='fb'; fb.setAttribute('data-k', ok?'right':'wrong');
+    fb.innerHTML='<strong>'+(ok?'Correct':(sure?'Confident and incorrect, flagged as a misconception':'Not correct'))+'</strong>'+
+      (ok?'':'<p style="margin:6px 0 0">Correct answer: '+q.o[q.a]+'</p>')+
+      '<p style="margin:6px 0 0">'+q.why+'</p>';
+    card.appendChild(fb);
+    nx.textContent = (SESS.i===SESS.items.length-1) ? 'Finish' : 'Next';
+    nx.onclick=function(){ SESS.i++; runSession(); };
+  });
+  row.appendChild(nx); card.appendChild(row); host.appendChild(card);
+  window.scrollTo(0,0);
+}
+function sessionReport(){
+  var host=el('nowHost'); host.innerHTML='';
+  var pct=Math.round(SESS.correct/SESS.items.length*100);
+  var card=document.createElement('div'); card.className='card';
+  var before=SESS.ceilBefore;
+  var after=dokCeiling(SESS.c);
+  card.innerHTML='<h2>'+SESS.c.name+'</h2><p class="lede">'+SESS.correct+' of '+SESS.items.length+' correct, '+pct+' percent.</p>'+
+    '<div class="gapRow"><h3>Depth ladder</h3><p>'+ladderNote(SESS.c)+'</p></div>';
+  if(after>before) card.insertAdjacentHTML('beforeend','<div class="gapRow"><h3>Depth level '+after+' unlocked</h3><p style="margin:0">The next session in this competency will include harder items.</p></div>');
+  var row=document.createElement('div'); row.className='btnrow'; row.style.marginTop='14px';
+  var again=document.createElement('button'); again.className='act primary'; again.textContent='Another set here';
+  again.addEventListener('click',function(){ SESS.ceilBefore=dokCeiling(SESS.c); startSession(SESS.c); });
+  row.appendChild(again);
+  var back=document.createElement('button'); back.className='act'; back.textContent='Back to today';
+  back.addEventListener('click', renderNow);
+  row.appendChild(back);
+  card.appendChild(row);
+  host.appendChild(card);
+  window.scrollTo(0,0);
+}
+
 function renderNow(){
   var host=el('nowHost'); host.innerHTML='';
   var p=plan(), r=ranked();
@@ -750,10 +927,18 @@ function renderNow(){
   var top=r.slice(0,4);
   top.forEach(function(x,i){
     var d=document.createElement('div'); d.className='gapRow';
+    var avail=PRPOOL.filter(function(q){ return q.c===x.c.id; }).length;
+    var ceil=dokCeiling(x.c);
     d.innerHTML='<span class="pill" data-k="'+x.st.k+'">'+x.st.label+'</span>'+
       '<h3 style="margin-top:8px">'+(i===0?'Start here: ':'')+x.c.name+'</h3>'+
-      '<p>'+x.c.domainName+' &middot; about '+x.c.est+' minutes &middot; '+x.c.objectives.length+' objectives</p>'+
-      '<p style="color:var(--ink-soft)">'+x.c.can+'</p>';
+      '<p>'+x.c.domainName+' &middot; about '+x.c.est+' minutes &middot; '+x.c.objectives.length+' objectives &middot; unlocked to depth level '+ceil+'</p>'+
+      '<p style="color:var(--ink-soft)">'+x.c.can+'</p>'+
+      '<p style="color:var(--ink-soft)">'+ladderNote(x.c)+'</p>';
+    var bt=document.createElement('button');
+    bt.className='act primary'; bt.textContent = avail? 'Study this, '+Math.min(8,avail)+' questions' : 'No items yet';
+    bt.disabled = !avail;
+    bt.addEventListener('click', function(){ SESS={ceilBefore:dokCeiling(x.c)}; var cb=dokCeiling(x.c); startSession(x.c); if(SESS) SESS.ceilBefore=cb; });
+    d.appendChild(bt);
     host.appendChild(d);
   });
   var note=document.createElement('p'); note.className='note';

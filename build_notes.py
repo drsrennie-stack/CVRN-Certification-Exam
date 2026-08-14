@@ -93,6 +93,159 @@ def sources(ns):
     lis = "".join(f'<li><a href="#ref{n}">{n}. {REFS[n-1][0]}</a></li>' for n in ns)
     return f'<h3>Sources for this chapter</h3>\n<ol class="srclist">{lis}</ol>'
 
+
+# ---------------------------------------------------------------- Wiggers diagram
+def _smooth(pts):
+    """Catmull-Rom through the points, emitted as cubic beziers."""
+    if len(pts) < 2:
+        return ""
+    d = "M %.1f %.1f" % pts[0]
+    for i in range(len(pts) - 1):
+        p0 = pts[i - 1] if i > 0 else pts[i]
+        p1, p2 = pts[i], pts[i + 1]
+        p3 = pts[i + 2] if i + 2 < len(pts) else pts[i + 1]
+        c1 = (p1[0] + (p2[0] - p0[0]) / 6.0, p1[1] + (p2[1] - p0[1]) / 6.0)
+        c2 = (p2[0] - (p3[0] - p1[0]) / 6.0, p2[1] - (p3[1] - p1[1]) / 6.0)
+        d += " C %.1f %.1f %.1f %.1f %.1f %.1f" % (c1[0], c1[1], c2[0], c2[1], p2[0], p2[1])
+    return d
+
+def wiggers_svg():
+    """The normal cardiac cycle, one beat at 75 per minute.
+
+    Every curve is drawn from timed control points rather than traced by eye,
+    so the valve events land on the pressure crossings they actually come from.
+    Labels are placed on staggered rows because the two isovolumetric phases
+    are only 60 to 80 ms wide and their names will not fit side by side.
+    """
+    import math
+    W, H = 990, 690
+    X0, X1 = 172, W - 24
+    T0, T1 = 0.0, 0.90
+    def X(t): return X0 + (t - T0) / (T1 - T0) * (X1 - X0)
+
+    EV_A, EV_B = 26, 46          # two staggered rows for the valve events
+    PH_A, PH_B = 78, 96          # two staggered rows for the phase names
+    PT, PB = 122, 356            # pressure lane, 0 to 130 mmHg
+    VT, VB = 382, 470            # volume lane, 40 to 130 mL
+    ET, EB = 486, 562            # ECG lane
+    ST, SB = 576, 624            # heart sounds lane
+    AXY = SB + 30                # the single time axis, under everything
+    def P(mm): return PB - mm / 130.0 * (PB - PT)
+    def V(ml): return VB - (ml - 40) / 90.0 * (VB - VT)
+
+    lv = [(0,7),(.04,10),(.08,12),(.10,12),(.12,34),(.14,62),(.16,80),(.19,104),(.24,120),
+          (.30,116),(.34,108),(.38,99),(.40,78),(.42,50),(.44,26),(.46,10),(.50,5),
+          (.56,6),(.66,7),(.74,7),(.78,8),(.84,11),(.90,12)]
+    ao = [(0,84),(.06,82),(.10,81),(.14,80),(.16,80),(.19,104),(.24,120),(.30,117),(.34,110),
+          (.38,101),(.395,94),(.405,99),(.42,97),(.48,94),(.58,90),(.70,86),(.80,83),(.90,81)]
+    la = [(0,8),(.05,14),(.09,11),(.12,10),(.14,9),(.18,6),(.24,7),(.30,8),(.36,10),(.44,13),
+          (.48,10),(.52,7),(.58,6),(.68,7),(.76,8),(.82,13),(.90,14)]
+    vol = [(0,104),(.05,114),(.09,120),(.10,120),(.16,120),(.19,106),(.24,80),(.30,62),
+           (.34,54),(.38,50),(.46,50),(.50,68),(.54,84),(.58,95),(.66,100),(.74,103),
+           (.80,105),(.86,116),(.90,120)]
+
+    def path(series, fy):
+        return _smooth([(X(t), fy(v)) for t, v in series])
+
+    phases = [(0.00,0.10,"Atrial systole"),(0.10,0.16,"IVC"),
+              (0.16,0.28,"Rapid ejection"),(0.28,0.38,"Reduced ejection"),
+              (0.38,0.46,"IVR"),(0.46,0.58,"Rapid filling"),
+              (0.58,0.78,"Diastasis"),(0.78,0.90,"Atrial systole")]
+    events = [(0.10,"Mitral closes, S1","end"),(0.16,"Aortic opens","start"),
+              (0.38,"Aortic closes, S2","end"),(0.46,"Mitral opens","start")]
+
+    o = []
+    a = o.append
+    a('<svg class="wg" viewBox="0 0 %d %d" role="img" aria-label="%s">' % (W, H,
+      "Wiggers diagram of one normal cardiac cycle at 75 beats per minute. "
+      "Four stacked lanes share one time axis: aortic, left ventricular and left atrial pressure; "
+      "left ventricular volume; the electrocardiogram; and the heart sounds. "
+      "Four valve events are marked at the pressure crossings that cause them: mitral closure with S1 at 0.10 seconds, "
+      "aortic opening at 0.16 seconds, aortic closure with S2 at 0.38 seconds, and mitral opening at 0.46 seconds. "
+      "The seven phases are atrial systole, isovolumetric contraction, rapid ejection, reduced ejection, "
+      "isovolumetric relaxation, rapid filling, and diastasis."))
+
+    for i,(sx,ex,name) in enumerate(phases):
+        if i % 2 == 0:
+            a('<rect class="wg-band" x="%.1f" y="%d" width="%.1f" height="%d"/>' % (X(sx), PT-8, X(ex)-X(sx), SB-(PT-8)))
+        a('<line class="wg-div" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>' % (X(sx), PH_A-14, X(sx), SB))
+    a('<line class="wg-div" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>' % (X(0.90), PH_A-14, X(0.90), SB))
+    for i,(sx,ex,name) in enumerate(phases):
+        y = PH_A if i % 2 == 0 else PH_B
+        a('<text class="wg-phase" x="%.1f" y="%d" text-anchor="middle">%s</text>' % (X(sx)+(X(ex)-X(sx))/2, y, name))
+
+    for mm in range(0,131,20):
+        a('<line class="wg-grid" x1="%d" y1="%.1f" x2="%d" y2="%.1f"/>' % (X0, P(mm), X1, P(mm)))
+        a('<text class="wg-ax" x="%d" y="%.1f" text-anchor="end">%d</text>' % (X0-10, P(mm)+4, mm))
+    for ml in (50,80,110):
+        a('<line class="wg-grid" x1="%d" y1="%.1f" x2="%d" y2="%.1f"/>' % (X0, V(ml), X1, V(ml)))
+        a('<text class="wg-ax" x="%d" y="%.1f" text-anchor="end">%d</text>' % (X0-10, V(ml)+4, ml))
+
+    for label, top, bot in (("PRESSURE",PT,PB),("mmHg",PT,PB),("LV VOLUME",VT,VB),("mL",VT,VB),
+                            ("ECG",ET,EB),("HEART",ST,SB),("SOUNDS",ST,SB)):
+        pass
+    def lane_label(lines, top, bot):
+        mid = (top+bot)/2 - (len(lines)-1)*8
+        for k,ln in enumerate(lines):
+            a('<text class="wg-lane" x="10" y="%.1f">%s</text>' % (mid + k*16, ln))
+    lane_label(["PRESSURE","mmHg"], PT, PB)
+    lane_label(["LV VOLUME","mL"], VT, VB)
+    lane_label(["ECG"], ET, EB)
+    lane_label(["HEART SOUNDS"], ST, SB)
+
+    a('<path class="wg-ao"  d="%s"/>' % path(ao, P))
+    a('<path class="wg-lv"  d="%s"/>' % path(lv, P))
+    a('<path class="wg-la"  d="%s"/>' % path(la, P))
+    a('<path class="wg-vol" d="%s"/>' % path(vol, V))
+
+    def ecgv(t):
+        def g(c,w,amp): return amp*math.exp(-((t-c)**2)/(2*w*w))
+        return (g(.045,.020,0.17) + g(.113,.006,-0.14) + g(.132,.009,1.0)
+                + g(.156,.008,-0.24) + g(.335,.042,0.30) + g(.825,.020,0.17))
+    midE = EB - 20
+    pts = []
+    n = 500
+    for i in range(n+1):
+        t = T0 + (T1-T0)*i/n
+        pts.append("%.1f,%.1f" % (X(t), midE - ecgv(t)*(EB-ET)*0.58))
+    a('<polyline class="wg-ecg" points="%s"/>' % " ".join(pts))
+    for lab,t in (("P",.045),("R",.132),("T",.335)):
+        a('<text class="wg-wave" x="%.1f" y="%d" text-anchor="middle">%s</text>' % (X(t), ET+14, lab))
+
+    def burst(centre, width, amp, label):
+        q=[]; m=(ST+SB)/2
+        for i in range(121):
+            t = centre - width/2 + width*i/120
+            env = math.exp(-((t-centre)**2)/(2*(width/5.2)**2))
+            q.append("%.1f,%.1f" % (X(t), m - math.sin((t-centre)*260)*env*amp))
+        a('<polyline class="wg-snd" points="%s"/>' % " ".join(q))
+        a('<text class="wg-snd-l" x="%.1f" y="%d" text-anchor="middle">%s</text>' % (X(centre), SB-2, label))
+    burst(.122,.055,17,"S1")
+    burst(.402,.048,15,"S2")
+
+    for i,(t,name,anchor) in enumerate(events):
+        a('<line class="wg-ev" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>' % (X(t), EV_A-14, X(t), SB))
+        y = EV_B if i % 2 == 0 else EV_A
+        dx = -7 if anchor == "end" else 7
+        a('<text class="wg-ev-l" x="%.1f" y="%d" text-anchor="%s">%s</text>' % (X(t)+dx, y, anchor, name))
+
+    a('<text class="wg-k wg-k-ao"  x="%.1f" y="%.1f">Aortic pressure</text>' % (X(.62), P(90)-12))
+    a('<text class="wg-k wg-k-lv"  x="%.1f" y="%.1f" text-anchor="middle">Left ventricular pressure</text>' % (X(.25), P(120)-14))
+    a('<text class="wg-k wg-k-la"  x="%.1f" y="%.1f">Left atrial pressure</text>' % (X(.60), P(6)+20))
+    a('<text class="wg-k wg-k-vol" x="%.1f" y="%.1f">LV volume</text>' % (X(.63), V(100)-12))
+    for lab,t,mm in (("a",.05,14),("c",.12,10),("v",.44,13)):
+        a('<text class="wg-k wg-k-la" x="%.1f" y="%.1f" text-anchor="middle">%s</text>' % (X(t), P(mm)-9, lab))
+    a('<text class="wg-k wg-k-ao" x="%.1f" y="%.1f" text-anchor="middle">dicrotic notch</text>' % (X(.47), P(99)-34))
+    a('<line class="wg-lead" x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f"/>' % (X(.455), P(99)-30, X(.402), P(96)))
+
+    a('<line class="wg-axis" x1="%d" y1="%d" x2="%d" y2="%d"/>' % (X0, SB+8, X1, SB+8))
+    for t in (0,.1,.2,.3,.4,.5,.6,.7,.8,.9):
+        a('<line class="wg-axis" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>' % (X(t), SB+8, X(t), SB+14))
+        a('<text class="wg-ax" x="%.1f" y="%d" text-anchor="middle">%.1f</text>' % (X(t), AXY, t))
+    a('<text class="wg-lane" x="10" y="%d">SECONDS</text>' % AXY)
+    a('</svg>')
+    return "\n".join(o)
+
 CH = []
 
 # ================= CHAPTER 1 =================
@@ -132,29 +285,29 @@ CH.append(dict(id="D2", num="1", title="Conduction and the Basic ECG",
 
 <p><strong>The conduction pathway, in sequence:</strong></p>
 <ol class="steps">
-  <li>The sinoatrial node depolarises.</li>
+  <li>The sinoatrial node depolarizes.</li>
   <li>The impulse spreads across both atria, producing the <strong>P wave</strong>.</li>
   <li>The atrioventricular node delays conduction. This delay allows atrial emptying to complete before ventricular systole, and it accounts for most of the <strong>PR interval</strong>.</li>
-  <li>The bundle of His, the right and left bundle branches, and the Purkinje fibres conduct rapidly through both ventricles, producing a narrow <strong>QRS complex</strong>.</li>
+  <li>The bundle of His, the right and left bundle branches, and the Purkinje fibers conduct rapidly through both ventricles, producing a narrow <strong>QRS complex</strong>.</li>
 </ol>
 <p><strong>Clinical consequence.</strong> An impulse that skips this rapid pathway travels myocyte to myocyte, which is slower. A QRS of 0.12 seconds or more means abnormal ventricular activation. Four causes:</p>
 <ul class="bul">
   <li>Bundle branch block</li>
   <li>A ventricular focus, including escape rhythms and ventricular tachycardia</li>
   <li>Ventricular pacing</li>
-  <li>A metabolic cause, most often hyperkalaemia{cite(1,7,8)}</li>
+  <li>A metabolic cause, most often hyperkalemia{cite(1,7,8)}</li>
 </ul>
 
 <h3>What each part of the tracing represents</h3>
 <ul class="def">
-  <li><strong>P wave.</strong> Atrial depolarisation. Upright in lead II indicates a sinus or high atrial origin conducting downward.</li>
+  <li><strong>P wave.</strong> Atrial depolarization. Upright in lead II indicates a sinus or high atrial origin conducting downward.</li>
   <li><strong>PR interval.</strong> Onset of P to onset of QRS. Normal 0.12 to 0.20 seconds, which is three to five small boxes.</li>
-  <li><strong>QRS complex.</strong> Ventricular depolarisation. Normal under 0.12 seconds.</li>
+  <li><strong>QRS complex.</strong> Ventricular depolarization. Normal under 0.12 seconds.</li>
   <li><strong>ST segment.</strong> The plateau phase of the ventricular action potential. Normally isoelectric with the baseline.</li>
-  <li><strong>T wave.</strong> Ventricular repolarisation.</li>
-  <li><strong>QT interval.</strong> Total duration of ventricular depolarisation and repolarisation. Shortens as rate increases, which is why it is rate corrected.</li>
+  <li><strong>T wave.</strong> Ventricular repolarization.</li>
+  <li><strong>QT interval.</strong> Total duration of ventricular depolarization and repolarization. Shortens as rate increases, which is why it is rate corrected.</li>
 </ul>
-<p>Atrial repolarisation occurs during the QRS complex and is not normally visible.{cite(2,3)}</p>
+<p>Atrial repolarization occurs during the QRS complex and is not normally visible.{cite(2,3)}</p>
 
 <div class="mem"><h4>Memory tool</h4>
 <p><strong>Five questions, same order, every strip:</strong></p>
@@ -194,7 +347,7 @@ CH.append(dict(id="D2", num="1", title="Conduction and the Basic ECG",
 <p><strong>Longer, longer, longer, drop, then you have a Wenckebach.</strong> Constant PR with a dropped beat is Mobitz II. P waves and QRS complexes marching independently is third degree. The distinguishing step in all three is measuring the PR interval across several consecutive beats rather than looking at one complex.</p></div>
 
 <div class="clin"><h4>At the bedside</h4>
-<p>Treatment follows symptoms, not the number. A rate of 40 in a well perfused, asymptomatic patient is a finding. A rate of 52 with hypotension, altered mental status, ischaemic chest discomfort, or acute heart failure meets the definition of symptomatic bradycardia and is treated.</p>
+<p>Treatment follows symptoms, not the number. A rate of 40 in a well perfused, asymptomatic patient is a finding. A rate of 52 with hypotension, altered mental status, ischemic chest discomfort, or acute heart failure meets the definition of symptomatic bradycardia and is treated.</p>
 <p>Sequence for symptomatic bradycardia: atropine 1 mg intravenous, repeated every three to five minutes to a maximum of 3 mg, while preparing transcutaneous pacing. If atropine is ineffective, proceed to transcutaneous pacing or a dopamine or epinephrine infusion.{cite(8)}</p></div>
 
 <h3>Test yourself</h3>
@@ -207,9 +360,9 @@ CH.append(dict(id="D2", num="1", title="Conduction and the Basic ECG",
    ("Administer adenosine to slow conduction and expose the underlying rhythm",
     "Adenosine blocks conduction through the atrioventricular node. In a patient already failing to conduct through that node and who is hypotensive, this risks prolonged asystole. Adenosine is indicated for regular narrow complex tachycardia."),
    ("Administer a 500 mL isotonic fluid bolus and reassess",
-    "The hypotension here results from an inadequate ventricular rate rather than from hypovolaemia. Fluid will not raise a rate of 44, and giving it first delays the indicated treatment.")],
+    "The hypotension here results from an inadequate ventricular rate rather than from hypovolemia. Fluid will not raise a rate of 44, and giving it first delays the indicated treatment.")],
   1,
-  "Two things are tested together: identifying Mobitz type II by a constant PR interval with dropped beats, and knowing that the anatomic level of the block determines whether atropine can be relied upon. Recognising the rhythm but managing it as Mobitz type I still produces the wrong action.",
+  "Two things are tested together: identifying Mobitz type II by a constant PR interval with dropped beats, and knowing that the anatomic level of the block determines whether atropine can be relied upon. Recognizing the rhythm but managing it as Mobitz type I still produces the wrong action.",
   "Constant PR with a dropped beat is <strong>M</strong>obitz II, so <strong>M</strong>ake ready to pace.")
   + mcq("d2q2",
   "A rhythm strip shows a QRS duration of 0.16 seconds, no identifiable P waves, and a regular rate of 38. Which conclusion is best supported?",
@@ -220,9 +373,9 @@ CH.append(dict(id="D2", num="1", title="Conduction and the Basic ECG",
    ("The impulse originates below the bundle branches, in the Purkinje system or ventricular myocardium",
     "Correct. A QRS of 0.16 seconds indicates activation outside the rapid conduction system, and a rate of 38 falls within the intrinsic ventricular escape range of 20 to 40. This is an escape rhythm maintaining cardiac output, so suppressing it with an antiarrhythmic would remove the only functioning pacemaker."),
    ("This is atrial flutter with variable atrioventricular conduction",
-    "Atrial flutter produces organised atrial activity at approximately 250 to 350 per minute with a ventricular rate that is a fraction of it. Neither finding is present.")],
+    "Atrial flutter produces organized atrial activity at approximately 250 to 350 per minute with a ventricular rate that is a fraction of it. Neither finding is present.")],
   2,
-  "QRS width localises the origin and rate identifies which escape pacemaker is active. Reading them together locates the focus without memorising rhythm names, and it establishes the management principle: an escape rhythm is supported, never suppressed.",
+  "QRS width localizes the origin and rate identifies which escape pacemaker is active. Reading them together locates the focus without memorizing rhythm names, and it establishes the management principle: an escape rhythm is supported, never suppressed.",
   "<strong>Wide means below.</strong> A narrow QRS used the conduction system, so the origin is at or above the junction. A wide QRS did not.")
   + sources([1,2,3,5,7,8,9])
 ))
@@ -242,11 +395,11 @@ CH.append(dict(id="D3", num="2", title="Coronary Artery Disease and Acute Corona
 <p><strong>Coronary perfusion occurs during diastole.</strong> Systolic contraction compresses the intramyocardial vessels, particularly in the left ventricular subendocardium. Two clinical consequences follow directly:</p>
 <ol class="steps">
   <li><strong>Tachycardia reduces perfusion.</strong> Increasing heart rate shortens diastole proportionally more than systole, so perfusion time falls at the moment demand is highest.</li>
-  <li><strong>The subendocardium is affected first.</strong> It is the last layer perfused and the most vulnerable to ischaemia, which is why subendocardial ischaemia produces ST depression rather than ST elevation.</li>
+  <li><strong>The subendocardium is affected first.</strong> It is the last layer perfused and the most vulnerable to ischemia, which is why subendocardial ischemia produces ST depression rather than ST elevation.</li>
 </ol>
 
 <div class="mem"><h4>Memory tool</h4>
-<p>Myocardial oxygen demand has three determinants: <strong>heart rate, contractility, and wall tension</strong> (preload and afterload). Every antianginal agent reduces at least one of them. Beta blockers reduce rate and contractility. Nitrates reduce preload. Afterload reducers reduce wall tension. Identifying which determinant a drug acts on gives you its indication without memorising a list.{cite(4)}</p></div>
+<p>Myocardial oxygen demand has three determinants: <strong>heart rate, contractility, and wall tension</strong> (preload and afterload). Every antianginal agent reduces at least one of them. Beta blockers reduce rate and contractility. Nitrates reduce preload. Afterload reducers reduce wall tension. Identifying which determinant a drug acts on gives you its indication without memorizing a list.{cite(4)}</p></div>
 
 <h3>From stable plaque to acute event</h3>
 <p><strong>Stable angina.</strong> A fixed stenosis limits flow reserve. Perfusion is adequate at rest and inadequate on exertion, producing predictable, reproducible, exertional chest discomfort relieved by rest or nitroglycerin.{cite(12)}</p>
@@ -273,7 +426,7 @@ CH.append(dict(id="D3", num="2", title="Coronary Artery Disease and Acute Corona
 <ol class="steps">
   <li><strong>Myocardial injury</strong> is any troponin elevation above the 99th percentile upper reference limit.</li>
   <li><strong>Acute injury</strong> requires a rise or fall across serial measurements, the delta.</li>
-  <li><strong>Myocardial infarction</strong> requires acute injury plus clinical evidence of ischaemia: symptoms, ECG changes, imaging evidence, or angiographic findings.</li>
+  <li><strong>Myocardial infarction</strong> requires acute injury plus clinical evidence of ischemia: symptoms, ECG changes, imaging evidence, or angiographic findings.</li>
 </ol>
 <ul class="bul">
   <li><strong>Flat and high</strong> across serial draws, as in chronic kidney disease, is chronic myocardial injury.</li>
@@ -289,12 +442,12 @@ CH.append(dict(id="D3", num="2", title="Coronary Artery Disease and Acute Corona
   <li>If 120 minutes cannot be met, give fibrinolytic therapy within <strong>30 minutes</strong> of arrival provided there is no contraindication, then transfer.</li>
 </ol>
 <p>The decision rests on anticipated time to reperfusion, not on institutional preference.</p>
-<p><strong>Absolute contraindications to fibrinolysis:</strong> any prior intracranial haemorrhage, known structural cerebral vascular lesion or malignant intracranial neoplasm, ischaemic stroke within three months, suspected aortic dissection, active bleeding or bleeding diathesis, and significant closed head or facial trauma within three months.{cite(10)}</p></div>
+<p><strong>Absolute contraindications to fibrinolysis:</strong> any prior intracranial hemorrhage, known structural cerebral vascular lesion or malignant intracranial neoplasm, ischemic stroke within three months, suspected aortic dissection, active bleeding or bleeding diathesis, and significant closed head or facial trauma within three months.{cite(10)}</p></div>
 
 <h3>Mechanical complications after infarction</h3>
 <p>These typically occur between day two and day seven after a large infarct and present as abrupt decompensation in a previously stable patient.{cite(4,5)}</p>
 <ul class="def">
-  <li><strong>Papillary muscle rupture.</strong> Acute severe mitral regurgitation. Sudden dyspnoea, new holosystolic murmur, pulmonary oedema, hypotension.</li>
+  <li><strong>Papillary muscle rupture.</strong> Acute severe mitral regurgitation. Sudden dyspnea, new holosystolic murmur, pulmonary edema, hypotension.</li>
   <li><strong>Ventricular septal rupture.</strong> New harsh holosystolic murmur with a palpable thrill, biventricular failure, oxygen saturation step up between right atrium and right ventricle.</li>
   <li><strong>Free wall rupture.</strong> Tamponade producing pulseless electrical activity.</li>
   <li><strong>Cardiogenic shock.</strong> Most often after a large anterior infarct. Low cardiac output with elevated filling pressures.</li>
@@ -305,17 +458,17 @@ CH.append(dict(id="D3", num="2", title="Coronary Artery Disease and Acute Corona
 
 <h3>Test yourself</h3>
 """ + mcq("d3q1",
-  "A patient with a large anterior STEMI is on hospital day three. He develops sudden severe dyspnoea, a new loud holosystolic murmur at the apex, and a blood pressure of 82 over 50. Which explanation best fits?",
+  "A patient with a large anterior STEMI is on hospital day three. He develops sudden severe dyspnea, a new loud holosystolic murmur at the apex, and a blood pressure of 82 over 50. Which explanation best fits?",
   [("Reinfarction of the anterior wall",
-    "Reinfarction presents with recurrent ischaemic chest discomfort and new ECG changes. It does not produce a new holosystolic murmur, which is the finding that directs the diagnosis elsewhere."),
+    "Reinfarction presents with recurrent ischemic chest discomfort and new ECG changes. It does not produce a new holosystolic murmur, which is the finding that directs the diagnosis elsewhere."),
    ("Papillary muscle rupture producing acute mitral regurgitation",
-    "Correct. The timing, day two to seven after infarction, and the combination of a new holosystolic murmur with abrupt haemodynamic decompensation are characteristic. The left atrium has not dilated or become compliant, so the regurgitant volume transmits directly to the pulmonary circulation, producing pulmonary oedema and shock rather than gradual decline."),
+    "Correct. The timing, day two to seven after infarction, and the combination of a new holosystolic murmur with abrupt hemodynamic decompensation are characteristic. The left atrium has not dilated or become compliant, so the regurgitant volume transmits directly to the pulmonary circulation, producing pulmonary edema and shock rather than gradual decline."),
    ("Acute pericarditis",
-    "Post-infarction pericarditis occurs in this window but produces a pericardial friction rub and positional pleuritic chest pain, not a holosystolic murmur with hypotension and pulmonary oedema."),
+    "Post-infarction pericarditis occurs in this window but produces a pericardial friction rub and positional pleuritic chest pain, not a holosystolic murmur with hypotension and pulmonary edema."),
    ("Anxiety related hyperventilation",
     "This attributes objective findings, a new murmur and a systolic pressure of 82, to a subjective cause. Hyperventilation produces neither.")],
   1,
-  "Timing plus a new murmur plus haemodynamic collapse is the pattern. Acute and chronic mitral regurgitation behave differently because of atrial compliance: the chronically volume loaded atrium has remodelled and accommodates the regurgitant volume at lower pressure, while the acutely affected atrium has not.",
+  "Timing plus a new murmur plus hemodynamic collapse is the pattern. Acute and chronic mitral regurgitation behave differently because of atrial compliance: the chronically volume loaded atrium has remodelled and accommodates the regurgitant volume at lower pressure, while the acutely affected atrium has not.",
   "<strong>Day two to seven, new murmur, sudden decompensation.</strong> Consider a mechanical complication before a medical one.")
   + sources([1,4,5,10,11,12])
 ))
@@ -327,7 +480,7 @@ CH.append(dict(id="D6", num="3", title="Heart Failure",
 <h3>Start with the physiology</h3>
 <p>Cardiac output equals stroke volume multiplied by heart rate. Stroke volume is determined by three factors:</p>
 <ol class="steps">
-  <li><strong>Preload.</strong> Ventricular end-diastolic volume, the degree of myocardial fibre stretch before contraction.</li>
+  <li><strong>Preload.</strong> Ventricular end-diastolic volume, the degree of myocardial fiber stretch before contraction.</li>
   <li><strong>Afterload.</strong> The resistance the ventricle must overcome to eject.</li>
   <li><strong>Contractility.</strong> The intrinsic force of contraction, independent of loading conditions.</li>
 </ol>
@@ -342,15 +495,15 @@ CH.append(dict(id="D6", num="3", title="Heart Failure",
 </ul>
 
 <h3>Compensatory mechanisms</h3>
-<p>When cardiac output falls, the body activates the same reflexes it uses for hypovolaemia. Each is beneficial acutely and harmful when sustained.{cite(4,13)}</p>
+<p>When cardiac output falls, the body activates the same reflexes it uses for hypovolemia. Each is beneficial acutely and harmful when sustained.{cite(4,13)}</p>
 <ol class="steps">
   <li><strong>Sympathetic activation.</strong> Increases heart rate and contractility and causes arteriolar vasoconstriction. Sustained, it increases myocardial oxygen demand, shortens diastolic filling and coronary perfusion time, raises afterload, and is directly cytotoxic to myocytes.</li>
   <li><strong>Renin angiotensin aldosterone activation.</strong> Reduced renal perfusion triggers renin release. Angiotensin II causes vasoconstriction and aldosterone causes sodium and water retention. Sustained, it adds both preload and afterload and promotes myocardial fibrosis.</li>
-  <li><strong>Ventricular remodelling.</strong> Under sustained neurohormonal stimulation the ventricle dilates and hypertrophies into a geometry that is mechanically less efficient, converting an initial injury into a progressive disease.</li>
+  <li><strong>Ventricular remodeling.</strong> Under sustained neurohormonal stimulation the ventricle dilates and hypertrophies into a geometry that is mechanically less efficient, converting an initial injury into a progressive disease.</li>
 </ol>
 
 <div class="mem"><h4>Memory tool</h4>
-<p>Each of the four pillars of therapy <strong>opposes</strong> one of these compensations. That is why a beta blocker is given to a failing heart and an afterload reducer to a patient whose blood pressure is already low. The target is the neurohormonal cascade driving remodelling, not the pump itself.{cite(13)}</p></div>
+<p>Each of the four pillars of therapy <strong>opposes</strong> one of these compensations. That is why a beta blocker is given to a failing heart and an afterload reducer to a patient whose blood pressure is already low. The target is the neurohormonal cascade driving remodeling, not the pump itself.{cite(13)}</p></div>
 
 <h3>The four pillars</h3>
 <table class="cmp">
@@ -358,14 +511,14 @@ CH.append(dict(id="D6", num="3", title="Heart Failure",
   <thead><tr><th>Pillar</th><th>Mechanism opposed</th><th>Monitoring</th></tr></thead>
   <tbody>
     <tr><th>ARNI, or ACE inhibitor or ARB</th><td>Renin angiotensin aldosterone system; ARNI additionally preserves natriuretic peptides</td><td>Potassium, creatinine, blood pressure, angioedema. A 36 hour washout is required when switching from an ACE inhibitor to an ARNI.</td></tr>
-    <tr><th>Beta blocker</th><td>Sympathetic activation and remodelling</td><td>Heart rate, blood pressure. Initiate at low dose and titrate slowly. Do not initiate during acute decompensation.</td></tr>
-    <tr><th>Mineralocorticoid receptor antagonist</th><td>Aldosterone mediated sodium retention and fibrosis</td><td>Potassium and renal function. The pillar most often responsible for hyperkalaemia.</td></tr>
-    <tr><th>SGLT2 inhibitor</th><td>Multiple, including natriuresis and altered myocardial substrate use</td><td>Volume status, genital mycotic infection, euglycaemic ketoacidosis. Benefit is independent of diabetes status.</td></tr>
+    <tr><th>Beta blocker</th><td>Sympathetic activation and remodeling</td><td>Heart rate, blood pressure. Initiate at low dose and titrate slowly. Do not initiate during acute decompensation.</td></tr>
+    <tr><th>Mineralocorticoid receptor antagonist</th><td>Aldosterone mediated sodium retention and fibrosis</td><td>Potassium and renal function. The pillar most often responsible for hyperkalemia.</td></tr>
+    <tr><th>SGLT2 inhibitor</th><td>Multiple, including natriuresis and altered myocardial substrate use</td><td>Volume status, genital mycotic infection, euglycemic ketoacidosis. Benefit is independent of diabetes status.</td></tr>
   </tbody>
 </table>
 <div class="key"><h4>The rule that saves the regimen</h4>
 <ul class="bul">
-  <li><strong>A modest creatinine rise</strong> after starting an ACE inhibitor, ARNI, or mineralocorticoid receptor antagonist is expected haemodynamics, not renal injury.</li>
+  <li><strong>A modest creatinine rise</strong> after starting an ACE inhibitor, ARNI, or mineralocorticoid receptor antagonist is expected hemodynamics, not renal injury.</li>
   <li><strong>It is not, by itself,</strong> a reason to stop the drug.</li>
   <li><strong>The common harm</strong> is stopping everything when one number moves, which costs the patient the drugs that reduce mortality.{cite(13)}</li>
 </ul></div>
@@ -373,12 +526,12 @@ CH.append(dict(id="D6", num="3", title="Heart Failure",
 <h3>Assessing congestion and perfusion</h3>
 <p>Two independent questions determine management. The resulting four profiles were described by Stevenson and validated by Nohria and colleagues.{cite(14)}</p>
 <ol class="steps">
-  <li><strong>Is the patient congested?</strong> Wet or dry. Assessed by jugular venous pressure, orthopnoea, crackles, peripheral oedema, and hepatomegaly.</li>
+  <li><strong>Is the patient congested?</strong> Wet or dry. Assessed by jugular venous pressure, orthopnea, crackles, peripheral edema, and hepatomegaly.</li>
   <li><strong>Is the patient adequately perfused?</strong> Warm or cold. Assessed by pulse pressure, extremity temperature, mental status, and renal function.</li>
 </ol>
 
 <table class="cmp">
-  <caption>Haemodynamic profiles and management priority</caption>
+  <caption>Hemodynamic profiles and management priority</caption>
   <thead><tr><th></th><th>Dry (no congestion)</th><th>Wet (congested)</th></tr></thead>
   <tbody>
     <tr><th>Warm (perfused)</th><td>Profile A. Compensated. Continue therapy.</td><td>Profile B. Diuresis.</td></tr>
@@ -411,7 +564,7 @@ CH.append(dict(id="D6", num="3", title="Heart Failure",
    ("Decongestion with consideration of inotropic support",
     "Correct. Congestion with hypoperfusion is profile C, which carries the highest mortality of the four profiles. Congestion must be treated, but perfusion requires simultaneous support, which is why inotropic therapy is considered here and not in the warm and wet patient."),
    ("Intravenous fluid resuscitation to improve renal perfusion",
-    "The rising creatinine suggests this, but crackles and jugular venous distension indicate volume overload. The renal impairment reflects low forward output and venous congestion, not hypovolaemia. Volume would worsen both."),
+    "The rising creatinine suggests this, but crackles and jugular venous distension indicate volume overload. The renal impairment reflects low forward output and venous congestion, not hypovolemia. Volume would worsen both."),
    ("Withhold all guideline directed therapy and observe",
     "Temporarily withholding beta blockade may be appropriate in low output states, but withholding all therapy while the patient is both congested and hypoperfused is not a management plan.")],
   1,
@@ -420,7 +573,76 @@ CH.append(dict(id="D6", num="3", title="Heart Failure",
   + sources([1,4,5,6,13,14])
 ))
 
+# ================= CHAPTER: THE NORMAL CARDIAC CYCLE =================
+CH.insert(0, dict(id="D8", num="1", title="The Normal Cardiac Cycle",
+  weight="L2 5%", sub="Pressure, volume, valves, and the two sounds they make",
+  body=f"""
+<h3>Why this comes first</h3>
+<p>Almost every finding on the rest of the exam is a deviation from this one diagram. A murmur is a pressure gradient across a valve at a moment in the cycle. An S3 is a filling wave hitting a stiff ventricle. A dicrotic notch is aortic valve closure. Balloon pump timing is the notch and the upstroke. If you know where each event sits in the cycle, you stop memorizing findings and start deriving them.</p>
+
+<div class="key"><h4>The one rule that generates the rest</h4>
+<ul class="bul">
+  <li><strong>Valves are not opened and closed by muscle. They are opened and closed by pressure.</strong> A valve opens the instant the chamber behind it exceeds the chamber in front of it, and shuts the instant that reverses.</li>
+  <li>Every event below is a pressure crossing. Find the crossing and the event follows.</li>
+</ul></div>
+
+<figure class="wgfig">
+  {wiggers_svg()}
+  <figcaption><strong>One cardiac cycle at 75 beats per minute.</strong> IVC is isovolumetric contraction. IVR is isovolumetric relaxation. The four vertical markers are the valve events, and each one sits on the pressure crossing that causes it. Read down any vertical line to see what the pressures, the volume, the electrocardiogram, and the sounds are all doing at that instant.{cite(1,4)}</figcaption>
+</figure>
+
+<h3>The seven phases, in order</h3>
+<ol class="steps">
+  <li><strong>Atrial systole, 0 to 0.10 s.</strong> The P wave has just fired the atria. Atrial contraction adds the last 20 to 30 percent of ventricular filling, the atrial kick, and produces the <strong>a wave</strong> on the atrial pressure trace. End diastolic volume is now about 120 mL.</li>
+  <li><strong>Isovolumetric contraction, 0.10 to 0.16 s.</strong> The QRS has fired the ventricle. Ventricular pressure crosses above atrial pressure, so the <strong>mitral valve shuts, and that is S1</strong>. The aortic valve is still shut because ventricular pressure is still below aortic. Both valves closed, so the volume cannot change. Pressure rises steeply with no ejection. This phase costs oxygen and delivers no output.</li>
+  <li><strong>Rapid ejection, 0.16 to 0.28 s.</strong> Ventricular pressure crosses above aortic pressure, the <strong>aortic valve opens</strong>, and roughly two thirds of the stroke volume leaves in the first third of ejection.</li>
+  <li><strong>Reduced ejection, 0.28 to 0.38 s.</strong> The T wave appears. Ventricular pressure is falling but flow continues on momentum.</li>
+  <li><strong>Isovolumetric relaxation, 0.38 to 0.46 s.</strong> Ventricular pressure falls below aortic, so the <strong>aortic valve shuts, and that is S2</strong>. That closure also puts the <strong>dicrotic notch</strong> on the arterial trace. Both valves are shut again, so volume is fixed at the end systolic volume, about 50 mL. <strong>Coronary filling happens here and through the rest of diastole</strong>, because the left ventricle only lets blood into its own muscle when it is not squeezing.</li>
+  <li><strong>Rapid filling, 0.46 to 0.58 s.</strong> Ventricular pressure falls below atrial, the <strong>mitral valve opens</strong>, and blood that has been stacking up in the atrium falls in. An <strong>S3</strong>, when present, occurs here.</li>
+  <li><strong>Diastasis, 0.58 to 0.78 s.</strong> Slow passive filling. This is the phase that disappears first when the heart rate rises, which is why tachycardia costs filling time and coronary perfusion time before it costs anything else.</li>
+</ol>
+
+<div class="key"><h4>Numbers worth having</h4>
+<ul class="bul">
+  <li><strong>End diastolic volume</strong> about 120 mL. <strong>End systolic volume</strong> about 50 mL.</li>
+  <li><strong>Stroke volume</strong> is the difference, about 70 mL.</li>
+  <li><strong>Ejection fraction</strong> is stroke volume divided by end diastolic volume, so about 58 percent. A normal ejection fraction is 50 percent or higher.</li>
+  <li><strong>Cardiac output</strong> is stroke volume multiplied by heart rate, about 5 L per minute at rest.</li>
+  <li>At 75 per minute, systole is roughly 0.28 s and diastole roughly 0.52 s. <strong>Diastole is the longer phase, and it is the one that shortens when the rate climbs.</strong>{cite(1,4)}</li>
+</ul></div>
+
+<h3>Where the heart sounds come from</h3>
+<ol class="steps">
+  <li><strong>S1, mitral and tricuspid closure.</strong> Marks the start of systole. Loudest at the apex. It gets louder when the valve leaflets are wide open at the moment the ventricle contracts, which is why S1 is loud in mitral stenosis and in a short PR interval, and soft in a long PR interval or poor contractility.</li>
+  <li><strong>S2, aortic and pulmonic closure.</strong> Marks the start of diastole. Loudest at the base. It splits on inspiration because the drop in intrathoracic pressure increases venous return to the right heart, which delays pulmonic closure. Splitting that persists through expiration is abnormal.</li>
+  <li><strong>S3, early diastole, just after S2.</strong> The sound of rapid filling striking a ventricle that cannot accept it easily. Normal in children and young adults, and a sign of volume overload or systolic failure after about 40.</li>
+  <li><strong>S4, late diastole, just before S1.</strong> The sound of the atrium contracting against a stiff ventricle. It requires an organized atrial contraction, so <strong>an S4 cannot exist in atrial fibrillation</strong>.</li>
+</ol>
+
+<h3>What the atrial pressure waveform is telling you</h3>
+<p>The same three bumps appear on a jugular venous pulse, a central venous pressure trace, and a pulmonary artery occlusion trace. They are the atrium, so they follow the atrial half of the cycle:</p>
+<ol class="steps">
+  <li><strong>a wave.</strong> Atrial contraction. Absent in atrial fibrillation. Large cannon a waves appear when the atrium contracts against a shut tricuspid valve, which is the finding in complete heart block and in ventricular tachycardia.</li>
+  <li><strong>c wave.</strong> The closed valve bulging back into the atrium during isovolumetric contraction.</li>
+  <li><strong>v wave.</strong> Atrial filling against a still closed valve during ventricular systole. A giant v wave means the valve is leaking during systole, so it is the hemodynamic signature of mitral regurgitation on a wedge trace and tricuspid regurgitation on a central venous trace.</li>
+</ol>
+
+<div class="key"><h4>Carrying this into the rest of the exam</h4>
+<ul class="bul">
+  <li><strong>Systolic murmurs</strong> sit between S1 and S2, so they belong to valves that should be shut then: mitral and tricuspid regurgitation, or valves blood is being forced through, aortic and pulmonic stenosis.</li>
+  <li><strong>Diastolic murmurs</strong> sit between S2 and S1, so they belong to aortic and pulmonic regurgitation, or mitral and tricuspid stenosis.</li>
+  <li><strong>Coronary perfusion pressure</strong> is aortic diastolic pressure minus left ventricular end diastolic pressure. Both terms come straight off this diagram, and both worsen in heart failure.</li>
+  <li><strong>Balloon pump timing</strong> is inflate at the dicrotic notch, which is aortic closure on this diagram, and deflate immediately before the ventricular upstroke.</li>
+  <li><strong>Anything that shortens diastole</strong> cuts filling and coronary perfusion at the same time. That single fact explains why rate control matters in ischemia, in aortic stenosis, and in heart failure with preserved ejection fraction.{cite(4,5)}</li>
+</ul></div>
+"""
+  + sources([1,4,5])
+))
+
 # ---------------------------------------------------------------- assemble
+for _i, _c in enumerate(CH):
+    _c['num'] = str(_i + 1)
+
 chapters_html, toc, total_min = [], [], 0
 for c in CH:
     secs = split_sections(c['body'])
@@ -485,7 +707,7 @@ HTML = f"""<!DOCTYPE html>
   --navy:#0A1322; --navy-tint:#EDF1F3; --ink:#0A1322; --ink-soft:#14202F; --ink-muted:#3D4860;
   --gold:#D4A24C; --gold-text:#6E5018; --terra:#C25A3E; --terra-text:#7A2F18; --teal-text:#2C5F66;
   --rule:#B8BEC8; --rule-soft:#DCE0E6; --white:#fff; --off-white:#fafaf9;
-  /* semantic section colours, screen only */
+  /* semantic section colors, screen only */
   --t-physio:#2C5F66; --t-patho:#7A2F18; --t-practice:#0A1322; --t-questions:#6E5018;
   --t-physio-soft:#EDF4F5; --t-patho-soft:#FAF1EE; --t-practice-soft:#EDF1F3; --t-questions-soft:#FAF5EA;
   --card:0 1px 3px rgba(10,19,34,.08), 0 1px 2px rgba(10,19,34,.05);
@@ -617,7 +839,7 @@ tbody tr:last-child td{{border-bottom:0}}
 .teach p{{margin:0;font-size:15px;color:var(--ink-soft)}}
 .q .mem{{margin-bottom:0}}
 
-/* ---- semantic colour, screen only ---- */
+/* ---- semantic color, screen only ---- */
 .chip{{display:inline-block;font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:700;
   letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:99px;white-space:nowrap;
   border:1px solid currentColor}}
@@ -651,7 +873,7 @@ tbody tr:last-child td{{border-bottom:0}}
 .progbar i{{display:block;height:100%;background:var(--navy);border-radius:99px;transition:width 320ms ease}}
 .progtxt{{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:700;color:var(--ink-muted);white-space:nowrap}}
 
-/* tables get a quiet zebra and a coloured caption on screen */
+/* tables get a quiet zebra and a colored caption on screen */
 tbody tr:nth-child(even) td{{background:var(--off-white)}}
 .sec[data-t="physio"] caption{{color:var(--t-physio)}}
 .sec[data-t="patho"] caption{{color:var(--t-patho)}}
@@ -759,6 +981,48 @@ footer{{margin-top:60px;padding-top:20px;font-size:13.5px;color:var(--ink-muted)
   .optbtn{{grid-template-columns:24px 1fr auto}}
   a{{text-decoration:none;color:var(--ink)}}
   .qr img{{width:84px;height:84px}}
+}}
+
+/* ---- Wiggers diagram ---- */
+.wgfig{{margin:22px 0 26px;padding:0}}
+.wgfig svg.wg{{width:100%;height:auto;display:block;background:#fff;border:1px solid var(--rule);border-radius:6px}}
+.wgfig figcaption{{font-size:13.5px;line-height:1.6;color:var(--ink-2);margin-top:10px}}
+.wg-band{{fill:#F3F6F8}}
+.wg-div{{stroke:#D7DFE4;stroke-width:1}}
+.wg-grid{{stroke:#E8EDF0;stroke-width:1}}
+.wg-axis{{stroke:#9AA9B2;stroke-width:1.2}}
+.wg-ax{{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:12px;font-weight:600;fill:#6C7A84}}
+.wg-lane{{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:10.5px;font-weight:800;
+  letter-spacing:.08em;fill:#6C7A84}}
+.wg-phase{{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:11.5px;font-weight:700;fill:#4A5A64}}
+.wg-ao{{fill:none;stroke:#C2734D;stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round}}
+.wg-lv{{fill:none;stroke:#1E3D4C;stroke-width:2.6;stroke-linejoin:round;stroke-linecap:round}}
+.wg-la{{fill:none;stroke:#B8924A;stroke-width:2.2;stroke-linejoin:round;stroke-linecap:round}}
+.wg-vol{{fill:none;stroke:#1E3D4C;stroke-width:2.4;stroke-dasharray:7 4;stroke-linejoin:round}}
+.wg-ecg{{fill:none;stroke:#1E3D4C;stroke-width:2}}
+.wg-snd{{fill:none;stroke:#1E3D4C;stroke-width:1.8}}
+.wg-snd-l{{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:14px;font-weight:800;fill:#1E3D4C}}
+.wg-wave{{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:12.5px;font-weight:800;fill:#6C7A84}}
+.wg-ev{{stroke:#A0522D;stroke-width:1.4;stroke-dasharray:4 3}}
+.wg-ev-l{{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:12px;font-weight:800;fill:#A0522D}}
+.wg-lead{{stroke:#C2734D;stroke-width:1.2}}
+.wg-k{{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:12.5px;font-weight:800}}
+.wg-k-ao{{fill:#A0522D}}.wg-k-lv{{fill:#1E3D4C}}.wg-k-la{{fill:#8A6B2E}}.wg-k-vol{{fill:#1E3D4C}}
+@media print{{
+  /* colour on screen only. In print every curve is black and separated by
+     line pattern instead, and each one is already labelled on the chart. */
+  .wgfig{{break-inside:avoid;page-break-inside:avoid}}
+  .wgfig svg.wg{{border:1px solid #000}}
+  .wg-band{{fill:#F2F2F2}}
+  .wg-ao{{stroke:#000;stroke-width:1.6;stroke-dasharray:none}}
+  .wg-lv{{stroke:#000;stroke-width:2.4}}
+  .wg-la{{stroke:#000;stroke-width:1.4;stroke-dasharray:2 3}}
+  .wg-vol{{stroke:#000;stroke-width:1.6;stroke-dasharray:8 4}}
+  .wg-ecg,.wg-snd{{stroke:#000}}
+  .wg-ev{{stroke:#000;stroke-dasharray:3 3}}
+  .wg-lead{{stroke:#000}}
+  .wg-k-ao,.wg-k-lv,.wg-k-la,.wg-k-vol,.wg-ev-l,.wg-snd-l,.wg-wave,.wg-phase,.wg-ax,.wg-lane{{fill:#000}}
+  .wg-div,.wg-grid{{stroke:#CCC}}
 }}
 </style>
 </head>

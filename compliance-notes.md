@@ -8,7 +8,7 @@
 
 1. `index.html` (merged single-file application, the file that ships to Kajabi)
 2. `cvrn-mastery-os.html` (plan, written gap finder, practice exams)
-3. `ecg-lab.html` (live monitor, 12-lead viewer, practice, practical gap finder)
+3. `ecg-lab.html` (live monitor, 12-lead viewer, practice, IABP waveform lab, practical gap finder)
 4. `study-notes.html` (chaptered notes, screen and print)
 5. `cvrn-dashboard.html` (weakness dashboard)
 6. `blueprint-pdf.html` (source for the printed blueprint)
@@ -42,16 +42,16 @@ Criteria verified in this pass:
 15. **2.3.3 Animation from interactions, AAA.** `prefers-reduced-motion` stops the monitor sweep, freezes the strip, and removes card lift transitions.
 16. **3.1.1 Language of page, A.** `lang="en"`.
 17. **3.2.2 On input, A.** No control changes context on input. Every change requires an explicit button press.
-18. **3.3.1 Error identification, A.** Validation messages are text, not colour alone, delivered into a live region.
+18. **3.3.1 Error identification, A.** Validation messages are text, not color alone, delivered into a live region.
 19. **3.3.2 Labels or instructions, A.** Every input has a visible label and a unit where a unit applies.
 20. **4.1.2 Name, role, value, A.** `role="tab"` and `role="tabpanel"` with `aria-selected` and `aria-controls`, `aria-pressed` on toggles, `aria-current="page"` on the active nav link.
 21. **4.1.3 Status messages, AA.** `aria-live="polite"` on the caliper readout, the practice feedback block, the vitals row, and both gap finder report regions.
 
-## 3. Colour contrast audit
+## 3. Color contrast audit
 
 Measured against the computed custom properties in the shipped build, not against the design file. Ratios calculated with the WCAG relative luminance formula.
 
-| Theme | Pair | Colours | Ratio | Level |
+| Theme | Pair | Colors | Ratio | Level |
 |---|---|---|---|---|
 | Dark | Body text on panel | #EEF2FF on #0B1530 | 16.13:1 | AAA |
 | Dark | Body text on raised card | #EEF2FF on #111C3A | 15.01:1 | AAA |
@@ -78,12 +78,12 @@ Measured against the computed custom properties in the shipped build, not agains
 
 Light mode green was corrected from #16A34A, which measured 3.30:1 and failed AA for normal text, to #166534 at 7.13:1, which passes AAA.
 
-### Colour is never the only signal
+### Color is never the only signal
 
-1. Mastery states carry a text label as well as a border colour: Locked, Unlocked, Completed.
+1. Mastery states carry a text label as well as a border color: Locked, Unlocked, Completed.
 2. Completed state is navy on navy tint, never green. Green is reserved for the interface accent and the ECG trace on the monitor channel.
 3. Gap finder reads carry text: Holding, Fragile, Priority, Too thin to call.
-4. Correct and incorrect feedback carries a written heading, not a coloured border alone.
+4. Correct and incorrect feedback carries a written heading, not a colored border alone.
 5. Chart series carry direct labels and value text, not a legend swatch alone.
 
 ## 4. Keyboard navigation flow verified
@@ -95,11 +95,12 @@ Verified end to end with keyboard only, no pointer.
 3. Inside a view, `Tab` reaches each tab button. `Enter` or `Space` activates. Focus stays on the tab, and the panel is exposed below.
 4. **Monitor:** rhythm select reached by `Tab`, changed with arrow keys, applied on change. Run and freeze, gain, and paper view are all buttons.
 5. **Calipers:** the toggle is a button. When on, each caliper handle is focusable and moves with arrow keys. `Escape` is not required to leave, because `Tab` exits normally. No trap.
-6. **12-lead:** pattern select by keyboard. All twelve canvases are labelled images and are skipped by tab order, which is correct since they are not interactive.
-7. **Practice and both gap finders:** depth select, radio group with arrow keys, numeric input, the two confidence buttons, then Submit. Feedback is inserted into a live region and announced without moving focus.
+6. **12-lead:** pattern select by keyboard. All twelve canvases are labeled images and are skipped by tab order, which is correct since they are not interactive.
+7. **IABP waveform lab:** timing select and assist ratio select reached by `Tab` and changed with arrow keys. The labels toggle is a button carrying `aria-pressed`. The waveform canvas is a labeled image, and every fact it shows is also stated in the numbered teaching lists beneath it, so nothing is available only inside the canvas.
+8. **Practice and both gap finders:** depth select, radio group with arrow keys, numeric input, the two confidence buttons, then Submit. Feedback is inserted into a live region and announced without moving focus.
 8. **Practice exams:** identical pattern, with the review list reachable after scoring.
 9. **Notes:** every collapsible section header is a real button carrying `aria-expanded`. `Enter` and `Space` both toggle.
-10. **Dashboard:** charts are labelled images. Every figure they present is also given as text in the table beneath, so nothing is available only inside a canvas.
+10. **Dashboard:** charts are labeled images. Every figure they present is also given as text in the table beneath, so nothing is available only inside a canvas.
 
 ## 5. Screen reader testing
 
@@ -115,7 +116,7 @@ Verified:
 6. Tables announce row and column headers when navigating in table mode.
 7. Form fields announce label plus unit, for example "Your measurement in ms, edit".
 8. Buttons that toggle announce pressed state.
-9. Print stylesheet output was checked as a linearised document. Reading order matches the visual order.
+9. Print stylesheet output was checked as a linearized document. Reading order matches the visual order.
 
 ## 6. Known limitations and remediation plan
 
@@ -125,7 +126,8 @@ Verified:
 4. **Light mode gold highlight at 4.97:1** passes AA but not AAA. Used for emphasis, never as the sole carrier of meaning. Accepted.
 5. **Dark mode priority pill at 5.17:1** passes AA but not AAA. The pill also carries its text label. Accepted.
 6. **Embedded in an iframe**, the host page controls the outer page language and landmark structure. The embed kit documents the requirement that the host page supply a heading before the frame.
-7. **Progress storage is `localStorage`.** In a browser with storage blocked the tools still run, but progress does not persist between sessions. A note states this in the interface rather than failing silently.
+7. **Hover styling is limited to pointer devices.** Touch devices report a stale hover on whatever element sat under the last tap. On an answer list that painted a gold border on one option before anything was chosen, which read as a hint. Hover rules are now inside `@media (hover:hover) and (pointer:fine)` equivalents, and selection has its own explicit state via `:has(input:checked)` plus a focus ring.
+8. **Progress storage is `localStorage`.** In a browser with storage blocked the tools still run, but progress does not persist between sessions. A note states this in the interface rather than failing silently.
 
 ## 7. Student privacy
 

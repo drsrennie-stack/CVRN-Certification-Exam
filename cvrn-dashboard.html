@@ -8,10 +8,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   Weakness dashboard. Colour is validated, not eyeballed:
+   Weakness dashboard. Color is validated, not eyeballed:
    ordinal blue ramp for the mastery mix, sequential blue for
    domain magnitude, two categorical slots for paired series,
-   status colours only ever with an icon and a label.
+   status colors only ever with an icon and a label.
    ============================================================ */
 :root{
   --bg:#F5F7F9; --panel:#FFFFFF; --panel2:#EDF1F4; --barbg:#E3E8EE;
@@ -114,6 +114,11 @@ tbody tr:hover td{background:var(--panel2)}
 .empty{color:var(--mute);font-size:14px;padding:18px 0}
 .note{color:var(--mute);font-size:12.5px;margin-top:11px;padding-top:11px;border-top:1px solid var(--line)}
 @media(prefers-reduced-motion:reduce){*{transition-duration:1ms !important}}
+
+@media (hover:none),(pointer:coarse){
+  tbody tr:hover td{background:transparent}
+  .btn:hover{border-color:var(--line);box-shadow:none}
+}
 </style>
 </head>
 <body>
@@ -129,7 +134,7 @@ tbody tr:hover td{background:var(--panel2)}
 <div class="dsec grid2">
   <div class="panel">
     <h2>Readiness by domain</h2>
-    <p class="sub">Bar length is your mastery. Bar colour is depth of evidence, palest means barely tested. The number on the right is the domain's share of the exam.</p>
+    <p class="sub">Bar length is your mastery. Bar color is depth of evidence, palest means barely tested. The number on the right is the domain's share of the exam.</p>
     <div id="domChart"></div>
     <button class="btn" id="domTbl" aria-pressed="false" style="margin-top:12px">Show as table</button>
     <div class="tblview" id="domTable" hidden></div>
@@ -152,14 +157,15 @@ tbody tr:hover td{background:var(--panel2)}
 
 <div class="dsec panel">
   <div class="dsechd">
-    <div><h2>Coverage against the blueprint</h2>
-      <p>Where your evidence is thin relative to what the exam weights. A short blue bar beside a tall orange one is a domain you have not tested enough.</p></div>
+    <div><h2>Exam points at risk</h2>
+      <p>Both bars are in the same unit, percentage points of the exam. The pale bar is what the domain carries. The solid bar is what you are currently likely to lose there.</p></div>
   </div>
   <div class="legend">
-    <span><i style="background:var(--ser-1)"></i>Your mastery</span>
-    <span><i style="background:var(--ser-2)"></i>Share of the exam</span>
+    <span><i style="background:var(--ser-1)"></i>Points at risk</span>
+    <span><i style="background:var(--ser-2);opacity:.30"></i>Points the domain carries</span>
   </div>
   <div id="covChart"></div>
+  <p class="sub" id="covNote" style="margin-top:10px"></p>
 </div>
 
 <div class="dsec panel">
@@ -298,7 +304,7 @@ var ICON = {
   check:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3.2L13 5"/></svg>',
   clock:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.4 1.6"/></svg>'
 };
-function sparkline(vals, colour){
+function sparkline(vals, color){
   if(vals.length<2) return '';
   var w=200,h=34, mx=Math.max.apply(null,vals), mn=Math.min.apply(null,vals);
   var rng=(mx-mn)||1;
@@ -308,13 +314,18 @@ function sparkline(vals, colour){
   var d='M'+pts.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join('L');
   var area=d+'L'+w+','+h+'L0,'+h+'Z';
   return '<svg class="spark" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" aria-hidden="true">'
-    +'<path d="'+area+'" fill="'+colour+'" opacity=".13"/>'
-    +'<path d="'+d+'" fill="none" stroke="'+colour+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+    +'<path d="'+area+'" fill="'+color+'" opacity=".13"/>'
+    +'<path d="'+d+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
 }
 function renderKPIs(){
   var scope=inScope(), rd=Math.round(readiness()*100), dte=daysToExam();
   var touched=scope.filter(function(c){ var e=P[c.id]; return e&&e.attempts; }).length;
+  /* two different quantities, so they get two different names.
+     misc counts flag EVENTS. miscComps counts how many competencies carry
+     at least one. The mastery mix separately counts competencies whose
+     CURRENT state is still misconception, which is a third thing again. */
   var misc=scope.reduce(function(a,c){ var e=P[c.id]; return a+((e&&e.misconceptions)||0); },0);
+  var miscComps=scope.filter(function(c){ var e=P[c.id]; return e&&e.misconceptions>0; }).length;
   var today=new Date().toISOString().slice(0,10);
   var due=scope.filter(function(c){ var e=P[c.id]; return e&&e.nextRecall&&e.nextRecall<=today; }).length;
   var atRisk=domains().filter(function(d){ return d.mastery<0.5 && d.weight>=7; }).length;
@@ -332,8 +343,8 @@ function renderKPIs(){
      d:'<span style="color:var(--mute)">'+ICON.clock+(S.date? Math.floor(dte/7*(S.days||4))+' study days left':'set a date in the plan')+'</span>'},
     {k:'Due for review', v:due, u:'', tone: due>12?'warn':'info',
      d:'<span style="color:var(--mute)">'+ICON.clock+'of '+scope.length+' in scope</span>'},
-    {k:'Misconceptions', v:misc, u:'', tone: misc>0?'crit':'good',
-     d: misc>0 ? '<span style="color:var(--red)">'+ICON.warn+'confident and wrong</span>'
+    {k:'Misconception flags', v:misc, u:'', tone: misc>0?'crit':'good',
+     d: misc>0 ? '<span style="color:var(--red)">'+ICON.warn+'across '+miscComps+' competenc'+(miscComps===1?'y':'ies')+'</span>'
                : '<span style="color:var(--acc)">'+ICON.check+'none flagged</span>'},
     {k:'Heavy domains at risk', v:atRisk, u:'', tone: atRisk>0?'warn':'good',
      d: atRisk>0 ? '<span style="color:var(--amber)">'+ICON.warn+'under 50 percent, worth 7 or more</span>'
@@ -397,11 +408,17 @@ function renderMix(){
     {k:'mastered', label:'Mastered', col:'var(--ord-4)'},
     {k:'fragile',  label:'Fragile',  col:'var(--ord-3)'},
     {k:'gap',      label:'Gap',      col:'var(--ord-2)'},
-    {k:'misc',     label:'Misconception', col:'var(--ord-1)'},
+    {k:'misc',     label:'Misconception, still weak', col:'var(--ord-1)'},
     {k:'untested', label:'Untested', col:'var(--barbg)'}
   ];
+  var mixTotal = scope.length || 1;
+  /* count and percent are rendered together, on the same row, for every state.
+     They used to sit in two places: the count in the legend and the percent
+     floating over a bar segment. Narrow segments dropped their label, so the
+     remaining percentages lined up against the wrong legend entries. */
   el('mixLegend').innerHTML = order.map(function(o){
-    return '<span><i style="background:'+o.col+'"></i>'+o.label+' '+counts[o.k]+'</span>'; }).join('');
+    return '<span><i style="background:'+o.col+'"></i>'+o.label+' '+counts[o.k]
+      +' <b style="font-weight:700;color:var(--ink)">'+Math.round(counts[o.k]/mixTotal*100)+'%</b></span>'; }).join('');
 
   var w=380,h=44,host=el('mixChart'); host.innerHTML='';
   var s=svg(w,h); s.setAttribute('aria-label','Mastery mix, stacked bar');
@@ -414,8 +431,6 @@ function renderMix(){
     hoverable(rect,'<b>'+o.label+'</b><span class="r">'+counts[o.k]+' of '+total+' competencies, '
       +Math.round(counts[o.k]/total*100)+' percent</span>');
     s.appendChild(rect);
-    if(seg>44) s.appendChild(txt(x+ (seg-gap)/2, 40, Math.round(counts[o.k]/total*100)+'%',
-      {'text-anchor':'middle','font-size':'11','font-weight':'700',fill:'var(--mute)'}));
     x+=seg;
   });
   host.appendChild(s);
@@ -456,26 +471,36 @@ function renderTrend(){
 
 /* ---------- coverage: two series, grouped ---------- */
 function renderCoverage(){
+  /* Mastery runs 0 to 100. Blueprint weight runs 0 to 14. Drawing both on a
+     single 0 to 100 axis made every weight bar a stub, so the chart could
+     never show what its own caption described. Both series are now in the
+     same unit: percentage points of the exam. Full bar height is the points
+     that domain carries. The filled portion is the points currently at risk,
+     which is weight multiplied by how much of that domain is not yet solid. */
   var D=domains(), host=el('covChart'); host.innerHTML='';
-  var w=1000, colW=w/D.length, h=170, padB=34, padT=10;
-  var s=svg(w,h); s.setAttribute('aria-label','Your mastery against each domain share of the exam');
-  var maxW=Math.max.apply(null, D.map(function(d){ return d.weight; }));
-  var scale=Math.max(100, maxW);
+  var w=1000, colW=w/D.length, h=190, padB=44, padT=16;
+  var s=svg(w,h); s.setAttribute('aria-label','Exam points at risk in each domain, against the points that domain carries');
+  var scale=Math.max.apply(null, D.map(function(d){ return d.weight; })) || 14;
+  var plotH=h-padT-padB, totalRisk=0;
   D.forEach(function(d,i){
-    var cx=i*colW, bw=Math.min(17, colW/3.2), gapx=3;
-    var mH=(d.mastery*100)/scale*(h-padT-padB);
-    var wH=(d.weight)/scale*(h-padT-padB);
-    var b1=mk('rect',{x:cx+colW/2-bw-gapx/2,y:h-padB-mH,width:bw,height:Math.max(2,mH),rx:4,fill:'var(--ser-1)'});
-    var b2=mk('rect',{x:cx+colW/2+gapx/2,y:h-padB-wH,width:bw,height:Math.max(2,wH),rx:4,fill:'var(--ser-2)'});
-    hoverable(b1,'<b>'+d.name+'</b><span class="r">Your mastery '+Math.round(d.mastery*100)+' percent</span>');
-    hoverable(b2,'<b>'+d.name+'</b><span class="r">Worth '+d.weight+' percent of the exam</span>');
-    s.appendChild(b1); s.appendChild(b2);
-    s.appendChild(txt(cx+colW/2, h-padB+15, d.id, {'text-anchor':'middle','font-size':'11','font-weight':'700',fill:'var(--mute)'}));
-    if(d.mastery*100 < d.weight*2 && d.weight>=7)
-      s.appendChild(txt(cx+colW/2, h-padB+28, 'thin', {'text-anchor':'middle','font-size':'9.5','font-weight':'700',fill:'var(--red)'}));
+    var risk=d.weight*(1-d.mastery); totalRisk+=risk;
+    var cx=i*colW, bw=Math.min(34, colW*0.56);
+    var fullH=d.weight/scale*plotH, riskH=risk/scale*plotH;
+    s.appendChild(mk('rect',{x:cx+colW/2-bw/2, y:h-padB-fullH, width:bw, height:Math.max(2,fullH),
+                             rx:4, fill:'var(--ser-2)', opacity:'0.30'}));
+    var rb=mk('rect',{x:cx+colW/2-bw/2, y:h-padB-riskH, width:bw, height:Math.max(2,riskH), rx:4, fill:'var(--ser-1)'});
+    hoverable(rb,'<b>'+d.name+'</b><span class="r">Carries '+d.weight+' points. About '
+      +(Math.round(risk*10)/10)+' at risk at '+Math.round(d.mastery*100)+' percent mastery.</span>');
+    s.appendChild(rb);
+    s.appendChild(txt(cx+colW/2, h-padB+16, d.id, {'text-anchor':'middle','font-size':'11','font-weight':'700',fill:'var(--mute)'}));
+    s.appendChild(txt(cx+colW/2, h-padB+30, (Math.round(risk*10)/10)+' pts',
+      {'text-anchor':'middle','font-size':'10','font-weight':'700',fill: risk>=4?'var(--red)':'var(--mute)'}));
   });
   s.appendChild(mk('line',{x1:0,y1:h-padB,x2:w,y2:h-padB,stroke:'var(--grid)','stroke-width':1}));
   host.appendChild(s);
+  var note=el('covNote');
+  if(note) note.textContent='About '+Math.round(totalRisk)+' of 100 exam points are currently at risk across all fourteen domains. '
+    + 'That figure falls as mastery rises, and it is the single number worth watching week to week.';
 }
 
 /* ---------- weakness queue ---------- */

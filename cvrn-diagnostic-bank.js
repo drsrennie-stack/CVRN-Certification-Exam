@@ -9,7 +9,7 @@
 
    That separation is what lets a practice exam score stay an
    estimate rather than a memory test, and it lets the gap
-   finder be re-run without the learner recognising items.
+   finder be re-run without the learner recognizing items.
 
    Design rules for this pool:
    - Every item is DOK 2. Application discriminates best when
@@ -33,11 +33,11 @@ window.CVRN_DIAGNOSTIC_POOL = [
  o:['Second intercostal space, right sternal border','Second intercostal space, left sternal border','Fifth intercostal space, midclavicular line','Fourth intercostal space, left sternal border'],a:2,
  why:'The mitral area is the apex, fifth intercostal space at the midclavicular line. The other three are aortic, pulmonic, and tricuspid.'},
 {id:'GA02',form:'A',d:'D1',c:'D1.C2',dok:2,q:'Jugular venous distension measured at 5 cm above the sternal angle with the head of bed at 45 degrees most directly indicates what?',
- o:['Left ventricular failure','Elevated right atrial pressure','Aortic stenosis','Hypovolaemia'],a:1,
+ o:['Left ventricular failure','Elevated right atrial pressure','Aortic stenosis','Hypovolemia'],a:1,
  why:'The jugular veins are a manometer for the right atrium. Elevation reflects right-sided filling pressure, whatever the upstream cause.'},
 {id:'GA03',form:'A',d:'D1',c:'D1.C4',dok:2,q:'A patient has cool, pale, hairless lower legs with pain that worsens on walking and improves with rest. This pattern indicates what?',
- o:['Venous insufficiency','Arterial insufficiency','Lymphoedema','Deep vein thrombosis'],a:1,
- why:'Claudication with cool, pale, hairless skin is arterial. Venous disease gives warm, brown-stained, oedematous legs with pain relieved by elevation.'},
+ o:['Venous insufficiency','Arterial insufficiency','Lymphedema','Deep vein thrombosis'],a:1,
+ why:'Claudication with cool, pale, hairless skin is arterial. Venous disease gives warm, brown-stained, edematous legs with pain relieved by elevation.'},
 
 /* D2 Basic ECG, 4 */
 {id:'GA04',form:'A',d:'D2',c:'D2.C1',dok:2,q:'At standard paper speed, how much time does one small box represent?',
@@ -45,7 +45,7 @@ window.CVRN_DIAGNOSTIC_POOL = [
  why:'At 25 mm per second one small box is 0.04 seconds and one large box is 0.20 seconds.'},
 {id:'GA05',form:'A',d:'D2',c:'D2.C3',dok:2,q:'A rhythm is irregularly irregular with no discernible P waves. What is it?',
  o:['Atrial flutter','Atrial fibrillation','Multifocal atrial tachycardia','Sinus arrhythmia'],a:1,
- why:'Absent organised atrial activity plus an irregularly irregular ventricular response defines atrial fibrillation.'},
+ why:'Absent organized atrial activity plus an irregularly irregular ventricular response defines atrial fibrillation.'},
 {id:'GA06',form:'A',d:'D2',c:'D2.C5',dok:2,q:'The PR interval lengthens progressively over three beats and then a QRS is dropped. What is this?',
  o:['First degree AV block','Mobitz type I','Mobitz type II','Third degree AV block'],a:1,
  why:'Progressive PR lengthening before a dropped beat is Wenckebach, Mobitz type I, usually within the AV node.'},
@@ -67,11 +67,11 @@ window.CVRN_DIAGNOSTIC_POOL = [
  o:['Acute myocardial infarction','Chronic myocardial injury','Laboratory error','Unstable angina'],a:1,
  why:'Acute injury requires a rise or fall. A stable elevation is chronic injury, common in renal impairment and chronic heart failure.'},
 {id:'GA12',form:'A',d:'D3',c:'D3.C4',dok:2,q:'Which is an absolute contraindication to fibrinolytic therapy?',
- o:['Systolic pressure of 165','Age over 75','Any prior intracranial haemorrhage','Current warfarin therapy with an INR of 2.0'],a:2,
- why:'Any prior intracranial haemorrhage is absolute. The others are relative considerations.'},
-{id:'GA13',form:'A',d:'D3',c:'D3.C5',dok:2,q:'Which medication class reduces mortality after myocardial infarction by limiting ventricular remodelling?',
+ o:['Systolic pressure of 165','Age over 75','Any prior intracranial hemorrhage','Current warfarin therapy with an INR of 2.0'],a:2,
+ why:'Any prior intracranial hemorrhage is absolute. The others are relative considerations.'},
+{id:'GA13',form:'A',d:'D3',c:'D3.C5',dok:2,q:'Which medication class reduces mortality after myocardial infarction by limiting ventricular remodeling?',
  o:['Calcium channel blockers','ACE inhibitors','Loop diuretics','Nitrates'],a:1,
- why:'ACE inhibitors interrupt the renin angiotensin cascade that drives remodelling after infarction.'},
+ why:'ACE inhibitors interrupt the renin angiotensin cascade that drives remodeling after infarction.'},
 
 /* D4 Hypertension, 3 */
 {id:'GA14',form:'A',d:'D4',c:'D4.C1',dok:2,q:'Using a blood pressure cuff that is too small produces what error?',
@@ -102,7 +102,7 @@ window.CVRN_DIAGNOSTIC_POOL = [
 {id:'GA21',form:'A',d:'D6',c:'D6.C2',dok:2,q:'Which finding would most support congestion rather than hypoperfusion?',
  o:['Narrow pulse pressure','Cool extremities','Jugular venous distension','Altered mental status'],a:2,
  why:'Jugular venous distension is a congestion sign. The other three are markers of low output.'},
-{id:'GA22',form:'A',d:'D6',c:'D6.C4',dok:2,q:'Which guideline directed therapy pillar most often causes hyperkalaemia?',
+{id:'GA22',form:'A',d:'D6',c:'D6.C4',dok:2,q:'Which guideline directed therapy pillar most often causes hyperkalemia?',
  o:['Beta blocker','SGLT2 inhibitor','Mineralocorticoid receptor antagonist','Loop diuretic'],a:2,
  why:'Mineralocorticoid receptor antagonists block aldosterone driven potassium excretion, so they are the usual cause.'},
 {id:'GA23',form:'A',d:'D6',c:'D6.C6',dok:2,q:'What weight gain should prompt a heart failure patient to call?',
@@ -113,14 +113,14 @@ window.CVRN_DIAGNOSTIC_POOL = [
  why:'Obesity lowers BNP. Age, renal impairment, and atrial fibrillation all raise it.'},
 
 /* D7 Non-Invasive and Interventional, 3 */
-{id:'GA25',form:'A',d:'D7',c:'D7.C3',dok:2,q:'A patient develops back pain and hypotension two hours after femoral cardiac catheterisation, with an unremarkable groin. What should be suspected?',
- o:['Vasovagal response','Retroperitoneal haemorrhage','Contrast reaction','Normal post-procedure discomfort'],a:1,
+{id:'GA25',form:'A',d:'D7',c:'D7.C3',dok:2,q:'A patient develops back pain and hypotension two hours after femoral cardiac catheterization, with an unremarkable groin. What should be suspected?',
+ o:['Vasovagal response','Retroperitoneal hemorrhage','Contrast reaction','Normal post-procedure discomfort'],a:1,
  why:'A retroperitoneal bleed hides from the groin exam. Back or flank pain with unexplained hypotension after femoral access is the classic presentation.'},
 {id:'GA26',form:'A',d:'D7',c:'D7.C4',dok:2,q:'Which intervention has the strongest evidence for preventing contrast associated acute kidney injury?',
  o:['N-acetylcysteine','Isotonic intravenous fluid','Sodium bicarbonate alone','Prophylactic dialysis'],a:1,
  why:'Volume expansion with isotonic fluid and limiting contrast volume are what hold up. N-acetylcysteine has repeatedly failed.'},
 {id:'GA27',form:'A',d:'D7',c:'D7.C5',dok:2,q:'Which complication is monitored most closely in the first 24 hours after TAVR?',
- o:['New conduction block','Hypoglycaemia','Ileus','Hyperthermia'],a:0,
+ o:['New conduction block','Hypoglycemia','Ileus','Hyperthermia'],a:0,
  why:'The valve sits against the conduction system, so new left bundle branch block and high grade AV block are the expected complications.'},
 
 /* D8 Heart Sounds and Valves, 2 */
@@ -132,15 +132,15 @@ window.CVRN_DIAGNOSTIC_POOL = [
  why:'Direct oral anticoagulants are contraindicated with mechanical valves. Warfarin with an INR target of 2.5 to 3.5 for a mechanical mitral valve.'},
 
 /* D9 12-Lead, 4 */
-{id:'GA30',form:'A',d:'D9',c:'D9.C4',dok:2,q:'ST elevation in leads II, III, and aVF localises the infarct to which wall?',
+{id:'GA30',form:'A',d:'D9',c:'D9.C4',dok:2,q:'ST elevation in leads II, III, and aVF localizes the infarct to which wall?',
  o:['Anterior','Inferior','Lateral','Septal'],a:1,
  why:'II, III, and aVF view the inferior wall, most often supplied by the right coronary artery.'},
 {id:'GA31',form:'A',d:'D9',c:'D9.C3',dok:2,q:'Which finding distinguishes right bundle branch block from left?',
  o:['QRS wider than 0.12 seconds','An rSR prime pattern in V1','ST depression in the lateral leads','Left axis deviation'],a:1,
  why:'Both widen the QRS. The rSR prime in V1 with a broad slurred S in I and V6 is right bundle branch block.'},
 {id:'GA32',form:'A',d:'D9',c:'D9.C6',dok:2,q:'Tall, narrow-based, peaked T waves with flattened P waves suggest what?',
- o:['Hypokalaemia','Hyperkalaemia','Hypercalcaemia','Digoxin effect'],a:1,
- why:'Peaked T waves come first in hyperkalaemia, then P wave flattening and PR prolongation, then QRS widening toward a sine wave.'},
+ o:['Hypokalemia','Hyperkalemia','Hypercalcemia','Digoxin effect'],a:1,
+ why:'Peaked T waves come first in hyperkalemia, then P wave flattening and PR prolongation, then QRS widening toward a sine wave.'},
 {id:'GA33',form:'A',d:'D9',c:'D9.C1',dok:2,q:'When are right-sided leads indicated?',
  o:['With any anterior STEMI','With an inferior STEMI','With a new left bundle branch block','With atrial fibrillation'],a:1,
  why:'An inferior STEMI raises the question of right ventricular involvement, which V4R answers and which changes management.'},
@@ -149,7 +149,7 @@ window.CVRN_DIAGNOSTIC_POOL = [
 {id:'GA34',form:'A',d:'D10',c:'D10.C3',dok:2,q:'A blood gas shows pH 7.28, PaCO2 30, HCO3 14. How is this classified?',
  o:['Respiratory acidosis','Metabolic acidosis with partial compensation','Metabolic alkalosis','Respiratory alkalosis'],a:1,
  why:'Low pH with low bicarbonate is metabolic acidosis. The low PaCO2 is respiratory compensation, partial because the pH is still abnormal.'},
-{id:'GA35',form:'A',d:'D10',c:'D10.C2',dok:2,q:'Which condition shifts the oxyhaemoglobin dissociation curve to the right?',
+{id:'GA35',form:'A',d:'D10',c:'D10.C2',dok:2,q:'Which condition shifts the oxyhemoglobin dissociation curve to the right?',
  o:['Alkalosis','Hypothermia','Fever','Decreased 2,3-DPG'],a:2,
  why:'Acidosis, hypercapnia, fever, and increased 2,3-DPG shift right, which unloads more oxygen at the tissue.'},
 
@@ -161,8 +161,8 @@ window.CVRN_DIAGNOSTIC_POOL = [
  o:['20 mL','35 mL','50 mL','84 mL'],a:2,
  why:'Stroke volume is cardiac output divided by heart rate. 4200 divided by 84 is 50 mL, which is below the normal 60 to 100.'},
 {id:'GA38',form:'A',d:'D11',c:'D11.C6',dok:2,q:'Low cardiac index with high filling pressures and high systemic vascular resistance describes which shock state?',
- o:['Hypovolaemic','Distributive','Cardiogenic','Obstructive'],a:2,
- why:'Cardiogenic shock. Hypovolaemic has low filling pressures, distributive has low resistance.'},
+ o:['Hypovolemic','Distributive','Cardiogenic','Obstructive'],a:2,
+ why:'Cardiogenic shock. Hypovolemic has low filling pressures, distributive has low resistance.'},
 
 /* D12 Assist Devices, 2 */
 {id:'GA39',form:'A',d:'D12',c:'D12.C1',dok:2,q:'When should the intra-aortic balloon pump inflate?',
@@ -185,7 +185,7 @@ window.CVRN_DIAGNOSTIC_POOL = [
  o:['Norepinephrine','Epinephrine','Phenylephrine','Dobutamine'],a:2,
  why:'Phenylephrine raises systemic vascular resistance without beta activity, so it can reduce cardiac output through reflex bradycardia and increased afterload.'},
 {id:'GA44',form:'A',d:'D14',c:'D14.C5',dok:2,q:'Which electrolyte abnormality most increases digoxin toxicity risk?',
- o:['Hypernatraemia','Hypokalaemia','Hypochloraemia','Hypermagnesaemia'],a:1,
+ o:['Hypernatremia','Hypokalemia','Hypochloremia','Hypermagnesemia'],a:1,
  why:'Digoxin and potassium compete for the same binding site, so low potassium increases binding and toxicity at otherwise therapeutic levels.'},
 {id:'GA45',form:'A',d:'D14',c:'D14.C4',dok:2,q:'A patient took sildenafil 12 hours ago. Which order should be questioned?',
  o:['Aspirin','Sublingual nitroglycerin','Morphine','Supplemental oxygen'],a:1,
@@ -201,7 +201,7 @@ window.CVRN_DIAGNOSTIC_POOL = [
  o:['1.59, normal','0.63, moderate peripheral arterial disease','0.63, venous insufficiency','0.88, borderline'],a:1,
  why:'88 divided by 140 is 0.63. Values from 0.41 to 0.90 indicate mild to moderate peripheral arterial disease.'},
 {id:'GB03',form:'B',d:'D1',c:'D1.C1',dok:2,q:'Which presentation of acute coronary syndrome is most common in patients with diabetes?',
- o:['Crushing substernal chest pain','Dyspnoea, fatigue, or nausea without chest pain','Sharp pleuritic pain','Pain radiating to the left arm only'],a:1,
+ o:['Crushing substernal chest pain','Dyspnea, fatigue, or nausea without chest pain','Sharp pleuritic pain','Pain radiating to the left arm only'],a:1,
  why:'Autonomic neuropathy blunts pain perception, so anginal equivalents replace classic chest pain.'},
 
 /* D2, 4 */
@@ -216,7 +216,7 @@ window.CVRN_DIAGNOSTIC_POOL = [
  why:'Flutter at about 300 with 2 to 1 conduction lands at 150 almost every time.'},
 {id:'GB07',form:'B',d:'D2',c:'D2.C4',dok:2,q:'A chaotic undulating baseline with no identifiable QRS complexes in a pulseless patient is what?',
  o:['Asystole','Ventricular fibrillation','Torsades de pointes','Artifact'],a:1,
- why:'Ventricular fibrillation. It is defibrillated, not synchronised, because there is no R wave to sense.'},
+ why:'Ventricular fibrillation. It is defibrillated, not synchronized, because there is no R wave to sense.'},
 
 /* D3, 6 */
 {id:'GB08',form:'B',d:'D3',c:'D3.C1',dok:2,q:'Approximately what fraction of delivered oxygen does myocardium extract at rest?',
@@ -225,7 +225,7 @@ window.CVRN_DIAGNOSTIC_POOL = [
 {id:'GB09',form:'B',d:'D3',c:'D3.C1',dok:2,q:'During which phase of the cardiac cycle does the left ventricle receive most of its coronary perfusion?',
  o:['Systole','Diastole','Isovolumetric contraction','Equally throughout'],a:1,
  why:'Systolic compression of intramyocardial vessels means perfusion occurs in diastole, which is why tachycardia reduces it.'},
-{id:'GB10',form:'B',d:'D3',c:'D3.C4',dok:2,q:'Transfer to a PCI centre will take 180 minutes. What is the preferred strategy for a STEMI?',
+{id:'GB10',form:'B',d:'D3',c:'D3.C4',dok:2,q:'Transfer to a PCI center will take 180 minutes. What is the preferred strategy for a STEMI?',
  o:['Transfer for primary PCI regardless','Fibrinolysis if no contraindication, then transfer','Wait for serial troponins','Aspirin alone and admit'],a:1,
  why:'When first medical contact to device exceeds 120 minutes, fibrinolysis within 30 minutes of arrival comes first, then transfer.'},
 {id:'GB11',form:'B',d:'D3',c:'D3.C4',dok:2,q:'A new holosystolic murmur with sudden hypotension on day three after an anterior MI suggests what?',
@@ -235,13 +235,13 @@ window.CVRN_DIAGNOSTIC_POOL = [
  o:['ST depression','T wave inversion','ST elevation or new left bundle branch block','A prolonged QT'],a:2,
  why:'ST elevation, or a new left bundle branch block, indicates complete occlusion and transmural injury.'},
 {id:'GB13',form:'B',d:'D3',c:'D3.C5',dok:2,q:'What is phase II of cardiac rehabilitation?',
- o:['Inpatient mobilisation','Monitored outpatient exercise and education','Unsupervised maintenance','Pre-procedure conditioning'],a:1,
+ o:['Inpatient mobilization','Monitored outpatient exercise and education','Unsupervised maintenance','Pre-procedure conditioning'],a:1,
  why:'Phase I is inpatient, phase II is monitored outpatient, phase III is maintenance.'},
 
 /* D4, 3 */
 {id:'GB14',form:'B',d:'D4',c:'D4.C5',dok:2,q:'In a hypertensive emergency, how much should the mean arterial pressure be reduced in the first hour?',
  o:['No more than 20 to 25 percent','To below 140 systolic','By half','To normal'],a:0,
- why:'Cerebral autoregulation has shifted, so rapid normalisation causes hypoperfusion. About a quarter in the first hour is the accepted target.'},
+ why:'Cerebral autoregulation has shifted, so rapid normalization causes hypoperfusion. About a quarter in the first hour is the accepted target.'},
 {id:'GB15',form:'B',d:'D4',c:'D4.C2',dok:2,q:'Which finding most suggests a secondary cause of hypertension?',
  o:['Family history of hypertension','Onset before age 30 with resistant pressures','Gradual rise over a decade','A body mass index of 31'],a:1,
  why:'Early onset, abrupt onset, or resistance to three agents including a diuretic should trigger a secondary workup.'},
@@ -269,7 +269,7 @@ window.CVRN_DIAGNOSTIC_POOL = [
  why:'Sequential nephron blockade addresses distal tubular sodium reabsorption. Oral dosing is unreliable in a congested gut.'},
 {id:'GB22',form:'B',d:'D6',c:'D6.C4',dok:2,q:'Which pillar should not be initiated during acute decompensation?',
  o:['ARNI','Beta blocker','SGLT2 inhibitor','Mineralocorticoid receptor antagonist'],a:1,
- why:'Beta blockade is started once the patient is euvolaemic and stable, because its negative inotropy is poorly tolerated in low output.'},
+ why:'Beta blockade is started once the patient is euvolemic and stable, because its negative inotropy is poorly tolerated in low output.'},
 {id:'GB23',form:'B',d:'D6',c:'D6.C3',dok:2,q:'Cool extremities, narrow pulse pressure, crackles, and jugular venous distension describe which profile?',
  o:['Warm and dry','Warm and wet','Cold and dry','Cold and wet'],a:3,
  why:'Congestion plus hypoperfusion is cold and wet, the highest risk of the four profiles.'},
@@ -278,7 +278,7 @@ window.CVRN_DIAGNOSTIC_POOL = [
  why:'Most sodium is already in the food before it reaches the table, which is why label reading beats removing the shaker.'},
 
 /* D7, 3 */
-{id:'GB25',form:'B',d:'D7',c:'D7.C1',dok:2,q:'A patient with a left bundle branch block cannot exercise. Which test is most appropriate for ischaemia evaluation?',
+{id:'GB25',form:'B',d:'D7',c:'D7.C1',dok:2,q:'A patient with a left bundle branch block cannot exercise. Which test is most appropriate for ischemia evaluation?',
  o:['Exercise treadmill ECG','Dobutamine stress echocardiography','Vasodilator nuclear perfusion imaging','Resting ECG alone'],a:2,
  why:'Left bundle branch block makes exercise ECG uninterpretable and dobutamine can create false septal defects. Vasodilator perfusion imaging avoids both.'},
 {id:'GB26',form:'B',d:'D7',c:'D7.C2',dok:2,q:'What determines the duration of dual antiplatelet therapy after PCI?',
@@ -292,7 +292,7 @@ window.CVRN_DIAGNOSTIC_POOL = [
 {id:'GB28',form:'B',d:'D8',c:'D8.C4',dok:2,q:'Which intervention carries the greatest risk in severe aortic stenosis with hypotension?',
  o:['Cautious isotonic fluid','Nitroglycerin infusion','Phenylephrine','Maintaining sinus rhythm'],a:1,
  why:'A fixed obstruction makes output preload dependent. Nitrates drop preload and can cause abrupt, hard to reverse hypotension.'},
-{id:'GB29',form:'B',d:'D8',c:'D8.C5',dok:2,q:'Why does acute severe mitral regurgitation present with pulmonary oedema when chronic regurgitation may be tolerated for years?',
+{id:'GB29',form:'B',d:'D8',c:'D8.C5',dok:2,q:'Why does acute severe mitral regurgitation present with pulmonary edema when chronic regurgitation may be tolerated for years?',
  o:['The murmur is louder','The left atrium has not remodelled to become compliant','It always involves the coronaries','Chronic regurgitation spares the atrium'],a:1,
  why:'Without atrial compliance the regurgitant volume transmits straight to the pulmonary circulation. Acute severe regurgitation often has a soft murmur.'},
 
@@ -300,11 +300,11 @@ window.CVRN_DIAGNOSTIC_POOL = [
 {id:'GB30',form:'B',d:'D9',c:'D9.C4',dok:2,q:'ST elevation greater in lead III than lead II, with depression in I and aVL, suggests which culprit vessel?',
  o:['Left anterior descending','Right coronary artery','Left circumflex','Left main'],a:1,
  why:'Elevation greater in III than II with reciprocal change in I and aVL points to the right coronary artery.'},
-{id:'GB31',form:'B',d:'D9',c:'D9.C5',dok:2,q:'Which Sgarbossa criterion is most specific for ischaemia in left bundle branch block?',
+{id:'GB31',form:'B',d:'D9',c:'D9.C5',dok:2,q:'Which Sgarbossa criterion is most specific for ischemia in left bundle branch block?',
  o:['Any ST depression','Concordant ST elevation of 1 mm or more','QRS wider than 0.14','T wave inversion in V1'],a:1,
- why:'Concordant elevation of 1 mm or more carries the highest specificity. Discordant change is expected and does not indicate ischaemia by itself.'},
+ why:'Concordant elevation of 1 mm or more carries the highest specificity. Discordant change is expected and does not indicate ischemia by itself.'},
 {id:'GB32',form:'B',d:'D9',c:'D9.C5',dok:2,q:'Diffuse concave ST elevation across coronary territories with PR depression suggests what?',
- o:['Multivessel STEMI','Acute pericarditis','Early repolarisation','Left ventricular aneurysm'],a:1,
+ o:['Multivessel STEMI','Acute pericarditis','Early repolarization','Left ventricular aneurysm'],a:1,
  why:'Elevation that ignores vascular anatomy, with reciprocal change only in aVR, is pericardial rather than occlusive.'},
 {id:'GB33',form:'B',d:'D9',c:'D9.C2',dok:2,q:'How is axis determined most quickly?',
  o:['Leads V1 and V6','Leads I and aVF','Leads II and III','Lead aVR alone'],a:1,
@@ -314,7 +314,7 @@ window.CVRN_DIAGNOSTIC_POOL = [
 {id:'GB34',form:'B',d:'D10',c:'D10.C1',dok:2,q:'A central venous oxygen saturation of 48 percent in shock indicates what?',
  o:['Excessive oxygen delivery','Increased tissue extraction because delivery is inadequate','Impaired extraction','Sampling error'],a:1,
  why:'A low venous saturation means tissues are pulling more from each unit of blood. Early septic shock often shows the opposite.'},
-{id:'GB35',form:'B',d:'D10',c:'D10.C5',dok:2,q:'Increasing PEEP in a hypovolaemic patient produces what haemodynamic effect?',
+{id:'GB35',form:'B',d:'D10',c:'D10.C5',dok:2,q:'Increasing PEEP in a hypovolemic patient produces what hemodynamic effect?',
  o:['Increased preload and output','Decreased venous return and falling cardiac output','No change','Increased systemic vascular resistance only'],a:1,
  why:'Positive intrathoracic pressure opposes venous return. The same change can help a congested patient by reducing preload and afterload.'},
 
@@ -331,8 +331,8 @@ window.CVRN_DIAGNOSTIC_POOL = [
 
 /* D12, 2 */
 {id:'GB39',form:'B',d:'D12',c:'D12.C3',dok:2,q:'Rising power with a low pulsatility index and dark urine in an LVAD patient suggests what?',
- o:['Pump thrombosis with haemolysis','Suction event','Driveline infection','Right ventricular failure'],a:0,
- why:'Rising power reflects the pump working against a clot, and haemolysis produces haemoglobinuria. A suction event shows low flow with a high pulsatility index.'},
+ o:['Pump thrombosis with hemolysis','Suction event','Driveline infection','Right ventricular failure'],a:0,
+ why:'Rising power reflects the pump working against a clot, and hemolysis produces hemoglobinuria. A suction event shows low flow with a high pulsatility index.'},
 {id:'GB40',form:'B',d:'D12',c:'D12.C4',dok:2,q:'What distinguishes venoarterial from venovenous ECMO?',
  o:['Cannula size','Venoarterial supports circulation as well as oxygenation','Venovenous requires anticoagulation','Only venoarterial uses a membrane'],a:1,
  why:'Venoarterial returns blood to the arterial system and supports cardiac output. Venovenous supports gas exchange only.'},

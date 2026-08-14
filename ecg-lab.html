@@ -210,6 +210,46 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 .readpill[data-k="pri"]{border-color:var(--pulse,#C2734D);color:var(--pulse,#C2734D)}
 .readpill[data-k="thin"]{border-color:var(--line);color:var(--ink-soft)}
 #p-pg .delta{font-weight:700;font-variant-numeric:tabular-nums}
+
+/* ------------------------------------------------------------
+   Touch devices keep a stale hover on whatever element sat under
+   the last tap. On an answer list that shows up as a gold border
+   on one option before anything is chosen, which reads as a hint.
+   Hover styling is therefore limited to devices with a real
+   pointer, and selection gets its own explicit state.
+   ------------------------------------------------------------ */
+@media (hover:none),(pointer:coarse){
+  .tab:hover{border-color:var(--line);color:var(--ink-soft)}
+  button.act:hover{border-color:var(--line);transform:none;box-shadow:var(--shadow-rest)}
+  button.primary:hover{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
+  .opt:hover{border-color:var(--line);transform:none;box-shadow:var(--shadow-rest)}
+  .tcard:hover{transform:none;box-shadow:var(--shadow-rest);border-color:var(--line)}
+}
+.opt.sel,.opt:has(input:checked){border-color:var(--gold);box-shadow:var(--shadow-hover)}
+.opt:focus-within{outline:2px solid var(--acc);outline-offset:2px}
+
+/* IABP lab */
+.bphd{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:700;font-size:12px;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--terra-hi);margin:18px 0 8px}
+.bphd:first-child{margin-top:10px}
+.bplist{margin:0;padding-left:22px}
+.bplist li{font-size:15px;line-height:1.62;margin-bottom:9px}
+.bplist li strong{font-weight:700}
+
+/* a heavier trace reads better once the strip is scaled down to a phone */
+@media (max-width:640px){
+  :root{--tracew:2.9}
+  .screen canvas{min-height:150px}
+}
+
+/* On a phone the tab row wrapped onto three lines and pushed the tool
+   below the fold. It scrolls sideways on one row instead. */
+@media (max-width:700px){
+  .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs .tab{white-space:nowrap;flex:0 0 auto}
+  .toolbar{flex-wrap:wrap}
+}
 </style>
 </head>
 <body>
@@ -229,6 +269,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   <button class="tab" role="tab" id="tab-mon" aria-controls="p-mon" aria-selected="true">Monitor</button>
   <button class="tab" role="tab" id="tab-12" aria-controls="p-12" aria-selected="false">12-Lead</button>
   <button class="tab" role="tab" id="tab-pr" aria-controls="p-pr" aria-selected="false">Practice</button>
+  <button class="tab" role="tab" id="tab-bp" aria-controls="p-bp" aria-selected="false">IABP</button>
   <button class="tab" role="tab" id="tab-pg" aria-controls="p-pg" aria-selected="false">Practical gap finder</button>
   <button class="tab" role="tab" id="tab-ms" aria-controls="p-ms" aria-selected="false">Mastery</button>
   <button class="act" id="paperBtn" aria-pressed="false" style="margin-left:auto">Monitor view</button>
@@ -365,6 +406,63 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
       <button class="act primary" id="submitQ">Submit</button>
     </div>
     <div class="fb" id="fb" hidden></div>
+  </div>
+</section>
+
+<!-- ============ IABP WAVEFORM LAB ============ -->
+<section class="panel" id="p-bp" role="tabpanel" aria-labelledby="tab-bp" hidden>
+
+  <div class="toolbar">
+    <div class="field" style="min-width:320px">
+      <label for="bpSel">Timing</label>
+      <select id="bpSel">
+        <option value="normal" selected>Correct timing</option>
+        <option value="early_inf">Early inflation</option>
+        <option value="late_inf">Late inflation</option>
+        <option value="early_def">Early deflation</option>
+        <option value="late_def">Late deflation</option>
+      </select>
+    </div>
+    <div class="field" style="min-width:170px">
+      <label for="bpRatio">Assist ratio</label>
+      <select id="bpRatio">
+        <option value="1">1 to 1</option>
+        <option value="2" selected>1 to 2</option>
+        <option value="3">1 to 3</option>
+      </select>
+    </div>
+    <div class="btnrow">
+      <button class="act" id="bpLabels" aria-pressed="true">Labels</button>
+    </div>
+  </div>
+
+  <div class="screen" data-frozen="1" style="margin-bottom:4px">
+    <canvas id="bpCan" width="1700" height="620" role="img" aria-label="Intra-aortic balloon pump arterial pressure waveform with a lead two rhythm strip above it"></canvas>
+  </div>
+
+  <div class="q" id="bpTeach">
+    <p class="qstem" id="bpTitle">Correct timing</p>
+    <div id="bpBody"></div>
+  </div>
+
+  <div class="q" style="margin-top:16px">
+    <p class="qstem">How to time the balloon from the tracing</p>
+    <ol class="bplist">
+      <li><strong>Set timing on the arterial waveform, not the ECG.</strong> The ECG triggers the pump. The arterial trace is what tells you whether the trigger landed in the right place.</li>
+      <li><strong>Inflate at the dicrotic notch.</strong> The notch is aortic valve closure. That is the start of diastole and the moment coronary filling begins.</li>
+      <li><strong>Deflate just before the next systolic upstroke.</strong> Deflation creates the empty space in the aorta that lowers the pressure the ventricle has to push against.</li>
+      <li><strong>Run 1 to 2 while you set timing.</strong> You cannot judge timing in 1 to 1, because there is no unassisted beat next to the assisted one to compare against.</li>
+      <li><strong>Read the two pairs.</strong> Assisted systole should be lower than unassisted systole. Balloon aortic end diastolic pressure should be lower than the patient's own aortic end diastolic pressure. If either fails, the timing is wrong or the balloon is not working.</li>
+    </ol>
+  </div>
+
+  <div class="q" style="margin-top:16px">
+    <p class="qstem">What the balloon is actually doing</p>
+    <ol class="bplist">
+      <li><strong>Inflation raises diastolic pressure.</strong> Gas fills the balloon in the descending aorta, displacing blood in both directions. Retrograde flow raises aortic root pressure during diastole, which is when the coronaries fill. This is the oxygen supply half.</li>
+      <li><strong>Deflation lowers the pressure at the start of systole.</strong> The balloon empties immediately before the aortic valve opens, so the ventricle ejects into a lower pressure. Afterload falls, stroke volume rises, and myocardial oxygen demand falls. This is the demand half.</li>
+      <li><strong>Both halves depend entirely on timing.</strong> A balloon with correct volume and no mechanical fault still harms the patient if it inflates or deflates at the wrong moment. Late deflation is the most dangerous error, because the balloon is inflated while the ventricle is trying to eject.</li>
+    </ol>
   </div>
 </section>
 
@@ -561,8 +659,12 @@ function afib(list,t,rate,st){
   return t+rr;
 }
 function aflutter(list,t,rate,st){
-  var rr=60/rate, k;
-  list.push({t:t, pm:null, qm:'qrs', tm:'tFlat', pr:0, qt:0.28, st:st, flut:true});
+  /* No separate T wave. In real 2 to 1 flutter the T is not separable from
+     the flutter waves, and drawing one on top rounds the sawtooth off into
+     something a learner reads as sinus tachycardia. The atrial activity is
+     carried entirely by the sawtooth in Stream.sample. */
+  var rr=60/rate;
+  list.push({t:t, pm:null, qm:'qrs', tm:null, pr:0, qt:0.28, st:st, flut:true});
   return t+rr;
 }
 function svt(list,t,rate,st){
@@ -696,10 +798,20 @@ Stream.prototype.sample=function(t){
     if(b.drop){ v += gsum(t-b.t, G.p, 1); continue; }
     v += beatValue(t,b);
   }
-  if(this.key==='afib'){ v += 0.055*Math.sin(t*2*Math.PI*7.3)+0.04*Math.sin(t*2*Math.PI*11.9+2); }
+  if(this.key==='afib'){
+    /* Fibrillatory waves are chaotic, not periodic. Two clean sine waves read
+       as a tidy ripple, which is not what f waves look like. Four incommensurate
+       components at different amplitudes give a wandering, irregular baseline. */
+    v += 0.070*Math.sin(t*2*Math.PI*7.3) + 0.052*Math.sin(t*2*Math.PI*11.9+2)
+       + 0.038*Math.sin(t*2*Math.PI*5.1+1.1) + 0.030*Math.sin(t*2*Math.PI*17.3+0.4);
+  }
   if(this.key==='aflut'){
-    /* sawtooth flutter waves at 300/min */
-    var ph=(t*5)%1; v += 0.20*(ph<0.72 ? (ph/0.72) : (1-(ph-0.72)/0.28)) - 0.10;
+    /* Typical flutter at 300 per minute: negative sawtooth in lead II, III
+       and aVF. Slow downslope, fast return, no isoelectric baseline between
+       waves. That absence of a flat baseline is the finding that separates
+       flutter from sinus tachycardia, so it has to be visible. */
+    var ph=(t*5)%1;
+    v += -0.30*(ph<0.78 ? (ph/0.78) : (1-(ph-0.78)/0.22)) + 0.15;
   }
   return v + 0.006*Math.sin(t*137.5);  /* trace of baseline noise */
 }
@@ -785,6 +897,28 @@ Monitor.prototype.renderStatic=function(seconds){
   x.stroke();
   this.px=0; this.t=0;
 };
+/* A ten second strip on a phone works out to about 3 screen pixels per
+   millimeter, which is not enough to read a rhythm from. On a narrow
+   viewport the window shortens and the panel gets taller so the trace
+   stays legible. Calipers read pxPerMm from here, so measurement
+   follows the change automatically. */
+Monitor.prototype.setWindow=function(mm){
+  this.pxPerMm = this.c.width/mm;
+  this.pxPerSec = this.pxPerMm*25;
+  this.midY = this.c.height*0.55;
+  this.lastY = this.midY;
+  this.grid();
+};
+function narrowView(){
+  var w = window.innerWidth || document.documentElement.clientWidth || 1200;
+  return w < 640;
+}
+function fitStrip(canvas){
+  var n=narrowView(), W=n?1000:1600, H=n?470:380, MM=n?110:250;
+  if(canvas.width!==W){ canvas.width=W; }
+  if(canvas.height!==H){ canvas.height=H; }
+  return MM;
+}
 
 /* ------------------------------------------------------------
    Critical care monitor: three coupled channels on one sweep.
@@ -867,6 +1001,11 @@ ICU.prototype.eraseBand=function(from,w){
     x.beginPath(); x.moveTo(from,L.top+i*mm+0.5); x.lineTo(from+w,L.top+i*mm+0.5); x.stroke(); }
   x.restore();
   this.labels();
+};
+ICU.prototype.setWindow=function(mm){
+  this.pxPerMm = this.c.width/mm;
+  this.pxPerSec = this.pxPerMm*25;
+  this.grid();
 };
 ICU.prototype.renderStatic=function(){
   var self=this,x=this.x,c=this.c,p;
@@ -1029,7 +1168,7 @@ function record(id, correct, confident){
 }
 
 /* ---- tabs ---- */
-var tabs=[['tab-mon','p-mon'],['tab-12','p-12'],['tab-pr','p-pr'],['tab-pg','p-pg'],['tab-ms','p-ms']];
+var tabs=[['tab-mon','p-mon'],['tab-12','p-12'],['tab-pr','p-pr'],['tab-bp','p-bp'],['tab-pg','p-pg'],['tab-ms','p-ms']];
 tabs.forEach(function(pair){
   el(pair[0]).addEventListener('click', function(){
     tabs.forEach(function(p){
@@ -1040,6 +1179,7 @@ tabs.forEach(function(pair){
     if(pair[0]==='tab-12') draw12();
     if(pair[0]==='tab-ms') renderMastery();
     if(pair[0]==='tab-pg') pgFormNote();
+    if(pair[0]==='tab-bp') bpAll();
   });
 });
 el('paperBtn').addEventListener('click', function(){
@@ -1049,7 +1189,7 @@ el('paperBtn').addEventListener('click', function(){
   this.textContent = on ? 'Monitor view' : 'Paper view';
   try{ localStorage.setItem('cvrn-theme', on?'off':'on'); }catch(e){}
   mon.grid(); if(!running) mon.renderStatic();
-  pmon.renderStatic(10); draw12();
+  pmon.renderStatic(10); draw12(); if(window.__bpReady) drawIABP();
 });
 try{ if(localStorage.getItem('cvrn-theme')==='on'){ document.documentElement.setAttribute('data-dark','on');
   el('paperBtn').setAttribute('aria-pressed','true'); el('paperBtn').textContent='Paper view'; } }catch(e){}
@@ -1060,6 +1200,7 @@ Object.keys(RHYTHMS).forEach(function(k){
   var o=document.createElement('option'); o.value=k; o.textContent=RHYTHMS[k].name; sel.appendChild(o);
 });
 var mon = new ICU(el('mon'), {rhythm:'nsr', autorun:true, mmWide:250});
+if(narrowView()) mon.setWindow(140);
 var running=true, lastTs=null;
 var cal = new Calipers(el('screen'), el('mon'), mon, function(d){
   if(!d){ el('mMs').textContent='not set'; el('mBox').textContent='not set'; el('mRate').textContent='not set'; el('mMv').textContent='not set'; return; }
@@ -1236,7 +1377,10 @@ el('showFind').addEventListener('click', function(){
 });
 
 /* ---- practice ---- */
+var pLastR=null;
+function stripSecs(){ return narrowView() ? 4.4 : 10; }
 var pmon = new Monitor(el('pMon'), {rhythm:'nsr', autorun:false, mmWide:250});
+pmon.setWindow(fitStrip(el('pMon')));
 pmon.gain=1;
 var pcal = new Calipers(el('pScreen'), el('pMon'), pmon, function(d){
   el('pMeas').textContent = d ? (Math.round(d.ms)+' ms  |  '+d.boxes.toFixed(1)+' mm  |  '+(d.ms>60?Math.round(d.rate)+' bpm':'span too short')) : 'no measurement yet';
@@ -1322,14 +1466,14 @@ function pickQ(){
     var q = BANK1[Math.floor(Math.random()*BANK1.length)];
     Q={type:1, q:q, correct:q.a, s:q.s};
     el('pLeadTag').textContent='Lead II';
-    pmon.stream=new Stream(q.r); pmon.renderStatic(10);
+    pLastR=q.r; pmon.setWindow(fitStrip(el('pMon'))); pmon.stream=new Stream(q.r); pmon.renderStatic(stripSecs());
     el('qStem').textContent='Identify the rhythm on the strip above.';
     body.appendChild(optionList(shuffle([q.a].concat(q.d))));
   }
   else if(dok==='2'){
     var q2 = BANK2[Math.floor(Math.random()*BANK2.length)];
     Q={type:2, q:q2, correct:q2.target, s:q2.s};
-    pmon.stream=new Stream(q2.r); pmon.renderStatic(10);
+    pLastR=q2.r; pmon.setWindow(fitStrip(el('pMon'))); pmon.stream=new Stream(q2.r); pmon.renderStatic(stripSecs());
     el('qStem').textContent=q2.ask+' Use the calipers, then enter your value.';
     var wrap=document.createElement('div'); wrap.className='measGrid';
     wrap.innerHTML='<div class="field"><label for="ansNum">'+q2.field+' in '+q2.unit+'</label><input type="number" id="ansNum" step="1"></div>';
@@ -1339,14 +1483,14 @@ function pickQ(){
   else if(dok==='3'){
     var q3 = BANK3[Math.floor(Math.random()*BANK3.length)];
     Q={type:3, q:q3, correct:q3.a, s:q3.s};
-    pmon.stream=new Stream(q3.r); pmon.renderStatic(10);
+    pLastR=q3.r; pmon.setWindow(fitStrip(el('pMon'))); pmon.stream=new Stream(q3.r); pmon.renderStatic(stripSecs());
     el('qStem').textContent=q3.stem;
     body.appendChild(optionList(shuffle([q3.a].concat(q3.d))));
   }
   else {
     var q4 = BANK4[Math.floor(Math.random()*BANK4.length)];
     Q={type:4, q:q4, correct:q4.a, s:q4.s};
-    pmon.stream=new Stream(q4.r==='infstemi12'?'brady':'paced'); pmon.renderStatic(10);
+    pLastR=(q4.r==='infstemi12'?'brady':'paced'); pmon.setWindow(fitStrip(el('pMon'))); pmon.stream=new Stream(pLastR); pmon.renderStatic(stripSecs());
     el('qStem').textContent=q4.stem;
     /* a case that turns on the 12-lead gets the 12-lead, not a description of one */
     if(q4.pattern){ showCase12(q4.pattern); }
@@ -1459,11 +1603,12 @@ function pgFormNote(){
     : 'You have completed '+done+' run'+(done===1?'':'s')+'. Run '+n.run+' draws form '+n.form+', '+cnt+' items, pass '+n.pass+' through the forms.';
 }
 
-var PG=null, pgChosen=null, pgConf=null;
+var PG=null, pgChosen=null, pgConf=null, pgLastR=null;
 var pgmon=null, pgcal=null;
 function pgBoot(){
   if(pgmon) return;
   pgmon = new Monitor(el('pgMon'), {rhythm:'nsr', autorun:false, mmWide:250});
+  pgmon.setWindow(fitStrip(el('pgMon')));
   pgcal = new Calipers(el('pgScreen'), el('pgMon'), pgmon, function(d){
     el('pgMeas').textContent = d ? (Math.round(d.ms)+' ms  ·  '+d.boxes.toFixed(1)+' mm'+(d.ms>60?('  ·  '+Math.round(d.rate)+' bpm'):'')) : 'no measurement yet';
   });
@@ -1518,7 +1663,7 @@ function pgRender(){
   el('pgMeas').textContent='no measurement yet';
   el('pgScreen').hidden = !showStrip;
   el('pgCalRow').style.display = showStrip ? '' : 'none';
-  if(showStrip){ pgmon.stream=new Stream(it.rhythm); pgmon.renderStatic(10); }
+  if(showStrip){ pgLastR=it.rhythm; pgmon.setWindow(fitStrip(el('pgMon'))); pgmon.stream=new Stream(it.rhythm); pgmon.renderStatic(stripSecs()); }
   if(it.pattern){ pgShow12(it.pattern); } else { el('pgLeads').hidden=true; el('pgLeads').innerHTML=''; }
 
   if(it.kind==='measure'){
@@ -1715,6 +1860,265 @@ function pgHistory(){
   host.appendChild(card);
 }
 pgFormNote();
+
+/* ============================================================
+   IABP WAVEFORM LAB
+   The arterial trace is where balloon timing is read, so the
+   lab renders the trace rather than describing it. Each timing
+   error is drawn from its own set of control points, with a
+   lead II strip above so the learner can see where inflation
+   and deflation sit against the cardiac cycle.
+   ============================================================ */
+var BP_LO=0, BP_HI=170;
+
+/* [fraction of beat, mmHg] */
+var BPBEATS = {
+  normal: {
+    aug:[[0,65],[.05,116],[.10,120],[.18,110],[.28,92],[.335,82],[.35,79],[.40,110],[.46,128],[.52,131],[.64,124],[.78,98],[.92,60],[1,50]],
+    plain:[[0,50],[.05,100],[.10,105],[.20,96],[.30,84],[.335,77],[.35,80],[.5,74],[.75,69],[1,65]]
+  },
+  early_inf: {
+    aug:[[0,65],[.05,116],[.10,120],[.15,114],[.20,109],[.25,116],[.33,128],[.44,133],[.56,127],[.72,102],[.90,62],[1,50]],
+    plain:[[0,50],[.05,101],[.10,106],[.20,97],[.30,85],[.335,78],[.35,81],[.5,75],[.75,70],[1,65]]
+  },
+  late_inf: {
+    aug:[[0,65],[.05,116],[.10,120],[.18,110],[.28,92],[.335,82],[.35,79],[.44,75],[.53,97],[.62,111],[.72,105],[.86,82],[.96,58],[1,53]],
+    plain:[[0,53],[.05,106],[.10,112],[.20,102],[.30,88],[.335,80],[.35,83],[.5,77],[.75,71],[1,65]]
+  },
+  early_def: {
+    aug:[[0,65],[.05,116],[.10,120],[.18,110],[.28,92],[.335,82],[.35,79],[.42,114],[.48,127],[.55,116],[.61,74],[.68,58],[.78,64],[.90,68],[1,67]],
+    plain:[[0,67],[.05,113],[.10,119],[.20,108],[.30,91],[.335,82],[.35,85],[.5,78],[.75,71],[1,65]]
+  },
+  late_def: {
+    aug:[[0,65],[.05,116],[.10,120],[.18,110],[.28,92],[.335,82],[.35,79],[.42,117],[.50,130],[.66,127],[.82,118],[.93,95],[1,72]],
+    plain:[[0,72],[.09,96],[.16,110],[.24,112],[.34,99],[.40,88],[.42,91],[.55,80],[.78,72],[1,65]]
+  }
+};
+
+var BPTEACH = {
+  normal:{
+    t:'Correct timing',
+    see:['Inflation begins exactly at the dicrotic notch, so the notch and the upstroke of augmentation form a sharp V.',
+         'The augmented diastolic peak is higher than the unassisted systolic peak.',
+         'Balloon aortic end diastolic pressure is lower than the patient’s own aortic end diastolic pressure.',
+         'Assisted systole is lower than unassisted systole.'],
+    does:['Coronary perfusion pressure rises through the whole of diastole.',
+          'The ventricle ejects into a lower pressure, so afterload and oxygen demand fall.'],
+    do:['Nothing. Confirm the same picture every hour and after any change in rhythm or rate.']
+  },
+  early_inf:{
+    t:'Early inflation',
+    see:['Inflation begins before the dicrotic notch, so the notch disappears into the augmentation wave.',
+         'Augmentation encroaches on the systolic wave and the two merge into one wide peak.'],
+    does:['The balloon inflates while the aortic valve is still open, which forces the valve shut early.',
+          'Stroke volume falls and end diastolic volume rises, so wall stress and oxygen demand go up.',
+          'Aortic regurgitation can be produced or worsened.'],
+    do:['Delay inflation until the notch reappears on the trace.',
+        'This is the error that most directly increases the work of a failing ventricle, so correct it before anything else.']
+  },
+  late_inf:{
+    t:'Late inflation',
+    see:['The dicrotic notch is clearly visible, and the augmentation wave starts well after it.',
+         'The augmented peak is lower and the augmentation lasts a shorter time than it should.'],
+    does:['A portion of diastole passes with no augmentation at all, so coronary perfusion is less than it could be.',
+          'The support is suboptimal rather than harmful. This is the least dangerous of the four errors.'],
+    do:['Advance inflation until it sits on the notch.',
+        'Check the trigger. A late inflation that appears suddenly often means the pump is triggering off a changed R wave or a paced spike.']
+  },
+  early_def:{
+    t:'Early deflation',
+    see:['A sharp drop follows the augmented peak, then pressure rises again before the next systole, which makes a U shape.',
+         'Balloon aortic end diastolic pressure is equal to or higher than the patient’s own aortic end diastolic pressure.',
+         'Assisted systole is equal to or higher than unassisted systole.'],
+    does:['Augmentation is cut short, so coronary perfusion is lost for the rest of diastole.',
+          'Aortic and coronary blood can flow backwards toward the balloon as it collapses, which can cause angina.',
+          'Afterload reduction is lost, because the aorta has time to refill before the valve opens.'],
+    do:['Delay deflation so the balloon stays inflated until just before the upstroke of the next beat.',
+        'If the patient reports chest pain at the same moment, treat that as a timing problem, not a new ischemic event, until the trace is corrected.']
+  },
+  late_def:{
+    t:'Late deflation',
+    see:['The augmentation wave is held late and widened.',
+         'Balloon aortic end diastolic pressure is equal to or higher than the patient’s own aortic end diastolic pressure.',
+         'The upstroke of the assisted systole is slow and prolonged rather than sharp.'],
+    does:['The balloon is still inflated when the aortic valve opens, so the ventricle ejects against an obstruction.',
+          'Afterload rises rather than falls. Oxygen demand rises, stroke volume falls, and the ventricle can decompensate.',
+          'This is the most dangerous of the four errors.'],
+    do:['Advance deflation immediately.',
+        'If the trace does not correct, check for a rhythm change. A rising rate shortens diastole, and fixed timing that was correct at 70 becomes late deflation at 120.']
+  }
+};
+
+/* labels drawn on the correct-timing trace */
+var BPMARKS = [
+  {beat:0, f:.10,  t:'1. Unassisted systole', up:1},
+  {beat:0, f:.345, t:'3. Dicrotic notch, inflation point', up:0},
+  {beat:0, f:.52,  t:'4. Augmented diastolic peak', up:1},
+  {beat:0, f:1.0,  t:'5. Balloon aortic end diastolic pressure', up:0},
+  {beat:1, f:.10,  t:'6. Assisted systole', up:1},
+  {beat:1, f:1.0,  t:'2. Patient aortic end diastolic pressure', up:0}
+];
+
+function bpSmooth(x, pts){
+  var ctx=x; ctx.moveTo(pts[0][0], pts[0][1]);
+  for(var i=0;i<pts.length-1;i++){
+    var p0=pts[i-1]||pts[i], p1=pts[i], p2=pts[i+1], p3=pts[i+2]||pts[i+1];
+    ctx.bezierCurveTo(p1[0]+(p2[0]-p0[0])/6, p1[1]+(p2[1]-p0[1])/6,
+                      p2[0]-(p3[0]-p1[0])/6, p2[1]-(p3[1]-p1[1])/6, p2[0], p2[1]);
+  }
+}
+/* a small lead II beat, drawn from the same time base as the pressure trace */
+function bpEcgValue(f){
+  function g(c,w,a){ return a*Math.exp(-((f-c)*(f-c))/(2*w*w)); }
+  return g(.02,.022,0.16) + g(.115,.007,-0.16) + g(.135,.010,1.0) + g(.158,.009,-0.28) + g(.32,.045,0.30);
+}
+
+function bpPattern(){
+  var ratio=parseInt(el('bpRatio').value,10);
+  var seq=['aug']; for(var i=1;i<ratio;i++) seq.push('plain');
+  var out=[]; while(out.length<(ratio===1?4:(ratio===2?4:6))){ out=out.concat(seq); }
+  return {seq:out, ratio:ratio};
+}
+
+function drawIABP(){
+  var c=el('bpCan'), x=c.getContext('2d');
+  var key=el('bpSel').value, set=BPBEATS[key];
+  var pat=bpPattern(), n=pat.seq.length;
+  var padL=118, padR=26, padT=14, padB=26;
+  var W=c.width-padL-padR;
+  var ecgH=140, gapH=10;
+  var bpTop=padT+ecgH+gapH, bpH=c.height-bpTop-padB;
+
+  var paper=V('--paper','#FFF7F4'), fine=V('--grid-fine','rgba(214,118,118,.4)'),
+      bold=V('--grid-bold','rgba(196,66,66,.66)'), ink=V('--trace','#15191E');
+  x.fillStyle=paper; x.fillRect(0,0,c.width,c.height);
+
+  /* pressure grid, 20 mmHg per bold line */
+  var yFor=function(mm){ return bpTop+bpH - (mm-BP_LO)/(BP_HI-BP_LO)*bpH; };
+  var mm, i;
+  x.lineWidth=1;
+  for(mm=BP_LO; mm<=BP_HI; mm+=10){
+    x.strokeStyle=(mm%20===0)?bold:fine;
+    x.beginPath(); x.moveTo(padL, yFor(mm)+.5); x.lineTo(c.width-padR, yFor(mm)+.5); x.stroke();
+    if(mm%20===0){
+      x.fillStyle=ink; x.font='600 15px "Plus Jakarta Sans", system-ui, sans-serif';
+      x.textAlign='right'; x.fillText(String(mm), padL-10, yFor(mm)+5);
+    }
+  }
+  var beatW=W/n;
+  for(i=0;i<=n*4;i++){
+    x.strokeStyle=(i%4===0)?bold:fine;
+    var gx=padL+i*beatW/4;
+    x.beginPath(); x.moveTo(gx+.5, bpTop); x.lineTo(gx+.5, bpTop+bpH); x.stroke();
+    x.beginPath(); x.moveTo(gx+.5, padT); x.lineTo(gx+.5, padT+ecgH); x.stroke();
+  }
+  for(i=0;i<=4;i++){
+    x.strokeStyle=(i%2===0)?bold:fine;
+    var gy=padT+i*ecgH/4;
+    x.beginPath(); x.moveTo(padL, gy+.5); x.lineTo(c.width-padR, gy+.5); x.stroke();
+  }
+
+  /* lead II lane */
+  x.strokeStyle=ink; x.lineWidth=2.2; x.lineCap='round'; x.lineJoin='round';
+  x.beginPath();
+  var mid=padT+ecgH*0.62;
+  /* the R wave has to sit just before the pressure upstroke, not after it.
+     The pressure beat starts at fraction 0, so the ECG lane is shifted to
+     put depolarization ahead of ejection where it belongs. */
+  var ECGSHIFT=0.13;
+  for(var px=0;px<W;px++){
+    var ff=((px/beatW)+ECGSHIFT)%1;
+    var y=mid - bpEcgValue(ff)*ecgH*0.34;
+    if(px===0) x.moveTo(padL+px,y); else x.lineTo(padL+px,y);
+  }
+  x.stroke();
+  x.fillStyle=V('--terra-hi','#8B3A2E'); x.textAlign='left';
+  x.font='700 13px "Plus Jakarta Sans", system-ui, sans-serif';
+  x.fillText('LEAD II', padL+8, padT+20);
+  x.fillText('ARTERIAL PRESSURE, mmHg', padL+8, bpTop+20);
+
+  /* pressure trace */
+  var pts=[];
+  pat.seq.forEach(function(kind, bi){
+    set[kind].forEach(function(p, pi){
+      if(bi>0 && pi===0) return;               /* the beats already share an endpoint */
+      pts.push([padL+(bi+p[0])*beatW, yFor(p[1])]);
+    });
+  });
+  x.strokeStyle=ink; x.lineWidth=2.6; x.beginPath(); bpSmooth(x, pts); x.stroke();
+
+  /* landmark labels, correct timing only */
+  if(el('bpLabels').getAttribute('aria-pressed')==='true' && key==='normal'){
+    x.font='700 13px "Plus Jakarta Sans", system-ui, sans-serif';
+    BPMARKS.forEach(function(m){
+      var kind=pat.seq[m.beat]; if(!kind) return;
+      var arr=set[kind], val=null, j;
+      for(j=0;j<arr.length;j++){ if(Math.abs(arr[j][0]-m.f)<0.02){ val=arr[j][1]; break; } }
+      if(val==null) val=arr[arr.length-1][1];
+      var mx=padL+(m.beat+m.f)*beatW, my=yFor(val);
+      var ly=m.up ? my-34 : my+34;
+      x.strokeStyle=V('--gold','#B8924A'); x.lineWidth=1.6;
+      x.beginPath(); x.moveTo(mx,my); x.lineTo(mx, ly); x.stroke();
+      x.fillStyle=V('--gold','#B8924A');
+      x.beginPath(); x.arc(mx,my,4.2,0,6.2832); x.fill();
+      x.textAlign = mx > padL+W*0.72 ? 'right' : 'left';
+      var tx = mx + (x.textAlign==='right' ? -8 : 8);
+      x.fillStyle=V('--terra-hi','#8B3A2E');
+      x.fillText(m.t, tx, ly + (m.up?0:12));
+    });
+  }
+  /* the tell for each error, marked where it happens */
+  if(el('bpLabels').getAttribute('aria-pressed')==='true' && key!=='normal'){
+    var tell={early_inf:[0,.24,'Notch is gone, augmentation merged into systole',1],
+              late_inf:[0,.44,'Gap between the notch and augmentation',0],
+              early_def:[0,.68,'Pressure falls then rises again, the U',0],
+              late_def:[1,.16,'Slow, prolonged assisted upstroke',1]}[key];
+    var kind2=pat.seq[tell[0]], arr2=set[kind2], v2=null, k2;
+    for(k2=0;k2<arr2.length;k2++){ if(Math.abs(arr2[k2][0]-tell[1])<0.05){ v2=arr2[k2][1]; break; } }
+    if(v2==null) v2=arr2[0][1];
+    var ax=padL+(tell[0]+tell[1])*beatW, ay=yFor(v2), aly=tell[3]?ay-40:ay+40;
+    x.strokeStyle=V('--pulse','#C2734D'); x.lineWidth=1.8;
+    x.beginPath(); x.moveTo(ax,ay); x.lineTo(ax,aly); x.stroke();
+    x.fillStyle=V('--pulse','#C2734D');
+    x.beginPath(); x.arc(ax,ay,4.6,0,6.2832); x.fill();
+    x.font='700 14px "Plus Jakarta Sans", system-ui, sans-serif';
+    x.textAlign = ax > padL+W*0.6 ? 'right' : 'left';
+    x.fillText(tell[2], ax + (x.textAlign==='right'?-9:9), aly + (tell[3]?0:13));
+  }
+}
+
+function bpTeachRender(){
+  var t=BPTEACH[el('bpSel').value];
+  el('bpTitle').textContent=t.t;
+  var b=el('bpBody');
+  function list(hd, arr){
+    return '<p class="bphd">'+hd+'</p><ol class="bplist">'+arr.map(function(s){ return '<li>'+s+'</li>'; }).join('')+'</ol>';
+  }
+  b.innerHTML = list('What you see on the trace', t.see) + list('What it does to the patient', t.does) + list('What to do', t.do);
+}
+function bpAll(){ drawIABP(); bpTeachRender(); }
+el('bpSel').addEventListener('change', bpAll);
+el('bpRatio').addEventListener('change', drawIABP);
+window.__bpReady=1;
+el('bpLabels').addEventListener('click', function(){
+  var on=this.getAttribute('aria-pressed')==='true';
+  this.setAttribute('aria-pressed', on?'false':'true');
+  drawIABP();
+});
+
+/* Rotating the phone or resizing changes which window is legible,
+   so every static strip is refitted and redrawn rather than stretched. */
+var _rsz=null;
+function refitAll(){
+  if(pLastR){ pmon.setWindow(fitStrip(el('pMon'))); pmon.stream=new Stream(pLastR); pmon.renderStatic(stripSecs());
+    if(pcal) pcal.draw(); }
+  if(pgmon && pgLastR && !el('pgScreen').hidden){ pgmon.setWindow(fitStrip(el('pgMon')));
+    pgmon.stream=new Stream(pgLastR); pgmon.renderStatic(stripSecs()); if(pgcal) pgcal.draw(); }
+  mon.setWindow(narrowView()?140:250); if(!running) mon.renderStatic();
+  if(window.__bpReady) drawIABP();
+}
+window.addEventListener('resize', function(){ clearTimeout(_rsz); _rsz=setTimeout(refitAll, 180); });
+window.addEventListener('orientationchange', function(){ setTimeout(refitAll, 300); });
 
 /* ---- mastery ---- */
 function renderMastery(){

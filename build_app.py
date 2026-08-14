@@ -4,13 +4,13 @@ import re, os
 
 TOOLS = [
     dict(key="os",    file="cvrn-mastery-os.html", title="Mastery OS",
-         desc="Your plan, your weak spots, today&rsquo;s work.", colour="gold"),
+         desc="Your plan, your weak spots, today&rsquo;s work.", color="gold"),
     dict(key="ecg",   file="ecg-lab.html",         title="ECG Lab",
-         desc="Live monitor, 12-leads, freeze and measure.", colour="terra"),
+         desc="Live monitor, 12-leads, freeze and measure.", color="terra"),
     dict(key="notes", file="study-notes.html",     title="Study Notes",
-         desc="Physiology to bedside, with sources.", colour="navy"),
+         desc="Physiology to bedside, with sources.", color="navy"),
     dict(key="dash",  file="cvrn-dashboard.html",   title="Weakness Dashboard",
-         desc="Where the exam will cost you points.", colour="deep"),
+         desc="Where the exam will cost you points.", color="deep"),
 ]
 
 # ---------------------------------------------------------------- CSS scoping
@@ -122,24 +122,24 @@ ICONS = {
 }
 
 CARDS = [
- dict(route="dash",     colour="deep",  icon="deep",  title="Weakness Dashboard",
+ dict(route="dash",     color="deep",  icon="deep",  title="Weakness Dashboard",
       desc="Readiness by blueprint weight, the mastery mix, and the queue.", meta="Where you stand"),
- dict(route="os",       colour="gold",  icon="gold",  title="Mastery OS",
+ dict(route="os",       color="gold",  icon="gold",  title="Mastery OS",
       desc="Set your exam date. Get a pace, a plan, and today&rsquo;s work.", meta="Plan &middot; Dashboard"),
- dict(route="ecg",      colour="terra", icon="terra", title="ECG Lab",
+ dict(route="ecg",      color="terra", icon="terra", title="ECG Lab",
       desc="Live monitor with freeze and calipers, plus twelve 12-lead patterns.", meta="Practice &middot; DOK 1 to 4"),
- dict(route="notes",    colour="navy",  icon="navy",  title="Study Notes",
+ dict(route="notes",    color="navy",  icon="navy",  title="Study Notes",
       desc="Physiology through bedside management, referenced and printable.", meta="Read &middot; 50 min"),
- dict(route="os/gap",   colour="slate", icon="deep2", title="Written Gap Finder",
+ dict(route="os/gap",   color="slate", icon="deep2", title="Written Gap Finder",
       desc="Multiple choice across all fourteen domains, weighted the way the exam is.", meta="Start here"),
- dict(route="ecg/gap",  colour="slate", icon="terra", title="Practical Gap Finder",
+ dict(route="ecg/gap",  color="slate", icon="terra", title="Practical Gap Finder",
       desc="Worked off live tracings. Name it, measure it, localize it, decide.", meta="Start here"),
- dict(route="os/exams", colour="slate", icon="slate", title="Practice Exams",
+ dict(route="os/exams", color="slate", icon="slate", title="Practice Exams",
       desc="Ten scored forms drawn from a reserved item pool.", meta="Score estimate"),
 ]
 
 def card(c):
-    return f'''      <a class="tcard" data-c="{c['colour']}" href="#/{c['route']}" data-route="{c['route']}">
+    return f'''      <a class="tcard" data-c="{c['color']}" href="#/{c['route']}" data-route="{c['route']}">
         <span class="ic">{ICONS[c['icon']]}</span>
         <h3>{c['title']}</h3>
         <p>{c['desc']}</p>
@@ -197,6 +197,17 @@ body{background:var(--s-bg);color:var(--s-ink);
   background:var(--s-panel2);border:1px solid var(--s-line);color:var(--s-mute)}
 .themebtn:hover{color:var(--s-ink);border-color:var(--s-acc)}
 @media(max-width:820px){.navlinks a{padding:8px 9px;font-size:11px}}
+/* On a phone the nav used to wrap one link per line and push the tool a
+   full screen down. It now scrolls sideways on one row instead. */
+@media(max-width:700px){
+  .appbar{flex-wrap:nowrap;gap:8px}
+  .navlinks{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
+    scrollbar-width:none;margin-left:0;padding-bottom:2px;min-width:0}
+  .navlinks::-webkit-scrollbar{display:none}
+  .navlinks a{white-space:nowrap;flex:0 0 auto;padding:8px 10px;font-size:11px}
+  .brand{flex:0 0 auto}
+  .themebtn{flex:0 0 auto}
+}
 
 /* home */
 .home{max-width:1180px;margin:0 auto;padding:34px 20px 80px}

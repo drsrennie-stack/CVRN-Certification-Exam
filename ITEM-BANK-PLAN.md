@@ -7,10 +7,16 @@ Target set August 13, 2026. Status updated August 14, 2026. Quotas are proportio
 | Pool | File | Items | Feeds |
 |---|---|---|---|
 | Reserved exam | cvrn-exam-bank.js | 103 | Ten scored practice forms, nothing else |
+| Practice and recall | cvrn-practice-bank.js | 500 | Study sessions and the spaced recall queue |
 | Written diagnostic | cvrn-diagnostic-bank.js | 90 | Written gap finder, forms A and B |
 | Practical diagnostic | cvrn-practical-bank.js | 40 | Practical gap finder, forms A and B |
 | ECG lab practice | ecg-lab.html | 23 | Open practice in the lab, unscored |
-| **Authored total** | | **256** | |
+| **Authored total** | | **756** | |
+
+The 500 item practice deck is blueprint proportional to the exact percentage
+point in all fourteen domains, and its DOK split is 15.4 / 44.6 / 34.4 / 5.6
+against a 15 / 45 / 35 / 5 target. Zero of its stems collide with any reserved
+pool, checked on every build.
 
 ### The four pool rule
 
@@ -95,7 +101,7 @@ Target: roughly one case per competency, 78 cases, about 250 case-linked items c
 | D12 Cardiac Assist Devices | 4% | 80 | 56 | 24 | 3 | 77 |
 | D13 Pacemaker Interpretation | 5% | 100 | 70 | 30 | 4 | 96 |
 | D14 Cardiovascular Pharmacology | 8% | 160 | 112 | 48 | 6 | 154 |
-| **Total** | **100%** | **2000** | **1400** | **600** | **256** | **1744** |
+| **Total** | **100%** | **2000** | **1400** | **600** | **756** | **1244** |
 
 The reserved exam pool never overlaps the practice and recall decks. That separation is what makes a practice exam score an estimate rather than a memory test.
 
@@ -116,4 +122,4 @@ At any point the practice exam engine reports exactly how many slots are filled 
 
 ## Honest scale note
 
-2,000 items with per-option rationale, background science, and a memory hook runs to roughly 250 words each, so about half a million words. That is a sustained authoring programme, not a single sitting. The structure above exists so the work can be done in batches by domain, dropped into `cvrn-exam-bank.js` and the practice bank, and counted automatically against these quotas.
+2,000 items with per-option rationale, background science, and a memory hook runs to roughly 250 words each, so about half a million words. That is a sustained authoring program, not a single sitting. The structure above exists so the work can be done in batches by domain, dropped into `cvrn-exam-bank.js` and the practice bank, and counted automatically against these quotas.
