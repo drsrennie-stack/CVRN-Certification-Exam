@@ -135,7 +135,7 @@ body{background:var(--s-bg);color:var(--s-ink);
   --shadow-rest:0 1px 3px rgba(0,0,0,.35);
   --shadow-hover:0 8px 20px rgba(0,0,0,.45);
 }#view-os *{box-sizing:border-box}#view-os,#view-os{margin:0;padding:0}#view-os{background:var(--base);color:var(--ink);font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}#view-os .skip{position:absolute;left:-9999px;background:var(--gold);color:#141414;padding:12px 18px;border-radius:0 0 10px 0;font-weight:700;z-index:999}#view-os .skip:focus{left:0;top:0}#view-os :focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:6px}#view-os .wrap{max-width:1120px;margin:0 auto;padding:28px 20px 72px}#view-os .eyebrow{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra-hi);font-weight:700;margin:0 0 10px}#view-os h1{font-size:clamp(28px,4vw,40px);font-weight:800;margin:0 0 6px;letter-spacing:-.02em}#view-os .subhead{font-weight:600;font-size:19px;color:var(--terra-hi);margin:0 0 8px}#view-os .lede{color:var(--ink-soft);max-width:72ch;margin:0 0 26px;font-size:15px}#view-os h2{font-size:22px;font-weight:700;margin:0 0 6px;letter-spacing:-.015em}#view-os h3{font-size:15px;font-weight:700;margin:0 0 8px}#view-os .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-rest);padding:22px;margin-bottom:16px}#view-os .stat,#view-os .dTile,#view-os .gapRow,#view-os .verdict,#view-os .opt,#view-os .fb{background:var(--panel);box-shadow:var(--shadow-rest)}#view-os .card .stat,#view-os .card .dTile,#view-os .card .gapRow,#view-os .card .verdict,#view-os .card .opt,#view-os .card .fb{background:var(--panel-2)}#view-os .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}#view-os .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
-@media(max-width:760px){.grid2{grid-template-columns:1fr}}#view-os .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px;border-bottom:1px solid var(--line);padding-bottom:14px}#view-os .tab{background:transparent;border:1px solid var(--line);color:var(--ink-soft);font-family:inherit;font-size:14px;font-weight:600;padding:9px 16px;border-radius:999px;cursor:pointer;transition:background 180ms,color 180ms,border-color 180ms}#view-os .tab:hover{border-color:var(--gold);color:var(--ink)}#view-os .tab[aria-selected="true"]{background:var(--acc);border-color:var(--acc);color:var(--onacc)}#view-os .panel[hidden]{display:none}#view-os .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}#view-os .field label{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}#view-os select,#view-os input,#view-os textarea{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:15px;padding:10px 12px;border-radius:9px;min-height:44px;width:100%}#view-os button.act{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:14px;font-weight:600;padding:11px 18px;border-radius:9px;cursor:pointer;min-height:44px;transition:transform 200ms,box-shadow 200ms,border-color 200ms,background 200ms}#view-os button.act:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-hover)}#view-os button.primary{background:var(--acc);border-color:var(--acc);color:var(--onacc)}#view-os button.primary:hover{background:var(--acc2);border-color:var(--acc2);color:var(--onacc)}#view-os button.act[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--onacc)}#view-os .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}#view-os .stat{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px 17px}#view-os .stat .lab{font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}#view-os .stat .val{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.15;color:var(--ink)}#view-os .stat .sub{font-size:12px;color:var(--ink-mute)}#view-os .verdict{border-radius:12px;padding:16px 18px;border:1px solid var(--line);background:var(--panel-2);margin-top:14px}#view-os .verdict[data-k="ok"]{border-color:var(--gold)}#view-os .verdict[data-k="tight"]{border-color:var(--alert)}#view-os .verdict[data-k="short"]{border-color:var(--pulse)}#view-os .verdict strong{display:block;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}#view-os .bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:10px}#view-os .bar i{display:block;height:100%;background:var(--acc);border-radius:99px;transition:width 400ms ease}#view-os .dTile{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px;transition:transform 200ms,box-shadow 200ms,border-color 200ms}#view-os .dTile:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}#view-os .dTile[data-state="locked"]{border-style:dashed;border-color:var(--ink-mute);opacity:.6}#view-os .dTile[data-state="unlocked"]{border-color:var(--gold)}#view-os .dTile[data-state="done"]{border-color:var(--ink);background:var(--panel-3)}#view-os .dTile .st{font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}#view-os .dTile h3{margin:2px 0 4px;font-size:14px}#view-os .dTile p{margin:0;font-size:12px;color:var(--ink-mute)}#view-os table{width:100%;border-collapse:collapse;font-size:14px}#view-os th,#view-os td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft)}#view-os th{font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}#view-os .pill{display:inline-block;font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid var(--line)}#view-os .pill[data-k="gap"]{border-color:var(--pulse);color:var(--pulse)}#view-os .pill[data-k="misc"]{border-color:var(--alert);color:var(--alert)}#view-os .pill[data-k="fragile"]{border-color:var(--gold);color:var(--gold-hi);background:transparent}#view-os .pill[data-k="mastered"]{border-color:var(--ink-mute);color:var(--ink-mute)}#view-os .rate{display:flex;gap:6px;flex-wrap:wrap}#view-os .rate button{flex:1;min-width:64px;background:var(--panel);border:1px solid var(--line);color:var(--ink-soft);font-family:inherit;font-size:13px;font-weight:600;padding:9px 6px;border-radius:9px;cursor:pointer;min-height:44px}#view-os .rate button[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--onacc)}#view-os .gapRow{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px 17px;margin-bottom:11px}#view-os .gapRow h3{margin:0 0 3px}#view-os .gapRow p{margin:0 0 11px;font-size:13px;color:var(--ink-soft)}#view-os .opts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}#view-os .opt{display:flex;gap:11px;align-items:flex-start;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;transition:transform 200ms,box-shadow 200ms,border-color 200ms}#view-os .opt:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-hover)}#view-os .opt input{margin:3px 0 0;accent-color:var(--gold);width:18px;height:18px;flex:0 0 auto}#view-os .fb{margin-top:14px;border-radius:10px;padding:14px 16px;border:1px solid var(--line);background:var(--panel-2);font-size:14px}#view-os .fb[data-k="right"]{border-color:var(--gold)}#view-os .fb[data-k="wrong"]{border-color:var(--pulse)}#view-os .note{font-size:13px;color:var(--ink-mute);margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}#view-os .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}#view-os footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--ink-mute);font-size:13px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}#view-os .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px;border-bottom:1px solid var(--line);padding-bottom:14px}#view-os .tab{background:transparent;border:1px solid var(--line);color:var(--ink-soft);font-family:inherit;font-size:14px;font-weight:600;padding:9px 16px;border-radius:999px;cursor:pointer;transition:background 180ms,color 180ms,border-color 180ms}#view-os .tab:hover{border-color:var(--gold);color:var(--ink)}#view-os .tab[aria-selected="true"]{background:var(--acc);border-color:var(--acc);color:var(--onacc)}#view-os .panel[hidden]{display:none}#view-os .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}#view-os .field label{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}#view-os select,#view-os input,#view-os textarea{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:15px;padding:10px 12px;border-radius:9px;min-height:44px;width:100%}#view-os button.act{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:14px;font-weight:600;padding:11px 18px;border-radius:9px;cursor:pointer;min-height:44px;transition:transform 200ms,box-shadow 200ms,border-color 200ms,background 200ms}#view-os button.act:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-hover)}#view-os button.primary{background:var(--acc);border-color:var(--acc);color:var(--onacc)}#view-os button.primary:hover{background:var(--acc2);border-color:var(--acc2);color:var(--onacc)}#view-os button.act[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--onacc)}#view-os .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}#view-os .stat{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px 17px}#view-os .stat .lab{font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}#view-os .stat .val{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.15;color:var(--ink)}#view-os .stat .sub{font-size:12px;color:var(--ink-mute)}#view-os .verdict{border-radius:12px;padding:16px 18px;border:1px solid var(--line);background:var(--panel-2);margin-top:14px}#view-os .verdict[data-k="ok"]{border-color:var(--gold)}#view-os .verdict[data-k="tight"]{border-color:var(--alert)}#view-os .verdict[data-k="short"]{border-color:var(--pulse)}#view-os .verdict strong{display:block;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}#view-os .bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:10px}#view-os .bar i{display:block;height:100%;background:var(--acc);border-radius:99px;transition:width 400ms ease}#view-os .dTile{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px;transition:transform 200ms,box-shadow 200ms,border-color 200ms}#view-os .dTile:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}#view-os .dTile[data-state="locked"]{border-style:dashed;border-color:var(--ink-mute);opacity:.6}#view-os .dTile[data-state="unlocked"]{border-color:var(--gold)}#view-os .dTile[data-state="done"]{border-color:var(--ink);background:var(--panel-3)}#view-os .dTile .st{font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}#view-os .dTile h3{margin:2px 0 4px;font-size:14px}#view-os .dTile p{margin:0;font-size:12px;color:var(--ink-mute)}#view-os table{width:100%;border-collapse:collapse;font-size:14px}#view-os th,#view-os td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft)}#view-os th{font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}#view-os .pill{display:inline-block;font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid var(--line)}#view-os .pill[data-k="gap"]{border-color:var(--pulse);color:var(--pulse)}#view-os .pill[data-k="misc"]{border-color:var(--alert);color:var(--alert)}#view-os .pill[data-k="fragile"]{border-color:var(--gold);color:var(--gold-hi);background:transparent}#view-os .pill[data-k="mastered"]{border-color:var(--ink-mute);color:var(--ink-mute)}#view-os .pill[data-k="untested"]{border-color:var(--line);color:var(--ink-soft)}#view-os .rate{display:flex;gap:6px;flex-wrap:wrap}#view-os .rate button{flex:1;min-width:64px;background:var(--panel);border:1px solid var(--line);color:var(--ink-soft);font-family:inherit;font-size:13px;font-weight:600;padding:9px 6px;border-radius:9px;cursor:pointer;min-height:44px}#view-os .rate button[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--onacc)}#view-os .gapRow{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px 17px;margin-bottom:11px}#view-os .gapRow h3{margin:0 0 3px}#view-os .gapRow p{margin:0 0 11px;font-size:13px;color:var(--ink-soft)}#view-os .opts{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}#view-os .opt{display:flex;gap:11px;align-items:flex-start;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;transition:transform 200ms,box-shadow 200ms,border-color 200ms}#view-os .opt:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-hover)}#view-os .opt input{margin:3px 0 0;accent-color:var(--gold);width:18px;height:18px;flex:0 0 auto}#view-os .fb{margin-top:14px;border-radius:10px;padding:14px 16px;border:1px solid var(--line);background:var(--panel-2);font-size:14px}#view-os .fb[data-k="right"]{border-color:var(--gold)}#view-os .fb[data-k="wrong"]{border-color:var(--pulse)}#view-os .note{font-size:13px;color:var(--ink-mute);margin-top:18px;padding-top:14px;border-top:1px solid var(--line)}#view-os .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}#view-os footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:var(--ink-mute);font-size:13px}
 
 /* ---- Study tools launcher ---- */#view-os .tools{margin-top:34px}#view-os .tools .hd{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra-hi);font-weight:700;margin:0 0 16px}#view-os .toolgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}#view-os .tcard{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;
   background:#0B1530;border:1px solid #182549;border-radius:18px;padding:24px 20px 20px;
@@ -199,6 +199,8 @@ body{background:var(--s-bg);color:var(--s-ink);
   text-decoration:none;color:#EAF0FB;box-shadow:var(--shadow-rest);
   transition:transform 200ms ease,box-shadow 200ms ease,border-color 200ms ease}#view-ecg .tcard:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover);border-color:#C9A14A}#view-ecg .tcard .ic{width:62px;height:62px;border-radius:17px;display:flex;align-items:center;justify-content:center;margin-bottom:2px}#view-ecg .tcard .ic svg{width:30px;height:30px;display:block}#view-ecg .tcard[data-c="gold"] .ic{background:linear-gradient(150deg,#E8D4A8,#C9A14A)}#view-ecg .tcard[data-c="terra"] .ic{background:linear-gradient(150deg,#B4614F,#8B3A2E)}#view-ecg .tcard[data-c="navy"] .ic{background:linear-gradient(150deg,#4FC3F7,#1F5C8C)}#view-ecg .tcard[data-c="deep"] .ic{background:linear-gradient(150deg,#8A97B4,#2A3960)}#view-ecg .tcard h3{font-size:19px;font-weight:800;margin:0;color:#FFFFFF;letter-spacing:-.01em}#view-ecg .tcard p{margin:0;font-size:13.5px;line-height:1.45;color:#BCC6DD;max-width:22ch}#view-ecg .tcard .go{margin-top:6px;font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#E8D4A8}#view-ecg .tcard[aria-current="page"]{border-color:#C9A14A}#view-ecg .tcard[aria-current="page"] .go{color:#8F9BB5}
 @media(prefers-reduced-motion:reduce){*{transition-duration:1ms !important;animation-duration:1ms !important}}
+
+/* practical gap finder */#view-ecg #p-pg table{width:100%;border-collapse:collapse;margin:14px 0 4px;font-size:14px}#view-ecg #p-pg th,#view-ecg #p-pg td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}#view-ecg #p-pg th{font-size:11.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-soft);font-weight:700}#view-ecg #p-pg td.num{text-align:right;font-variant-numeric:tabular-nums}#view-ecg .readpill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid}#view-ecg .readpill[data-k="hold"]{border-color:var(--ok,#166534);color:var(--ok,#166534)}#view-ecg .readpill[data-k="frag"]{border-color:var(--gold,#B8924A);color:var(--gold,#B8924A)}#view-ecg .readpill[data-k="pri"]{border-color:var(--pulse,#C2734D);color:var(--pulse,#C2734D)}#view-ecg .readpill[data-k="thin"]{border-color:var(--line);color:var(--ink-soft)}#view-ecg #p-pg .delta{font-weight:700;font-variant-numeric:tabular-nums}
 
 #view-notes{
   --navy:#0A1322; --navy-tint:#EDF1F3; --ink:#0A1322; --ink-soft:#14202F; --ink-muted:#3D4860;
@@ -328,6 +330,7 @@ body{background:var(--s-bg);color:var(--s-ink);
       <a href="#/os"    data-route="os">Plan</a>
       <a href="#/ecg"   data-route="ecg">ECG Lab</a>
       <a href="#/notes" data-route="notes">Notes</a>
+      <a href="#/os/gap" data-route="os/gap">Gap finders</a>
       <a href="#/os/exams" data-route="exams">Exams</a>
     </nav>
     <button class="themebtn" id="themeBtn" type="button" aria-pressed="true">Light</button>
@@ -373,8 +376,14 @@ body{background:var(--s-bg);color:var(--s-ink);
       </a>
       <a class="tcard" data-c="slate" href="#/os/gap" data-route="os/gap">
         <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#04200E" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/><path d="M12 1.8v3M12 19.2v3M1.8 12h3M19.2 12h3"/></svg></span>
-        <h3>Gap Finder</h3>
-        <p>Two passes. Find the holes before you spend time studying.</p>
+        <h3>Written Gap Finder</h3>
+        <p>Multiple choice across all fourteen domains, weighted the way the exam is.</p>
+        <span class="go">Start here</span>
+      </a>
+      <a class="tcard" data-c="slate" href="#/ecg/gap" data-route="ecg/gap">
+        <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#101820" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12h3l1.6-4 2.6 8.5L12.6 8l1.5 4h7.4"/></svg></span>
+        <h3>Practical Gap Finder</h3>
+        <p>Worked off live tracings. Name it, measure it, localize it, decide.</p>
         <span class="go">Start here</span>
       </a>
       <a class="tcard" data-c="slate" href="#/os/exams" data-route="os/exams">
@@ -469,10 +478,10 @@ body{background:var(--s-bg);color:var(--s-ink);
   <div class="card" id="planCard" hidden>
     <h2>Your plan</h2>
     <div class="grid3" style="margin-top:14px">
-      <div class="stat"><span class="lab">Days to exam</span><div class="val" id="sDays">—</div><span class="sub" id="sDate"></span></div>
-      <div class="stat"><span class="lab">Study time available</span><div class="val" id="sAvail">—</div><span class="sub">hours before exam day</span></div>
-      <div class="stat"><span class="lab">Content time needed</span><div class="val" id="sNeed">—</div><span class="sub" id="sNeedSub">hours at your starting point</span></div>
-      <div class="stat"><span class="lab">Required pace</span><div class="val" id="sPace">—</div><span class="sub">competencies per study day</span></div>
+      <div class="stat"><span class="lab">Days to exam</span><div class="val" id="sDays">not set</div><span class="sub" id="sDate"></span></div>
+      <div class="stat"><span class="lab">Study time available</span><div class="val" id="sAvail">not set</div><span class="sub">hours before exam day</span></div>
+      <div class="stat"><span class="lab">Content time needed</span><div class="val" id="sNeed">not set</div><span class="sub" id="sNeedSub">hours at your starting point</span></div>
+      <div class="stat"><span class="lab">Required pace</span><div class="val" id="sPace">not set</div><span class="sub">competencies per study day</span></div>
     </div>
     <div class="verdict" id="verdict"></div>
     <h3 style="margin-top:22px">Week by week</h3>
@@ -484,11 +493,29 @@ body{background:var(--s-bg);color:var(--s-ink);
 <!-- GAP FINDER -->
 <section class="panel" id="p-gap" role="tabpanel" aria-labelledby="t-gap" hidden>
   <div class="card">
-    <h2>Gap finder</h2>
-    <p class="lede">Two passes. First you rate yourself across every domain on the blueprint, which takes about three minutes. Then the system builds a short diagnostic from the domains you rated lowest and from the heaviest-weighted domains regardless of your rating, because self-assessment is reliable about what you know you do not know and unreliable about the rest.</p>
-    <div class="btnrow">
-      <button class="act primary" id="gapStart">Start pass one, self-rating</button>
-      <button class="act" id="gapDiag">Run pass two, diagnostic</button>
+    <h2>Two gap finders, because two things fail independently</h2>
+    <p class="lede">Knowing the content and reading a tracing are separate skills. Candidates fail on either one, and a single blended number hides which. So they are run separately, scored separately, and never averaged together. Both draw from their own item pool, and neither touches the reserved practice exam pool, so nothing you see here inflates a later score estimate.</p>
+    <div class="grid2">
+      <div class="gapRow">
+        <h3>Written gap finder</h3>
+        <p>Multiple choice across all fourteen blueprint domains, weighted the way the exam is weighted. Each run draws a different form.</p>
+        <div class="btnrow">
+          <button class="act primary" id="gapDiag">Run a full form</button>
+          <button class="act" id="gapShort">Short scan</button>
+        </div>
+      </div>
+      <div class="gapRow">
+        <h3>Practical gap finder</h3>
+        <p>Worked off live tracings in the ECG lab. Name the rhythm, measure with calipers, localize on the 12-lead, then decide and act.</p>
+        <div class="btnrow">
+          <a class="act primary" href="#/ecg/gap" target="_top" style="text-decoration:none;display:inline-flex;align-items:center" id="gapPrac">Open the practical run</a>
+        </div>
+      </div>
+    </div>
+    <p class="note" id="gapFormNote"></p>
+    <div class="btnrow" style="margin-top:14px">
+      <button class="act" id="gapStart">Self-rating pass, optional</button>
+      <button class="act" id="gapRuns">Run history, both finders</button>
     </div>
   </div>
   <div id="gapHost"></div>
@@ -508,10 +535,10 @@ body{background:var(--s-bg);color:var(--s-ink);
   <div class="card">
     <h2>Readiness</h2>
     <div class="grid3" style="margin-top:14px">
-      <div class="stat"><span class="lab">Estimated readiness</span><div class="val" id="rdVal">—</div><span class="sub" id="rdSub">weighted across the blueprint</span></div>
-      <div class="stat"><span class="lab">Competencies touched</span><div class="val" id="rdTouch">—</div><span class="sub" id="rdTouchSub"></span></div>
-      <div class="stat"><span class="lab">Flagged misconceptions</span><div class="val" id="rdMisc">—</div><span class="sub">confident and wrong</span></div>
-      <div class="stat"><span class="lab">ANCC CV-BC read</span><div class="val" id="rdAncc">—</div><span class="sub" id="rdAnccSub">secondary lens, same evidence</span></div>
+      <div class="stat"><span class="lab">Estimated readiness</span><div class="val" id="rdVal">not set</div><span class="sub" id="rdSub">weighted across the blueprint</span></div>
+      <div class="stat"><span class="lab">Competencies touched</span><div class="val" id="rdTouch">not set</div><span class="sub" id="rdTouchSub"></span></div>
+      <div class="stat"><span class="lab">Flagged misconceptions</span><div class="val" id="rdMisc">not set</div><span class="sub">confident and wrong</span></div>
+      <div class="stat"><span class="lab">ANCC CV-BC read</span><div class="val" id="rdAncc">not set</div><span class="sub" id="rdAnccSub">secondary lens, same evidence</span></div>
     </div>
     <div class="bar" style="margin-top:16px"><i id="rdBar" style="width:0%"></i></div>
   </div>
@@ -570,6 +597,7 @@ body{background:var(--s-bg);color:var(--s-ink);
   <button class="tab" role="tab" id="tab-mon" aria-controls="p-mon" aria-selected="true">Monitor</button>
   <button class="tab" role="tab" id="tab-12" aria-controls="p-12" aria-selected="false">12-Lead</button>
   <button class="tab" role="tab" id="tab-pr" aria-controls="p-pr" aria-selected="false">Practice</button>
+  <button class="tab" role="tab" id="tab-pg" aria-controls="p-pg" aria-selected="false">Practical gap finder</button>
   <button class="tab" role="tab" id="tab-ms" aria-controls="p-ms" aria-selected="false">Mastery</button>
   <button class="act" id="paperBtn" aria-pressed="false" style="margin-left:auto">Monitor view</button>
 </div>
@@ -636,10 +664,10 @@ body{background:var(--s-bg);color:var(--s-ink);
   <div class="readout">
     <h3>Caliper measurement</h3>
     <dl aria-live="polite" id="measOut">
-      <div><dt>Interval</dt><dd id="mMs">&mdash;</dd></div>
-      <div><dt>Small boxes</dt><dd id="mBox">&mdash;</dd></div>
-      <div><dt>Rate if R to R</dt><dd id="mRate">&mdash;</dd></div>
-      <div><dt>Amplitude</dt><dd id="mMv">&mdash;</dd></div>
+      <div><dt>Interval</dt><dd id="mMs">not set</dd></div>
+      <div><dt>Small boxes</dt><dd id="mBox">not set</dd></div>
+      <div><dt>Rate if R to R</dt><dd id="mRate">not set</dd></div>
+      <div><dt>Amplitude</dt><dd id="mMv">not set</dd></div>
     </dl>
     <p class="hint" id="calHint">Freeze the sweep, turn calipers on, then drag either marker across the ECG channel. Keyboard: tab to a marker, arrow keys move it, hold shift for fine steps.</p>
   <p class="note">The ECG channel runs at 25 mm per second: one small box is 40 ms, one large box 200 ms, and 10 mm of height is 1 mV at standard gain. The pleth and arterial channels are generated from the same beats, so a beat that fills poorly produces a weak pulse. When the pulse rate falls below the heart rate, that is a real pulse deficit, not a display error.</p>
@@ -674,10 +702,10 @@ body{background:var(--s-bg);color:var(--s-ink);
     <div class="field" style="min-width:300px">
       <label for="dokSel">Depth level</label>
       <select id="dokSel">
-        <option value="1">DOK 1 &mdash; Name it. Recognition from the strip.</option>
-        <option value="2" selected>DOK 2 &mdash; Measure it. Calipers and intervals.</option>
-        <option value="3">DOK 3 &mdash; Decide. Rhythm plus patient.</option>
-        <option value="4">DOK 4 &mdash; Manage. A case that changes on you.</option>
+        <option value="1">DOK 1. Name it. Recognition from the strip.</option>
+        <option value="2" selected>DOK 2. Measure it. Calipers and intervals.</option>
+        <option value="3">DOK 3. Decide. Rhythm plus patient.</option>
+        <option value="4">DOK 4. Manage. A case that changes on you.</option>
       </select>
     </div>
     <div class="btnrow"><button class="act primary" id="newQ">New question</button></div>
@@ -690,7 +718,7 @@ body{background:var(--s-bg);color:var(--s-ink);
   </div>
   <div class="btnrow" style="margin:10px 0 0">
     <button class="act" id="pCalBtn" aria-pressed="false">Calipers</button>
-    <span class="hint" id="pMeas" aria-live="polite" style="align-self:center;margin:0">&mdash;</span>
+    <span class="hint" id="pMeas" aria-live="polite" style="align-self:center;margin:0">no measurement yet</span>
   </div>
 
   <div id="caseLeads" hidden style="margin-top:14px"></div>
@@ -706,6 +734,48 @@ body{background:var(--s-bg);color:var(--s-ink);
     </div>
     <div class="fb" id="fb" hidden></div>
   </div>
+</section>
+
+<!-- ============ PRACTICAL GAP FINDER ============ -->
+<section class="panel" id="p-pg" role="tabpanel" aria-labelledby="tab-pg" hidden>
+
+  <div class="q" id="pgIntro">
+    <h2 style="margin-top:0">Practical gap finder</h2>
+    <p class="usage">Reading a tracing is a separate skill from knowing the content, and the two fail independently. This run is twenty items worked directly off a strip or a 12-lead: name it, measure it, localize it, decide what to do. None of it is multiple choice about a written description of a tracing.</p>
+    <p class="usage" style="margin-top:10px">Run it more than once. Each run pulls a different form, and the report compares this run against every earlier one, so you can tell a real weak spot from a small sample that happened to land badly.</p>
+    <div class="btnrow">
+      <button class="act primary" id="pgStart">Start a run</button>
+      <button class="act" id="pgHist">Show run history</button>
+    </div>
+    <p class="note" id="pgFormNote"></p>
+  </div>
+
+  <div id="pgStage" hidden>
+    <p class="eyebrow" id="pgProg"></p>
+    <div class="screen" id="pgScreen" data-frozen="1" style="margin-bottom:4px">
+      <canvas id="pgMon" width="1600" height="380" role="img" aria-label="Practical gap finder electrocardiogram strip"></canvas>
+      <span class="leadTag">Lead II</span>
+      <span class="calTag">25 mm/s &middot; 10 mm/mV</span>
+    </div>
+    <div class="btnrow" id="pgCalRow" style="margin:10px 0 0">
+      <button class="act" id="pgCalBtn" aria-pressed="false">Calipers</button>
+      <span class="hint" id="pgMeas" aria-live="polite" style="align-self:center;margin:0">no measurement yet</span>
+    </div>
+    <div id="pgLeads" hidden style="margin-top:14px"></div>
+    <div class="q">
+      <p class="qstem" id="pgStem"></p>
+      <div id="pgBody"></div>
+      <div class="confRow" id="pgConf">
+        <span class="lab">How sure are you?</span>
+        <button class="act" data-pgconf="1" aria-pressed="false">Sure</button>
+        <button class="act" data-pgconf="0" aria-pressed="false">Not sure</button>
+        <button class="act primary" id="pgSubmit">Submit</button>
+      </div>
+      <div class="fb" id="pgFb" hidden></div>
+    </div>
+  </div>
+
+  <div id="pgReport" aria-live="polite"></div>
 </section>
 
 <!-- ============ MASTERY ============ -->
@@ -5096,7 +5166,759 @@ window.CVRN_EXAM_POOL = [
  why:'Digoxin and potassium compete for the same binding site on the sodium potassium ATPase, so low potassium increases digoxin binding and toxicity at otherwise therapeutic levels. This matters because loop diuretics and digoxin are often prescribed together.'},
 {id:'X060',d:'D14',c:'D14.C1',dok:2,q:'Which agent reverses dabigatran?',
  o:['Protamine sulfate','Idarucizumab','Andexanet alfa','Vitamin K'],a:1,
- why:'Idarucizumab is the specific reversal agent for dabigatran, a direct thrombin inhibitor. Andexanet alfa reverses factor Xa inhibitors, protamine reverses heparin, and vitamin K reverses warfarin.'}
+ why:'Idarucizumab is the specific reversal agent for dabigatran, a direct thrombin inhibitor. Andexanet alfa reverses factor Xa inhibitors, protamine reverses heparin, and vitamin K reverses warfarin.'},
+
+/* ============================================================
+   DOK 1 BLOCK  (X061 to X075)
+   Straight recall. These exist so an exam form can open with
+   items that confirm the foundation is there before the form
+   asks the learner to apply anything.
+   ============================================================ */
+
+{id:'X061',d:'D1',c:'D1.C3',dok:1,q:'Which heart sound is produced by closure of the aortic and pulmonic valves?',
+ o:['S1','S2','S3','S4'],a:1,
+ why:'S2 marks closure of the semilunar valves, aortic and pulmonic, at the end of ventricular systole. S1 is closure of the mitral and tricuspid valves at the start of systole. S3 and S4 are filling sounds, not valve closure sounds.'},
+
+{id:'X062',d:'D2',c:'D2.C1',dok:1,q:'Which waveform on the ECG represents ventricular repolarization?',
+ o:['P wave','QRS complex','T wave','U wave'],a:2,
+ why:'The T wave is ventricular repolarization. The P wave is atrial depolarization, the QRS is ventricular depolarization, and the U wave, when visible, is thought to reflect late repolarization of the Purkinje system or papillary muscles.'},
+
+{id:'X063',d:'D2',c:'D2.C2',dok:1,q:'What is the normal intrinsic firing rate of the sinoatrial node in an adult?',
+ o:['20 to 40 per minute','40 to 60 per minute','60 to 100 per minute','100 to 140 per minute'],a:2,
+ why:'The sinoatrial node fires at 60 to 100 per minute and is therefore the dominant pacemaker. The AV junction is the first backup at 40 to 60, and the ventricular Purkinje escape rate is 20 to 40.'},
+
+{id:'X064',d:'D3',c:'D3.C1',dok:1,q:'Which coronary artery supplies the anterior wall of the left ventricle and most of the interventricular septum?',
+ o:['Right coronary artery','Left circumflex artery','Left anterior descending artery','Posterior descending artery'],a:2,
+ why:'The left anterior descending artery runs down the anterior interventricular groove and supplies the anterior wall, the anterior two thirds of the septum, and the apex. This is why an LAD occlusion carries the largest infarct burden and the highest risk of pump failure.'},
+
+{id:'X065',d:'D3',c:'D3.C3',dok:1,q:'Which laboratory marker is the most specific indicator of myocardial injury?',
+ o:['Creatine kinase, total','Myoglobin','Cardiac troponin','Lactate dehydrogenase'],a:2,
+ why:'Cardiac troponin I and T are structural proteins found in cardiac muscle, which makes them the most specific markers of myocardial injury. Myoglobin rises early but is released by any muscle. Total creatine kinase and lactate dehydrogenase are not cardiac specific.'},
+
+{id:'X066',d:'D4',c:'D4.C1',dok:1,q:'Under the 2017 ACC/AHA classification, which blood pressure defines stage 2 hypertension?',
+ o:['120 to 129 over less than 80','130 to 139 over 80 to 89','140 over 90 or higher','180 over 120 or higher'],a:2,
+ why:'Stage 2 begins at 140 systolic or 90 diastolic. The tier below it, 130 to 139 over 80 to 89, is stage 1, and 120 to 129 over less than 80 is elevated. Readings of 180 over 120 or higher are a hypertensive crisis, not a stage.'},
+
+{id:'X067',d:'D5',c:'D5.C1',dok:1,q:'Which type of cardiomyopathy is the most common?',
+ o:['Hypertrophic','Restrictive','Dilated','Arrhythmogenic right ventricular'],a:2,
+ why:'Dilated cardiomyopathy accounts for the majority of cases. Chamber enlargement with thin walls produces systolic failure. Hypertrophic is the most common inherited form, restrictive is the least common, and arrhythmogenic right ventricular cardiomyopathy is rare.'},
+
+{id:'X068',d:'D6',c:'D6.C1',dok:1,q:'What does New York Heart Association class III describe?',
+ o:['No limitation of physical activity','Slight limitation, comfortable at rest, ordinary activity causes symptoms','Marked limitation, comfortable at rest, less than ordinary activity causes symptoms','Symptoms at rest'],a:2,
+ why:'Class III is marked limitation. The patient is comfortable at rest but less than ordinary activity brings on symptoms. Class II is symptoms with ordinary activity, and class IV is symptoms at rest. NYHA class describes current function and can move in both directions, unlike ACC/AHA stages.'},
+
+{id:'X069',d:'D6',c:'D6.C4',dok:1,q:'Which four drug classes make up guideline-directed medical therapy for heart failure with reduced ejection fraction?',
+ o:['ACE inhibitor or ARNI, beta blocker, mineralocorticoid receptor antagonist, SGLT2 inhibitor','Digoxin, loop diuretic, nitrate, hydralazine','Calcium channel blocker, statin, aspirin, beta blocker','Amiodarone, warfarin, loop diuretic, ACE inhibitor'],a:0,
+ why:'The four pillars are renin angiotensin system inhibition preferably with an ARNI, a beta blocker proven in heart failure, a mineralocorticoid receptor antagonist, and an SGLT2 inhibitor. Each lowers mortality independently. Diuretics relieve symptoms but do not extend survival.'},
+
+{id:'X070',d:'D7',c:'D7.C1',dok:1,q:'Which non-invasive test measures ejection fraction, wall motion, and valve function at the bedside without radiation?',
+ o:['Transthoracic echocardiogram','Cardiac computed tomography angiography','Nuclear perfusion imaging','Exercise treadmill test'],a:0,
+ why:'Transthoracic echocardiography uses ultrasound, so it carries no radiation, needs no contrast in its basic form, and can be done at the bedside. It is the standard first test for ventricular function and valve disease.'},
+
+{id:'X071',d:'D8',c:'D8.C3',dok:1,q:'What separates a grade IV murmur from a grade III murmur?',
+ o:['A grade IV is heard without a stethoscope','A grade IV has a palpable thrill','A grade IV is holosystolic','A grade IV radiates to the neck'],a:1,
+ why:'Grade IV is the point at which a palpable thrill appears. Grades I through III are increasingly loud but have no thrill. Grade V needs only the edge of the stethoscope on the chest, and grade VI is audible with the stethoscope lifted off the chest.'},
+
+{id:'X072',d:'D9',c:'D9.C2',dok:1,q:'What is the upper limit of a normal QRS duration?',
+ o:['0.08 seconds','0.10 seconds','0.12 seconds','0.20 seconds'],a:2,
+ why:'A QRS of less than 0.12 seconds, meaning under three small boxes, is narrow and indicates supraventricular conduction through the His Purkinje system. At 0.12 seconds or more the complex is wide, which points to bundle branch block, ventricular origin, pacing, or a conduction poison such as hyperkalemia.'},
+
+{id:'X073',d:'D10',c:'D10.C4',dok:1,q:'A nasal cannula running at 4 liters per minute delivers approximately what fraction of inspired oxygen?',
+ o:['0.28','0.36','0.50','0.70'],a:1,
+ why:'A nasal cannula adds roughly 4 percentage points of FiO2 per liter above room air at 21 percent, so 4 liters gives about 36 percent. The number is an estimate only, because the actual value falls as minute ventilation rises and the patient entrains more room air.'},
+
+{id:'X074',d:'D11',c:'D11.C3',dok:1,q:'What is the normal range for central venous pressure?',
+ o:['0 to 1 mmHg','2 to 6 mmHg','8 to 12 mmHg','15 to 20 mmHg'],a:1,
+ why:'Normal central venous pressure is 2 to 6 mmHg measured at the phlebostatic axis at end expiration. It reflects right ventricular preload and is raised by volume overload, right heart failure, tamponade, and high intrathoracic pressure.'},
+
+{id:'X075',d:'D13',c:'D13.C2',dok:1,q:'In the NBG pacemaker code, what does the third letter describe?',
+ o:['The chamber paced','The chamber sensed','The response to a sensed event','The rate response feature'],a:2,
+ why:'Position one is the chamber paced, position two is the chamber sensed, and position three is the response to sensing, given as I for inhibited, T for triggered, D for dual, or O for none. Position four covers rate modulation.'},
+
+/* ============================================================
+   DOK 2 BLOCK  (X076 to X094)
+   Apply a rule, run a calculation, classify a finding.
+   ============================================================ */
+
+{id:'X076',d:'D1',c:'D1.C5',dok:2,q:'Over two hours a post-operative cardiac surgery patient moves from a blood pressure of 118 over 62 to 106 over 88, with the respiratory rate rising from 16 to 26 and new restlessness. Which interpretation is best supported?',
+ o:['The patient is stable because the systolic pressure is above 100','The narrowing pulse pressure with tachypnea and restlessness suggests falling stroke volume and warrants escalation','The changes reflect normal post-operative pain and can be treated with analgesia alone','A rising diastolic pressure indicates improving cardiac output'],a:1,
+ why:'Pulse pressure fell from 56 to 18. A narrowing pulse pressure means stroke volume is dropping while vasoconstriction holds the systolic number up. Tachypnea and restlessness are early compensation for low output or blood loss. Systolic pressure is the last number to fall, so waiting for it is waiting too long.'},
+
+{id:'X077',d:'D2',c:'D2.C6',dok:2,q:'A monitor shows low amplitude complexes that intermittently drop out. The patient is diaphoretic and the electrode gel is dry. What is the first action?',
+ o:['Increase the monitor gain and continue observing','Change the electrodes and prepare the skin before reapplying','Obtain a 12-lead ECG to look for a new conduction defect','Silence the alarm and reassess in one hour'],a:1,
+ why:'Dry gel and moist skin both break the electrode to skin interface, which produces low amplitude and dropout. Fix the source before adjusting the display. Raising the gain magnifies noise along with signal and can create false alarms.'},
+
+{id:'X078',d:'D3',c:'D3.C4',dok:2,q:'Forty minutes after fibrinolytic therapy for an inferior STEMI, the patient reports the chest pain has resolved and the ST elevation has fallen by more than half. What does this most likely indicate?',
+ o:['Reperfusion of the infarct related artery','Failed lysis requiring immediate rescue PCI','Development of pericarditis','A false positive initial diagnosis'],a:0,
+ why:'Successful reperfusion shows as relief of pain, resolution of at least 50 percent of the ST elevation by 60 to 90 minutes, and often accelerated idioventricular rhythm. Failed lysis shows the opposite and triggers transfer for rescue PCI.'},
+
+{id:'X079',d:'D3',c:'D3.C5',dok:2,q:'Six weeks after a myocardial infarction, a patient taking moderate intensity atorvastatin has an LDL cholesterol of 96 mg/dL. What is the appropriate next step?',
+ o:['Continue the current dose since the LDL is under 100','Stop the statin and start a fibrate','Intensify to high intensity statin therapy and recheck in four to twelve weeks','Add niacin to the current regimen'],a:2,
+ why:'After an acute coronary syndrome the LDL goal is less than 70 mg/dL, and less than 55 mg/dL for very high risk patients. Reaching 96 on moderate intensity therapy means the dose is not doing enough. Move to high intensity statin first, then consider ezetimibe or a PCSK9 inhibitor if the goal is still missed.'},
+
+{id:'X080',d:'D4',c:'D4.C3',dok:2,q:'A 54 year old Black patient with no heart failure, no chronic kidney disease, and no diabetes needs first line therapy for stage 2 hypertension. Which choice is preferred?',
+ o:['An ACE inhibitor alone','A thiazide type diuretic or a calcium channel blocker','A beta blocker alone','An alpha blocker alone'],a:1,
+ why:'In Black adults without a compelling indication, thiazide type diuretics and calcium channel blockers lower blood pressure more effectively than renin angiotensin blockers used alone, and they reduce stroke risk more. If heart failure or albuminuric kidney disease is present, an ACE inhibitor or ARB is added regardless.'},
+
+{id:'X081',d:'D5',c:'D5.C5',dok:2,q:'Which finding most supports placing an implantable defibrillator for primary prevention in nonischemic dilated cardiomyopathy?',
+ o:['An ejection fraction of 35 percent or less with NYHA class II or III symptoms after at least three months of optimal therapy','A single episode of nonsustained ventricular tachycardia on telemetry','A brain natriuretic peptide above 1000','A left ventricular end diastolic diameter above 60 mm'],a:0,
+ why:'Primary prevention criteria hinge on an ejection fraction of 35 percent or less with class II or III symptoms after at least three months of guideline directed therapy, plus an expected survival over one year. Ejection fraction is measured after therapy because many patients recover function and no longer qualify.'},
+
+{id:'X082',d:'D6',c:'D6.C3',dok:2,q:'A heart failure patient reports early satiety, abdominal fullness, and worsening leg swelling, but denies orthopnea and has clear lung fields. Which pattern does this fit?',
+ o:['Predominantly left sided congestion','Predominantly right sided congestion','Low output without congestion','Noncardiac abdominal disease only'],a:1,
+ why:'Early satiety, abdominal fullness from hepatic and gut congestion, and dependent edema are right sided congestion. Left sided congestion backs into the pulmonary circuit and shows as orthopnea, paroxysmal nocturnal dyspnea, and crackles. Clear lungs with a swollen abdomen point right, not left.'},
+
+{id:'X083',d:'D6',c:'D6.C5',dok:2,q:'A patient arrives with sudden severe dyspnea, diffuse crackles, an oxygen saturation of 84 percent, and a blood pressure of 196 over 104. Body weight is unchanged from last week. Which initial approach fits best?',
+ o:['Large dose intravenous diuretic as the single priority','Intravenous vasodilator with noninvasive positive pressure ventilation','Intravenous fluid bolus to improve preload','Immediate intubation and a beta blocker infusion'],a:1,
+ why:'This is sympathetic crashing acute pulmonary edema. The problem is redistribution of fluid into the lungs driven by a sudden rise in afterload, not total body volume overload, which is why the weight has not changed. Afterload reduction with nitroglycerin and positive pressure ventilation reverses it quickly. Heavy diuresis in this setting can leave the patient volume depleted.'},
+
+{id:'X084',d:'D7',c:'D7.C3',dok:2,q:'Four hours after radial artery access, a patient reports increasing hand pain with pallor and numbness. The compression band is in place at the access site. What is the priority action?',
+ o:['Tighten the band further to control bleeding','Remove the band completely and apply direct pressure','Release band pressure in small steps while watching for bleeding and reassessing perfusion','Elevate the arm and continue monitoring'],a:2,
+ why:'Pain, pallor, and numbness point to the band being tight enough to obstruct arterial inflow. Patent hemostasis means the least pressure that stops bleeding while flow continues. Step the pressure down gradually so the site is not left unsupported.'},
+
+{id:'X085',d:'D7',c:'D7.C4',dok:2,q:'A patient taking metformin with an eGFR of 42 is scheduled for coronary angiography with iodinated contrast. What is the appropriate medication action?',
+ o:['Continue metformin without change','Hold metformin at the time of the procedure and restart after 48 hours once renal function is confirmed stable','Stop metformin permanently','Double the metformin dose to offset contrast effects'],a:1,
+ why:'Metformin is cleared by the kidney. If contrast injures the kidney, metformin accumulates and raises the risk of lactic acidosis. With an eGFR from 30 to 60 receiving arterial contrast, hold the dose and restart after 48 hours once creatinine is confirmed stable.'},
+
+{id:'X086',d:'D8',c:'D8.C4',dok:2,q:'A patient with known severe aortic stenosis reports two episodes of syncope on exertion in the past month. What does this add?',
+ o:['Nothing, syncope is common and nonspecific','It marks symptomatic severe stenosis, which sharply shortens survival without valve replacement','It indicates the stenosis has become mild','It suggests the primary problem is vasovagal'],a:1,
+ why:'Once severe aortic stenosis becomes symptomatic the survival curve drops steeply. Average survival is roughly five years after angina, three years after syncope, and two years after heart failure symptoms. Symptoms move the patient from watchful waiting to valve replacement.'},
+
+{id:'X087',d:'D9',c:'D9.C3',dok:2,q:'A 12-lead shows a QRS duration of 0.14 seconds, a broad monophasic R wave in leads I and V6, and a deep QS complex in V1. What is this?',
+ o:['Right bundle branch block','Left bundle branch block','Ventricular paced rhythm with normal function','Left ventricular hypertrophy with strain'],a:1,
+ why:'A wide QRS with a broad monophasic R in the lateral leads and a QS or rS in V1 is left bundle branch block. Right bundle branch block produces the opposite, an rSR pattern in V1 with a wide slurred S in I and V6. This pattern also obscures ordinary ST criteria for infarction, which is why Sgarbossa criteria exist.'},
+
+{id:'X088',d:'D10',c:'D10.C2',dok:2,q:'A patient has an oxygen saturation of 90 percent with a normal pH and temperature. What is the approximate arterial oxygen tension?',
+ o:['40 mmHg','60 mmHg','80 mmHg','100 mmHg'],a:1,
+ why:'Three reference points anchor the oxyhemoglobin dissociation curve: saturation 90 matches a PaO2 near 60, saturation 80 matches 50, and saturation 70 matches 40. Saturation 90 sits at the top of the steep part of the curve, so any further fall produces a rapid drop in oxygen content.'},
+
+{id:'X089',d:'D11',c:'D11.C5',dok:2,q:'A patient has a mean arterial pressure of 62 mmHg, a central venous pressure of 8 mmHg, and a cardiac output of 5.0 liters per minute. What is the systemic vascular resistance?',
+ o:['432 dynes per second per cm to the fifth','864 dynes per second per cm to the fifth','1120 dynes per second per cm to the fifth','1400 dynes per second per cm to the fifth'],a:1,
+ why:'SVR equals mean arterial pressure minus central venous pressure, divided by cardiac output, times 80. That is 62 minus 8, which is 54, divided by 5, which is 10.8, times 80, which is 864. Normal is roughly 800 to 1200, so this sits at the low end and fits a vasodilated state.'},
+
+{id:'X090',d:'D12',c:'D12.C2',dok:2,q:'A patient on a percutaneous left ventricular assist device develops a suction alarm, a flattened motor current waveform, and a rising plasma free hemoglobin. What is the most likely cause?',
+ o:['The device is correctly positioned and the alarm is artifact','The inlet is against the ventricular wall or the ventricle is underfilled','The patient has developed aortic regurgitation','The purge solution concentration is too high'],a:1,
+ why:'Suction alarms mean the inlet cannot get enough volume, either because the catheter has migrated against the wall or because preload has dropped. Continued suction shears red cells, which is why plasma free hemoglobin rises. Assess position with imaging and treat volume status before assuming device failure.'},
+
+{id:'X091',d:'D12',c:'D12.C4',dok:2,q:'A patient on femoral venoarterial ECMO has a right radial arterial saturation of 84 percent while the circuit post-oxygenator saturation is 100 percent and the left femoral arterial saturation is 99 percent. What does this indicate?',
+ o:['Oxygenator failure','Differential hypoxia, with poorly oxygenated native cardiac output perfusing the upper body','Circuit recirculation','A miscalibrated pulse oximeter'],a:1,
+ why:'This is differential hypoxia, also called harlequin or north south syndrome. As the native heart recovers, it ejects blood that passed through injured lungs into the aortic root and up the arch, while the retrograde femoral circuit flow serves the lower body. Monitor the right radial artery, since it reflects what the brain and right coronary receive. Treatment options include improving native lung gas exchange or converting to a venoarteriovenous configuration.'},
+
+{id:'X092',d:'D13',c:'D13.C3',dok:2,q:'A pacemaker dependent patient has spikes at the programmed rate with no QRS after most of them. Potassium is 6.1 mmol/L and the patient was started on a new antiarrhythmic yesterday. What is the most likely explanation?',
+ o:['Oversensing of myopotentials','A rise in the pacing threshold above the programmed output','Lead dislodgement into the atrium','Normal device function with fusion beats'],a:1,
+ why:'Hyperkalemia and class IC antiarrhythmics both raise the myocardial capture threshold, so the programmed output no longer depolarizes tissue. Spikes present with no capture points to threshold, not to sensing. Correct the potassium, review the drug, and expect the device to need output reprogramming.'},
+
+{id:'X093',d:'D14',c:'D14.C1',dok:2,q:'A patient on warfarin for atrial fibrillation has an INR of 6.2 with no bleeding and no planned procedure. What is the appropriate management?',
+ o:['Give four factor prothrombin complex concentrate now','Hold warfarin and monitor, with oral vitamin K considered if the risk of bleeding is high','Give fresh frozen plasma and hold warfarin','Continue the current dose and recheck in one week'],a:1,
+ why:'With an INR from 4.5 to 10 and no bleeding, holding doses and monitoring is enough for most patients, and low dose oral vitamin K is reserved for those at high bleeding risk. Prothrombin complex concentrate and plasma are for serious bleeding or urgent reversal, and both carry thrombotic and volume risks.'},
+
+{id:'X094',d:'D14',c:'D14.C7',dok:2,q:'Which practice most reduces harm from high alert vasoactive infusions?',
+ o:['Allowing each nurse to choose a familiar concentration','Standardized concentrations with smart pump limits and an independent double check at initiation and rate change','Documenting the rate every four hours','Rounding doses to whole numbers for easier calculation'],a:1,
+ why:'Errors with vasoactive drugs come from concentration confusion and mistyped rates. Standard concentrations remove one variable, smart pump dose limits catch the outliers, and an independent double check at start and at every rate change catches the rest. An independent check means a second clinician calculates separately, not simply agrees.'},
+
+/* ============================================================
+   DOK 4 BLOCK  (X095 to X099)
+   Extended reasoning. Each stem carries conflicting data and
+   asks the learner to weigh several competencies at once and
+   defend a plan, not to name a single finding.
+   ============================================================ */
+
+{id:'X095',d:'D3',c:'D3.C4',dok:4,q:'A 68 year old arrives 90 minutes into crushing chest pain. The 12-lead shows 3 mm of ST elevation in II, III, and aVF with reciprocal depression in I and aVL. Blood pressure is 82 over 54, heart rate 46, lungs clear, jugular veins distended. The nearest PCI center is 25 minutes away. A colleague has already drawn up nitroglycerin and morphine. Which plan best fits the whole picture?',
+ o:['Give the nitroglycerin, then activate the cath lab','Hold nitrates, obtain right sided leads, give a cautious fluid challenge, and activate the cath lab for primary PCI','Give fibrinolytics now because the pressure is too low for transfer','Treat the bradycardia with atropine and observe for one hour before deciding'],a:1,
+ why:'Four threads have to be pulled together. First, inferior ST elevation with hypotension, clear lungs, and distended neck veins is right ventricular infarction until proven otherwise, so V4R comes before any drug. Second, the right ventricle in that state is preload dependent, so nitrates and morphine can drop the pressure sharply. Third, transfer time of 25 minutes is well inside the 120 minute first medical contact to device window, so primary PCI beats fibrinolysis. Fourth, the bradycardia usually reflects the same right coronary occlusion and improves with reperfusion, so it is not the target. The order matters as much as the elements.'},
+
+{id:'X096',d:'D6',c:'D6.C4',dok:4,q:'A patient with an ejection fraction of 28 percent is on sacubitril-valsartan, carvedilol, and spironolactone. Today the creatinine has risen from 1.1 to 1.5 mg/dL, potassium is 5.3 mmol/L, blood pressure is 96 over 58, and the patient feels better than last month with no orthopnea and no edema. An SGLT2 inhibitor has not been started. What is the most defensible plan?',
+ o:['Stop the spironolactone and the sacubitril-valsartan and recheck in one week','Hold nothing, reduce the diuretic, recheck chemistry in three to five days, counsel on potassium sources, and start the SGLT2 inhibitor','Increase the loop diuretic to protect the kidney','Stop all four pillar medications until the creatinine returns to baseline'],a:1,
+ why:'The temptation is to read a rising creatinine as harm and pull back therapy. Look at what changed instead. The patient is dry by exam and feels better, which points at over diuresis as the driver rather than the disease drugs. A creatinine rise up to about 30 percent above baseline that plateaus is expected with renin angiotensin blockade and does not by itself require stopping. Potassium at 5.3 is manageable with dietary review before dose changes. The SGLT2 inhibitor is the missing mortality benefit and produces its own small early creatinine dip that then recovers. Stopping pillars is the single most common cause of avoidable readmission in this population.'},
+
+{id:'X097',d:'D9',c:'D9.C5',dok:4,q:'A 52 year old with 40 minutes of chest pain has a 12-lead showing 2 mm of ST depression in V1 through V3 with tall R waves in V2 and upright T waves, plus 1 mm of ST depression in I and aVL. Troponin is pending, blood pressure is 138 over 80. The emergency physician plans a stress test in the morning. What is the strongest interpretation and action?',
+ o:['This is a nonspecific pattern and a morning stress test is reasonable','This is anterior subendocardial ischemia and heparin alone is enough','This is a posterior STEMI equivalent, so obtain V7 to V9 and activate the cath lab','This is early repolarization and needs no further workup'],a:2,
+ why:'Anterior ST depression is not always anterior ischemia. Leads V1 through V3 look at the posterior wall from the front, so a posterior injury current shows up inverted, as ST depression with tall R waves and upright T waves. Posterior leads V7 to V9 convert the mirror image back into recognizable ST elevation, and 0.5 mm there is diagnostic. The reciprocal depression in I and aVL fits a circumflex territory event. Treating this as a non-STEMI and waiting for a morning stress test lets a full thickness infarct complete overnight. This is the classic missed STEMI on the certification exam and in practice.'},
+
+{id:'X098',d:'D11',c:'D11.C6',dok:4,q:'A patient two days after mitral valve replacement has a blood pressure of 84 over 52, heart rate 118, central venous pressure 18 mmHg, pulmonary artery occlusion pressure 19 mmHg, cardiac index 1.6, systemic vascular resistance 1580, and mixed venous oxygen saturation 51 percent. Chest radiograph shows a widened mediastinum and the heart sounds are muffled. Which reading of the data is best supported?',
+ o:['Distributive shock, so start norepinephrine and give fluid','Cardiogenic shock from ventricular failure, so start dobutamine and diurese','Obstructive shock from tamponade, so support filling and prepare for urgent surgical evaluation','Hypovolemic shock, so give two liters of crystalloid'],a:2,
+ why:'Read the numbers as a set. Low cardiac index with high systemic vascular resistance and low mixed venous saturation says the problem is forward flow, not vasodilation, which rules out distributive shock. What separates tamponade from pump failure is the equalization of filling pressures, with central venous pressure and occlusion pressure nearly the same at 18 and 19, combined with muffled sounds and a widened mediastinum two days after cardiac surgery. Diuresis would remove the preload this patient depends on, and inotropes cannot fill a ventricle that is being squeezed from outside. Support filling, avoid anything that drops preload, and get the surgical team now.'},
+
+{id:'X099',d:'D14',c:'D14.C2',dok:4,q:'A patient admitted with heart failure is on amiodarone, digoxin, furosemide, and warfarin. Levofloxacin was started yesterday for pneumonia and ondansetron was given twice for nausea. Today: potassium 3.2 mmol/L, magnesium 1.4 mg/dL, QTc 530 ms, and a run of polymorphic ventricular tachycardia. Which analysis best explains the event and directs care?',
+ o:['Digoxin toxicity is the sole cause, so give digoxin immune Fab','Several QT prolonging drugs stacked on top of low potassium and low magnesium, so repair the electrolytes, give magnesium, and remove the avoidable QT offenders','This is monomorphic ventricular tachycardia from ischemia, so give more amiodarone','The warfarin interaction with levofloxacin caused the arrhythmia'],a:1,
+ why:'No single agent explains this. Amiodarone, levofloxacin, and ondansetron each prolong repolarization, and their effects add. Furosemide drove potassium and magnesium down, and both losses lengthen the QT further and destabilize the membrane. That combination produces torsades de pointes, which is polymorphic by definition. Management is magnesium regardless of the serum level, aggressive potassium replacement to the high normal range, and stopping every avoidable QT prolonging drug. Adding more amiodarone would extend the QT and worsen it. The warfarin and levofloxacin interaction raises INR and bleeding risk but has nothing to do with repolarization.'}
+,
+
+/* ---------- D3 top-up: coronary artery disease is the single
+     heaviest block on the blueprint at 14 percent, so the pool
+     carries proportional weight rather than nominal coverage ---------- */
+
+{id:'X100',d:'D3',c:'D3.C2',dok:1,q:'Which term describes chest pain that is brought on by a predictable amount of exertion and relieved within minutes by rest or nitroglycerin?',
+ o:['Unstable angina','Stable angina','Prinzmetal angina','Acute myocardial infarction'],a:1,
+ why:'Stable angina is reproducible, predictable, and relieved by rest or nitroglycerin within about five minutes. Unstable angina is new, occurs at rest, or has become more frequent or severe. Prinzmetal angina comes from coronary vasospasm and typically occurs at rest, often at night.'},
+
+{id:'X101',d:'D3',c:'D3.C1',dok:2,q:'A patient has a 10 year atherosclerotic cardiovascular disease risk of 9.4 percent, an LDL of 142 mg/dL, no diabetes, and a blood pressure of 134 over 84. Which management step fits current risk based guidance?',
+ o:['No pharmacologic therapy is indicated at any risk level below 10 percent','Discuss moderate intensity statin therapy, since this is intermediate risk, and use risk enhancing factors to settle the decision','Start high intensity statin plus ezetimibe immediately','Repeat the lipid panel in five years'],a:1,
+ why:'A 10 year risk of 7.5 to 19.9 percent is intermediate, and the guideline calls for a clinician and patient discussion rather than an automatic yes or no. Risk enhancing factors such as family history of premature disease, persistent LDL of 160 or more, chronic kidney disease, inflammatory disease, or a raised lipoprotein(a) tip the decision toward starting a moderate intensity statin. A coronary calcium score can settle the question when the decision stays uncertain.'},
+
+{id:'X102',d:'D3',c:'D3.C3',dok:2,q:'A patient with chest pain has a high sensitivity troponin of 8 ng/L on arrival and 47 ng/L at one hour, with the assay upper reference limit at 14 ng/L. How is this best read?',
+ o:['A single value below the reference limit rules out infarction','The rise across serial draws indicates acute myocardial injury and warrants an ischemic pathway','The result is a false positive because the first value was normal','Troponin should be repeated at six hours before any conclusion'],a:1,
+ why:'High sensitivity assays are read as a pattern, not a single number. A significant delta across a one hour or two hour protocol identifies acute injury even when the first draw is normal, because the first draw may have been taken before release began. A flat elevated value across draws suggests chronic injury instead. Waiting six hours discards the advantage the high sensitivity assay provides.'},
+
+{id:'X103',d:'D3',c:'D3.C5',dok:3,q:'A patient six weeks after drug eluting stent placement asks to stop clopidogrel because of easy bruising, while continuing aspirin. Which response is best supported?',
+ o:['Stopping clopidogrel now is reasonable since aspirin alone prevents stent thrombosis','Early discontinuation of the P2Y12 inhibitor carries a high risk of stent thrombosis, so the bruising should be evaluated and the decision made with cardiology','Both antiplatelet agents should be stopped and restarted in one month','Switch to warfarin, which causes less bruising'],a:1,
+ why:'Until the stent endothelializes, the P2Y12 inhibitor is what prevents stent thrombosis, an event that presents as an acute infarct and carries high mortality. Minor bruising is expected on dual antiplatelet therapy and is not by itself a reason to stop. Evaluate for a real bleeding source, review interacting drugs, and make any change with the interventional team. Warfarin does not prevent platelet mediated stent thrombosis.'}
+
+];
+
+/* ============================================================
+   ECG & CVRN Review Course
+   DIAGNOSTIC POOL  ·  third pool, reserved for the gap finder
+
+   Three pools, no item ever crosses between them:
+     1. cvrn-diagnostic-bank.js   the gap finder            (this file)
+     2. practice and recall decks the ECG lab, study notes
+     3. cvrn-exam-bank.js         scored practice exams
+
+   That separation is what lets a practice exam score stay an
+   estimate rather than a memory test, and it lets the gap
+   finder be re-run without the learner recognising items.
+
+   Design rules for this pool:
+   - Every item is DOK 2. Application discriminates best when
+     the system knows nothing about the learner yet. DOK 1 is
+     too easy to carry signal; DOK 3 confounds a knowledge gap
+     with a reasoning gap on the first pass.
+   - Each FORM is independently blueprint-proportional, so
+     re-running form B gives a comparable read to form A, not a
+     different-shaped exam.
+   - One rationale per item. Full per-option rationale lives in
+     the exam pool and the notes; the gap finder is a locator.
+
+   Fields: id, form, d (domain), c (competency), dok, q, o, a, why
+   ============================================================ */
+window.CVRN_DIAGNOSTIC_POOL = [
+
+/* ================= FORM A ================= */
+
+/* D1 Bedside Assessment, 3 */
+{id:'GA01',form:'A',d:'D1',c:'D1.C3',dok:2,q:'Where is the mitral valve best auscultated?',
+ o:['Second intercostal space, right sternal border','Second intercostal space, left sternal border','Fifth intercostal space, midclavicular line','Fourth intercostal space, left sternal border'],a:2,
+ why:'The mitral area is the apex, fifth intercostal space at the midclavicular line. The other three are aortic, pulmonic, and tricuspid.'},
+{id:'GA02',form:'A',d:'D1',c:'D1.C2',dok:2,q:'Jugular venous distension measured at 5 cm above the sternal angle with the head of bed at 45 degrees most directly indicates what?',
+ o:['Left ventricular failure','Elevated right atrial pressure','Aortic stenosis','Hypovolaemia'],a:1,
+ why:'The jugular veins are a manometer for the right atrium. Elevation reflects right-sided filling pressure, whatever the upstream cause.'},
+{id:'GA03',form:'A',d:'D1',c:'D1.C4',dok:2,q:'A patient has cool, pale, hairless lower legs with pain that worsens on walking and improves with rest. This pattern indicates what?',
+ o:['Venous insufficiency','Arterial insufficiency','Lymphoedema','Deep vein thrombosis'],a:1,
+ why:'Claudication with cool, pale, hairless skin is arterial. Venous disease gives warm, brown-stained, oedematous legs with pain relieved by elevation.'},
+
+/* D2 Basic ECG, 4 */
+{id:'GA04',form:'A',d:'D2',c:'D2.C1',dok:2,q:'At standard paper speed, how much time does one small box represent?',
+ o:['0.02 seconds','0.04 seconds','0.10 seconds','0.20 seconds'],a:1,
+ why:'At 25 mm per second one small box is 0.04 seconds and one large box is 0.20 seconds.'},
+{id:'GA05',form:'A',d:'D2',c:'D2.C3',dok:2,q:'A rhythm is irregularly irregular with no discernible P waves. What is it?',
+ o:['Atrial flutter','Atrial fibrillation','Multifocal atrial tachycardia','Sinus arrhythmia'],a:1,
+ why:'Absent organised atrial activity plus an irregularly irregular ventricular response defines atrial fibrillation.'},
+{id:'GA06',form:'A',d:'D2',c:'D2.C5',dok:2,q:'The PR interval lengthens progressively over three beats and then a QRS is dropped. What is this?',
+ o:['First degree AV block','Mobitz type I','Mobitz type II','Third degree AV block'],a:1,
+ why:'Progressive PR lengthening before a dropped beat is Wenckebach, Mobitz type I, usually within the AV node.'},
+{id:'GA07',form:'A',d:'D2',c:'D2.C4',dok:2,q:'A wide complex rhythm at 180 per minute is regular and uniform in shape. What is the most likely rhythm?',
+ o:['Supraventricular tachycardia','Monomorphic ventricular tachycardia','Atrial flutter with 2 to 1 conduction','Junctional tachycardia'],a:1,
+ why:'Wide, fast, regular, and uniform is monomorphic ventricular tachycardia, and in structural heart disease it is assumed until proven otherwise.'},
+
+/* D3 Coronary Artery Disease, 6 */
+{id:'GA08',form:'A',d:'D3',c:'D3.C2',dok:2,q:'What distinguishes unstable angina from NSTEMI?',
+ o:['ST elevation on the ECG','Troponin elevation','Duration of chest pain','Response to nitroglycerin'],a:1,
+ why:'They can present identically. Troponin elevation is what defines NSTEMI.'},
+{id:'GA09',form:'A',d:'D3',c:'D3.C1',dok:2,q:'Which event converts stable coronary disease into an acute coronary syndrome?',
+ o:['Gradual progression of the stenosis','Plaque rupture with thrombus formation','Coronary vasospasm alone','Increased myocardial oxygen demand'],a:1,
+ why:'Plaque rupture or erosion exposes thrombogenic material, platelets aggregate, and a thrombus forms. That is the acute event.'},
+{id:'GA10',form:'A',d:'D3',c:'D3.C4',dok:2,q:'For a STEMI at a PCI capable facility, what is the target from first medical contact to device?',
+ o:['30 minutes','60 minutes','90 minutes','120 minutes'],a:2,
+ why:'90 minutes at a PCI capable facility, 120 minutes if transfer is required.'},
+{id:'GA11',form:'A',d:'D3',c:'D3.C3',dok:2,q:'A patient has a troponin that is elevated but unchanged across three serial draws. How is this best described?',
+ o:['Acute myocardial infarction','Chronic myocardial injury','Laboratory error','Unstable angina'],a:1,
+ why:'Acute injury requires a rise or fall. A stable elevation is chronic injury, common in renal impairment and chronic heart failure.'},
+{id:'GA12',form:'A',d:'D3',c:'D3.C4',dok:2,q:'Which is an absolute contraindication to fibrinolytic therapy?',
+ o:['Systolic pressure of 165','Age over 75','Any prior intracranial haemorrhage','Current warfarin therapy with an INR of 2.0'],a:2,
+ why:'Any prior intracranial haemorrhage is absolute. The others are relative considerations.'},
+{id:'GA13',form:'A',d:'D3',c:'D3.C5',dok:2,q:'Which medication class reduces mortality after myocardial infarction by limiting ventricular remodelling?',
+ o:['Calcium channel blockers','ACE inhibitors','Loop diuretics','Nitrates'],a:1,
+ why:'ACE inhibitors interrupt the renin angiotensin cascade that drives remodelling after infarction.'},
+
+/* D4 Hypertension, 3 */
+{id:'GA14',form:'A',d:'D4',c:'D4.C1',dok:2,q:'Using a blood pressure cuff that is too small produces what error?',
+ o:['A falsely low reading','A falsely high reading','No consistent error','An unobtainable reading'],a:1,
+ why:'An undersized cuff needs more pressure to occlude the artery, so it reads high. The bladder should encircle at least 80 percent of the arm.'},
+{id:'GA15',form:'A',d:'D4',c:'D4.C5',dok:2,q:'What separates hypertensive urgency from hypertensive emergency?',
+ o:['The absolute systolic pressure','The presence of acute end-organ damage','Whether the patient is symptomatic','The rate of rise'],a:1,
+ why:'Emergency requires acute end-organ involvement. The number alone does not make the distinction.'},
+{id:'GA16',form:'A',d:'D4',c:'D4.C3',dok:2,q:'A patient on lisinopril develops a persistent dry cough. What is the appropriate change?',
+ o:['Add a cough suppressant','Switch to an ARB','Switch to a beta blocker','Reduce the dose by half'],a:1,
+ why:'ACE inhibitor cough comes from bradykinin accumulation and does not resolve with dose reduction. An ARB gives the same blockade without it.'},
+
+/* D5 Cardiomyopathy, 2 */
+{id:'GA17',form:'A',d:'D5',c:'D5.C2',dok:2,q:'Which maneuver increases the murmur of hypertrophic obstructive cardiomyopathy?',
+ o:['Squatting','Handgrip','Valsalva strain','Passive leg raise'],a:2,
+ why:'Valsalva reduces venous return, which shrinks the cavity and worsens outflow obstruction, so the murmur intensifies.'},
+{id:'GA18',form:'A',d:'D5',c:'D5.C1',dok:2,q:'Which cardiomyopathy produces diastolic rather than systolic dysfunction as its primary problem?',
+ o:['Dilated','Restrictive','Takotsubo','Peripartum'],a:1,
+ why:'Restrictive physiology impairs filling. Ejection fraction is often preserved while filling pressures climb.'},
+
+/* D6 Heart Failure, 6 */
+{id:'GA19',form:'A',d:'D6',c:'D6.C1',dok:2,q:'Which ejection fraction range defines heart failure with reduced ejection fraction?',
+ o:['40 percent or less','41 to 49 percent','50 percent or more','Any value with symptoms'],a:0,
+ why:'HFrEF is 40 percent or less. 41 to 49 is mildly reduced, 50 or above is preserved.'},
+{id:'GA20',form:'A',d:'D6',c:'D6.C4',dok:2,q:'How long a washout is required when switching from an ACE inhibitor to sacubitril-valsartan?',
+ o:['No washout','12 hours','36 hours','7 days'],a:2,
+ why:'36 hours. Overlapping neprilysin and ACE inhibition raises bradykinin and causes angioedema. No washout is needed from an ARB.'},
+{id:'GA21',form:'A',d:'D6',c:'D6.C2',dok:2,q:'Which finding would most support congestion rather than hypoperfusion?',
+ o:['Narrow pulse pressure','Cool extremities','Jugular venous distension','Altered mental status'],a:2,
+ why:'Jugular venous distension is a congestion sign. The other three are markers of low output.'},
+{id:'GA22',form:'A',d:'D6',c:'D6.C4',dok:2,q:'Which guideline directed therapy pillar most often causes hyperkalaemia?',
+ o:['Beta blocker','SGLT2 inhibitor','Mineralocorticoid receptor antagonist','Loop diuretic'],a:2,
+ why:'Mineralocorticoid receptor antagonists block aldosterone driven potassium excretion, so they are the usual cause.'},
+{id:'GA23',form:'A',d:'D6',c:'D6.C6',dok:2,q:'What weight gain should prompt a heart failure patient to call?',
+ o:['1 pound in a day','2 to 3 pounds in a day or 5 in a week','5 pounds in a day only','10 pounds in a week'],a:1,
+ why:'2 to 3 pounds in 24 hours or 5 in a week is the standard threshold that converts a measurement into an action.'},
+{id:'GA24',form:'A',d:'D6',c:'D6.C2',dok:2,q:'Which condition lowers natriuretic peptide levels and can mask congestion?',
+ o:['Advanced age','Obesity','Renal impairment','Atrial fibrillation'],a:1,
+ why:'Obesity lowers BNP. Age, renal impairment, and atrial fibrillation all raise it.'},
+
+/* D7 Non-Invasive and Interventional, 3 */
+{id:'GA25',form:'A',d:'D7',c:'D7.C3',dok:2,q:'A patient develops back pain and hypotension two hours after femoral cardiac catheterisation, with an unremarkable groin. What should be suspected?',
+ o:['Vasovagal response','Retroperitoneal haemorrhage','Contrast reaction','Normal post-procedure discomfort'],a:1,
+ why:'A retroperitoneal bleed hides from the groin exam. Back or flank pain with unexplained hypotension after femoral access is the classic presentation.'},
+{id:'GA26',form:'A',d:'D7',c:'D7.C4',dok:2,q:'Which intervention has the strongest evidence for preventing contrast associated acute kidney injury?',
+ o:['N-acetylcysteine','Isotonic intravenous fluid','Sodium bicarbonate alone','Prophylactic dialysis'],a:1,
+ why:'Volume expansion with isotonic fluid and limiting contrast volume are what hold up. N-acetylcysteine has repeatedly failed.'},
+{id:'GA27',form:'A',d:'D7',c:'D7.C5',dok:2,q:'Which complication is monitored most closely in the first 24 hours after TAVR?',
+ o:['New conduction block','Hypoglycaemia','Ileus','Hyperthermia'],a:0,
+ why:'The valve sits against the conduction system, so new left bundle branch block and high grade AV block are the expected complications.'},
+
+/* D8 Heart Sounds and Valves, 2 */
+{id:'GA28',form:'A',d:'D8',c:'D8.C2',dok:2,q:'An S3 in a 62 year old most likely indicates what?',
+ o:['A normal variant','Volume overload with rapid early diastolic filling','Reduced ventricular compliance from hypertrophy','Aortic stenosis'],a:1,
+ why:'After roughly age 40 an S3 suggests volume overload. The S4 is the stiff, hypertrophied ventricle.'},
+{id:'GA29',form:'A',d:'D8',c:'D8.C6',dok:2,q:'Which anticoagulant is appropriate for a mechanical mitral valve?',
+ o:['Apixaban','Rivaroxaban','Warfarin','Dabigatran'],a:2,
+ why:'Direct oral anticoagulants are contraindicated with mechanical valves. Warfarin with an INR target of 2.5 to 3.5 for a mechanical mitral valve.'},
+
+/* D9 12-Lead, 4 */
+{id:'GA30',form:'A',d:'D9',c:'D9.C4',dok:2,q:'ST elevation in leads II, III, and aVF localises the infarct to which wall?',
+ o:['Anterior','Inferior','Lateral','Septal'],a:1,
+ why:'II, III, and aVF view the inferior wall, most often supplied by the right coronary artery.'},
+{id:'GA31',form:'A',d:'D9',c:'D9.C3',dok:2,q:'Which finding distinguishes right bundle branch block from left?',
+ o:['QRS wider than 0.12 seconds','An rSR prime pattern in V1','ST depression in the lateral leads','Left axis deviation'],a:1,
+ why:'Both widen the QRS. The rSR prime in V1 with a broad slurred S in I and V6 is right bundle branch block.'},
+{id:'GA32',form:'A',d:'D9',c:'D9.C6',dok:2,q:'Tall, narrow-based, peaked T waves with flattened P waves suggest what?',
+ o:['Hypokalaemia','Hyperkalaemia','Hypercalcaemia','Digoxin effect'],a:1,
+ why:'Peaked T waves come first in hyperkalaemia, then P wave flattening and PR prolongation, then QRS widening toward a sine wave.'},
+{id:'GA33',form:'A',d:'D9',c:'D9.C1',dok:2,q:'When are right-sided leads indicated?',
+ o:['With any anterior STEMI','With an inferior STEMI','With a new left bundle branch block','With atrial fibrillation'],a:1,
+ why:'An inferior STEMI raises the question of right ventricular involvement, which V4R answers and which changes management.'},
+
+/* D10 Oxygenation, 2 */
+{id:'GA34',form:'A',d:'D10',c:'D10.C3',dok:2,q:'A blood gas shows pH 7.28, PaCO2 30, HCO3 14. How is this classified?',
+ o:['Respiratory acidosis','Metabolic acidosis with partial compensation','Metabolic alkalosis','Respiratory alkalosis'],a:1,
+ why:'Low pH with low bicarbonate is metabolic acidosis. The low PaCO2 is respiratory compensation, partial because the pH is still abnormal.'},
+{id:'GA35',form:'A',d:'D10',c:'D10.C2',dok:2,q:'Which condition shifts the oxyhaemoglobin dissociation curve to the right?',
+ o:['Alkalosis','Hypothermia','Fever','Decreased 2,3-DPG'],a:2,
+ why:'Acidosis, hypercapnia, fever, and increased 2,3-DPG shift right, which unloads more oxygen at the tissue.'},
+
+/* D11 Hemodynamics, 3 */
+{id:'GA36',form:'A',d:'D11',c:'D11.C2',dok:2,q:'A square wave test shows a flattened return with no oscillations. What does this indicate?',
+ o:['Optimal damping','Overdamping','Underdamping','A failed transducer'],a:1,
+ why:'Overdamping from air, clot, or a kink blunts the systolic peak and underestimates systolic pressure.'},
+{id:'GA37',form:'A',d:'D11',c:'D11.C5',dok:2,q:'Cardiac output is 4.2 L per minute at a heart rate of 84. What is the stroke volume?',
+ o:['20 mL','35 mL','50 mL','84 mL'],a:2,
+ why:'Stroke volume is cardiac output divided by heart rate. 4200 divided by 84 is 50 mL, which is below the normal 60 to 100.'},
+{id:'GA38',form:'A',d:'D11',c:'D11.C6',dok:2,q:'Low cardiac index with high filling pressures and high systemic vascular resistance describes which shock state?',
+ o:['Hypovolaemic','Distributive','Cardiogenic','Obstructive'],a:2,
+ why:'Cardiogenic shock. Hypovolaemic has low filling pressures, distributive has low resistance.'},
+
+/* D12 Assist Devices, 2 */
+{id:'GA39',form:'A',d:'D12',c:'D12.C1',dok:2,q:'When should the intra-aortic balloon pump inflate?',
+ o:['At the onset of the QRS','At the dicrotic notch','At peak systole','Just before the aortic valve opens'],a:1,
+ why:'Inflation at the dicrotic notch, which marks aortic valve closure, augments diastolic coronary perfusion.'},
+{id:'GA40',form:'A',d:'D12',c:'D12.C3',dok:2,q:'How is blood pressure most reliably obtained in a patient with a continuous flow LVAD?',
+ o:['Standard automated cuff','Doppler with a manual cuff, giving a mean pressure','Palpated radial pulse','Pulse oximetry waveform'],a:1,
+ why:'Continuous flow produces little pulsatility, so automated cuffs often fail. Doppler opening pressure approximates the mean arterial pressure.'},
+
+/* D13 Pacemakers, 2 */
+{id:'GA41',form:'A',d:'D13',c:'D13.C4',dok:2,q:'A pacing spike appears with no QRS following it. What is this?',
+ o:['Failure to sense','Failure to capture','Oversensing','Normal fusion'],a:1,
+ why:'A spike without a resulting complex is failure to capture, from lead dislodgement, a threshold rise, or a metabolic cause.'},
+{id:'GA42',form:'A',d:'D13',c:'D13.C6',dok:2,q:'What does placing a magnet over a permanent pacemaker do?',
+ o:['Disables the device','Causes asynchronous pacing at a fixed rate','Increases sensitivity','Delivers a shock'],a:1,
+ why:'A magnet produces asynchronous pacing, which protects against inhibition by interference. Over an ICD it suspends tachytherapy instead.'},
+
+/* D14 Pharmacology, 4 */
+{id:'GA43',form:'A',d:'D14',c:'D14.C3',dok:2,q:'Which vasoactive agent is a pure alpha-1 agonist with no direct inotropic effect?',
+ o:['Norepinephrine','Epinephrine','Phenylephrine','Dobutamine'],a:2,
+ why:'Phenylephrine raises systemic vascular resistance without beta activity, so it can reduce cardiac output through reflex bradycardia and increased afterload.'},
+{id:'GA44',form:'A',d:'D14',c:'D14.C5',dok:2,q:'Which electrolyte abnormality most increases digoxin toxicity risk?',
+ o:['Hypernatraemia','Hypokalaemia','Hypochloraemia','Hypermagnesaemia'],a:1,
+ why:'Digoxin and potassium compete for the same binding site, so low potassium increases binding and toxicity at otherwise therapeutic levels.'},
+{id:'GA45',form:'A',d:'D14',c:'D14.C4',dok:2,q:'A patient took sildenafil 12 hours ago. Which order should be questioned?',
+ o:['Aspirin','Sublingual nitroglycerin','Morphine','Supplemental oxygen'],a:1,
+ why:'Nitrates with a phosphodiesterase-5 inhibitor cause refractory hypotension. At least 24 hours for sildenafil, 48 for tadalafil.'},
+
+/* ================= FORM B ================= */
+
+/* D1, 3 */
+{id:'GB01',form:'B',d:'D1',c:'D1.C2',dok:2,q:'An apical impulse palpated at the sixth intercostal space, anterior axillary line, suggests what?',
+ o:['Normal position','Left ventricular dilation','Right ventricular hypertrophy','Pericardial effusion'],a:1,
+ why:'The normal point of maximal impulse is the fifth space near the midclavicular line. Lateral and inferior displacement reflects left ventricular enlargement.'},
+{id:'GB02',form:'B',d:'D1',c:'D1.C4',dok:2,q:'An ankle systolic of 88 with a brachial systolic of 140 gives what ankle-brachial index and interpretation?',
+ o:['1.59, normal','0.63, moderate peripheral arterial disease','0.63, venous insufficiency','0.88, borderline'],a:1,
+ why:'88 divided by 140 is 0.63. Values from 0.41 to 0.90 indicate mild to moderate peripheral arterial disease.'},
+{id:'GB03',form:'B',d:'D1',c:'D1.C1',dok:2,q:'Which presentation of acute coronary syndrome is most common in patients with diabetes?',
+ o:['Crushing substernal chest pain','Dyspnoea, fatigue, or nausea without chest pain','Sharp pleuritic pain','Pain radiating to the left arm only'],a:1,
+ why:'Autonomic neuropathy blunts pain perception, so anginal equivalents replace classic chest pain.'},
+
+/* D2, 4 */
+{id:'GB04',form:'B',d:'D2',c:'D2.C2',dok:2,q:'On a regular rhythm, four large boxes separate consecutive R waves. What is the rate?',
+ o:['60','75','100','150'],a:1,
+ why:'300 divided by the number of large boxes. 300 divided by 4 is 75.'},
+{id:'GB05',form:'B',d:'D2',c:'D2.C5',dok:2,q:'P waves and QRS complexes occur at independent rates with no fixed relationship. What is this?',
+ o:['Mobitz type I','Mobitz type II','Third degree AV block','Atrial fibrillation'],a:2,
+ why:'Atrioventricular dissociation is the defining finding of complete heart block. The slow rate is the consequence.'},
+{id:'GB06',form:'B',d:'D2',c:'D2.C3',dok:2,q:'A regular ventricular rate of exactly 150 should prompt you to look for what?',
+ o:['Sinus tachycardia','Atrial flutter with 2 to 1 conduction','Junctional rhythm','Ventricular fibrillation'],a:1,
+ why:'Flutter at about 300 with 2 to 1 conduction lands at 150 almost every time.'},
+{id:'GB07',form:'B',d:'D2',c:'D2.C4',dok:2,q:'A chaotic undulating baseline with no identifiable QRS complexes in a pulseless patient is what?',
+ o:['Asystole','Ventricular fibrillation','Torsades de pointes','Artifact'],a:1,
+ why:'Ventricular fibrillation. It is defibrillated, not synchronised, because there is no R wave to sense.'},
+
+/* D3, 6 */
+{id:'GB08',form:'B',d:'D3',c:'D3.C1',dok:2,q:'Approximately what fraction of delivered oxygen does myocardium extract at rest?',
+ o:['25 percent','40 percent','55 percent','70 to 80 percent'],a:3,
+ why:'Extraction is already near maximal, which is why increased demand must be met by increased coronary flow rather than more extraction.'},
+{id:'GB09',form:'B',d:'D3',c:'D3.C1',dok:2,q:'During which phase of the cardiac cycle does the left ventricle receive most of its coronary perfusion?',
+ o:['Systole','Diastole','Isovolumetric contraction','Equally throughout'],a:1,
+ why:'Systolic compression of intramyocardial vessels means perfusion occurs in diastole, which is why tachycardia reduces it.'},
+{id:'GB10',form:'B',d:'D3',c:'D3.C4',dok:2,q:'Transfer to a PCI centre will take 180 minutes. What is the preferred strategy for a STEMI?',
+ o:['Transfer for primary PCI regardless','Fibrinolysis if no contraindication, then transfer','Wait for serial troponins','Aspirin alone and admit'],a:1,
+ why:'When first medical contact to device exceeds 120 minutes, fibrinolysis within 30 minutes of arrival comes first, then transfer.'},
+{id:'GB11',form:'B',d:'D3',c:'D3.C4',dok:2,q:'A new holosystolic murmur with sudden hypotension on day three after an anterior MI suggests what?',
+ o:['Reinfarction','Papillary muscle rupture','Pericarditis','Anxiety'],a:1,
+ why:'Day two to seven with a new murmur and abrupt decompensation is a mechanical complication until proven otherwise.'},
+{id:'GB12',form:'B',d:'D3',c:'D3.C2',dok:2,q:'Which ECG finding defines a STEMI rather than an NSTEMI?',
+ o:['ST depression','T wave inversion','ST elevation or new left bundle branch block','A prolonged QT'],a:2,
+ why:'ST elevation, or a new left bundle branch block, indicates complete occlusion and transmural injury.'},
+{id:'GB13',form:'B',d:'D3',c:'D3.C5',dok:2,q:'What is phase II of cardiac rehabilitation?',
+ o:['Inpatient mobilisation','Monitored outpatient exercise and education','Unsupervised maintenance','Pre-procedure conditioning'],a:1,
+ why:'Phase I is inpatient, phase II is monitored outpatient, phase III is maintenance.'},
+
+/* D4, 3 */
+{id:'GB14',form:'B',d:'D4',c:'D4.C5',dok:2,q:'In a hypertensive emergency, how much should the mean arterial pressure be reduced in the first hour?',
+ o:['No more than 20 to 25 percent','To below 140 systolic','By half','To normal'],a:0,
+ why:'Cerebral autoregulation has shifted, so rapid normalisation causes hypoperfusion. About a quarter in the first hour is the accepted target.'},
+{id:'GB15',form:'B',d:'D4',c:'D4.C2',dok:2,q:'Which finding most suggests a secondary cause of hypertension?',
+ o:['Family history of hypertension','Onset before age 30 with resistant pressures','Gradual rise over a decade','A body mass index of 31'],a:1,
+ why:'Early onset, abrupt onset, or resistance to three agents including a diuretic should trigger a secondary workup.'},
+{id:'GB16',form:'B',d:'D4',c:'D4.C4',dok:2,q:'Which lifestyle change produces the largest single reduction in blood pressure for most patients?',
+ o:['Weight loss','Reducing caffeine','Vitamin supplementation','Increasing dairy intake'],a:0,
+ why:'Weight loss gives roughly 1 mmHg per kilogram lost, the largest single effect, followed by the DASH pattern and sodium restriction.'},
+
+/* D5, 2 */
+{id:'GB17',form:'B',d:'D5',c:'D5.C4',dok:2,q:'Which intervention is hazardous in symptomatic hypertrophic obstructive cardiomyopathy?',
+ o:['Beta blockade','Verapamil','Aggressive diuresis','Disopyramide'],a:2,
+ why:'Diuresis reduces preload, shrinks the cavity, and worsens the outflow gradient. Negative inotropes are used deliberately.'},
+{id:'GB18',form:'B',d:'D5',c:'D5.C1',dok:2,q:'A postmenopausal woman develops chest pain and apical ballooning after acute emotional stress, with clean coronaries. What is this?',
+ o:['Dilated cardiomyopathy','Takotsubo cardiomyopathy','Restrictive cardiomyopathy','Peripartum cardiomyopathy'],a:1,
+ why:'Catecholamine mediated stress cardiomyopathy. It mimics anterior STEMI and is usually reversible over weeks.'},
+
+/* D6, 6 */
+{id:'GB19',form:'B',d:'D6',c:'D6.C1',dok:2,q:'What is the difference between ACC/AHA stages and NYHA classes?',
+ o:['They are interchangeable','Stages do not move backward; NYHA class changes with current function','NYHA is structural, stages are functional','Stages apply only to HFrEF'],a:1,
+ why:'Once a patient has had symptoms they remain Stage C. NYHA class tracks current function and can improve.'},
+{id:'GB20',form:'B',d:'D6',c:'D6.C2',dok:2,q:'Why does sympathetic activation eventually harm the failing heart?',
+ o:['It lowers blood pressure','It raises oxygen demand, shortens diastole, and raises afterload','It causes bradycardia','It reduces preload excessively'],a:1,
+ why:'The reflex defends pressure acutely and then increases the work of a ventricle that cannot meet it, while shortening coronary perfusion time.'},
+{id:'GB21',form:'B',d:'D6',c:'D6.C5',dok:2,q:'A patient on escalating intravenous furosemide has minimal urine output and persistent congestion. What is the next step?',
+ o:['Switch to oral furosemide','Add a thiazide-type diuretic','Restrict fluid only','Stop diuretics'],a:1,
+ why:'Sequential nephron blockade addresses distal tubular sodium reabsorption. Oral dosing is unreliable in a congested gut.'},
+{id:'GB22',form:'B',d:'D6',c:'D6.C4',dok:2,q:'Which pillar should not be initiated during acute decompensation?',
+ o:['ARNI','Beta blocker','SGLT2 inhibitor','Mineralocorticoid receptor antagonist'],a:1,
+ why:'Beta blockade is started once the patient is euvolaemic and stable, because its negative inotropy is poorly tolerated in low output.'},
+{id:'GB23',form:'B',d:'D6',c:'D6.C3',dok:2,q:'Cool extremities, narrow pulse pressure, crackles, and jugular venous distension describe which profile?',
+ o:['Warm and dry','Warm and wet','Cold and dry','Cold and wet'],a:3,
+ why:'Congestion plus hypoperfusion is cold and wet, the highest risk of the four profiles.'},
+{id:'GB24',form:'B',d:'D6',c:'D6.C6',dok:2,q:'Which contributes most dietary sodium for a typical patient?',
+ o:['The salt shaker','Processed and restaurant food','Naturally occurring sodium in vegetables','Drinking water'],a:1,
+ why:'Most sodium is already in the food before it reaches the table, which is why label reading beats removing the shaker.'},
+
+/* D7, 3 */
+{id:'GB25',form:'B',d:'D7',c:'D7.C1',dok:2,q:'A patient with a left bundle branch block cannot exercise. Which test is most appropriate for ischaemia evaluation?',
+ o:['Exercise treadmill ECG','Dobutamine stress echocardiography','Vasodilator nuclear perfusion imaging','Resting ECG alone'],a:2,
+ why:'Left bundle branch block makes exercise ECG uninterpretable and dobutamine can create false septal defects. Vasodilator perfusion imaging avoids both.'},
+{id:'GB26',form:'B',d:'D7',c:'D7.C2',dok:2,q:'What determines the duration of dual antiplatelet therapy after PCI?',
+ o:['Patient age','Stent type and clinical setting','Access site','Contrast volume used'],a:1,
+ why:'Stent type and whether the presentation was an acute coronary syndrome or stable disease set the duration.'},
+{id:'GB27',form:'B',d:'D7',c:'D7.C2',dok:2,q:'Compared with femoral access, radial access offers what advantage?',
+ o:['Shorter procedure time','Lower access site bleeding risk','Better catheter control','Less contrast use'],a:1,
+ why:'Radial access reduces access site bleeding and vascular complications and allows earlier ambulation.'},
+
+/* D8, 2 */
+{id:'GB28',form:'B',d:'D8',c:'D8.C4',dok:2,q:'Which intervention carries the greatest risk in severe aortic stenosis with hypotension?',
+ o:['Cautious isotonic fluid','Nitroglycerin infusion','Phenylephrine','Maintaining sinus rhythm'],a:1,
+ why:'A fixed obstruction makes output preload dependent. Nitrates drop preload and can cause abrupt, hard to reverse hypotension.'},
+{id:'GB29',form:'B',d:'D8',c:'D8.C5',dok:2,q:'Why does acute severe mitral regurgitation present with pulmonary oedema when chronic regurgitation may be tolerated for years?',
+ o:['The murmur is louder','The left atrium has not remodelled to become compliant','It always involves the coronaries','Chronic regurgitation spares the atrium'],a:1,
+ why:'Without atrial compliance the regurgitant volume transmits straight to the pulmonary circulation. Acute severe regurgitation often has a soft murmur.'},
+
+/* D9, 4 */
+{id:'GB30',form:'B',d:'D9',c:'D9.C4',dok:2,q:'ST elevation greater in lead III than lead II, with depression in I and aVL, suggests which culprit vessel?',
+ o:['Left anterior descending','Right coronary artery','Left circumflex','Left main'],a:1,
+ why:'Elevation greater in III than II with reciprocal change in I and aVL points to the right coronary artery.'},
+{id:'GB31',form:'B',d:'D9',c:'D9.C5',dok:2,q:'Which Sgarbossa criterion is most specific for ischaemia in left bundle branch block?',
+ o:['Any ST depression','Concordant ST elevation of 1 mm or more','QRS wider than 0.14','T wave inversion in V1'],a:1,
+ why:'Concordant elevation of 1 mm or more carries the highest specificity. Discordant change is expected and does not indicate ischaemia by itself.'},
+{id:'GB32',form:'B',d:'D9',c:'D9.C5',dok:2,q:'Diffuse concave ST elevation across coronary territories with PR depression suggests what?',
+ o:['Multivessel STEMI','Acute pericarditis','Early repolarisation','Left ventricular aneurysm'],a:1,
+ why:'Elevation that ignores vascular anatomy, with reciprocal change only in aVR, is pericardial rather than occlusive.'},
+{id:'GB33',form:'B',d:'D9',c:'D9.C2',dok:2,q:'How is axis determined most quickly?',
+ o:['Leads V1 and V6','Leads I and aVF','Leads II and III','Lead aVR alone'],a:1,
+ why:'The net QRS direction in I and aVF places the axis in a quadrant in one step.'},
+
+/* D10, 2 */
+{id:'GB34',form:'B',d:'D10',c:'D10.C1',dok:2,q:'A central venous oxygen saturation of 48 percent in shock indicates what?',
+ o:['Excessive oxygen delivery','Increased tissue extraction because delivery is inadequate','Impaired extraction','Sampling error'],a:1,
+ why:'A low venous saturation means tissues are pulling more from each unit of blood. Early septic shock often shows the opposite.'},
+{id:'GB35',form:'B',d:'D10',c:'D10.C5',dok:2,q:'Increasing PEEP in a hypovolaemic patient produces what haemodynamic effect?',
+ o:['Increased preload and output','Decreased venous return and falling cardiac output','No change','Increased systemic vascular resistance only'],a:1,
+ why:'Positive intrathoracic pressure opposes venous return. The same change can help a congested patient by reducing preload and afterload.'},
+
+/* D11, 3 */
+{id:'GB36',form:'B',d:'D11',c:'D11.C2',dok:2,q:'A transducer positioned 5 cm below the phlebostatic axis will do what to the reading?',
+ o:['Read falsely low','Read falsely high','Have no effect if zeroed','Lose the waveform'],a:1,
+ why:'The added hydrostatic column raises the displayed pressure by roughly 3.7 mmHg per 5 cm. Zeroing corrects for atmosphere, not leveling.'},
+{id:'GB37',form:'B',d:'D11',c:'D11.C4',dok:2,q:'A persistent wedge waveform with the balloon deflated requires what action?',
+ o:['Inflate to confirm','Reposition or withdraw the catheter and notify the provider','Flush vigorously','Document and recheck in an hour'],a:1,
+ why:'Spontaneous wedge means distal migration with risk of pulmonary infarction or arterial rupture. Inflating compounds it.'},
+{id:'GB38',form:'B',d:'D11',c:'D11.C1',dok:2,q:'Which measurement best estimates left ventricular preload?',
+ o:['Central venous pressure','Pulmonary artery occlusion pressure','Systemic vascular resistance','Mean arterial pressure'],a:1,
+ why:'The occlusion, or wedge, pressure reflects left atrial and therefore left ventricular filling pressure.'},
+
+/* D12, 2 */
+{id:'GB39',form:'B',d:'D12',c:'D12.C3',dok:2,q:'Rising power with a low pulsatility index and dark urine in an LVAD patient suggests what?',
+ o:['Pump thrombosis with haemolysis','Suction event','Driveline infection','Right ventricular failure'],a:0,
+ why:'Rising power reflects the pump working against a clot, and haemolysis produces haemoglobinuria. A suction event shows low flow with a high pulsatility index.'},
+{id:'GB40',form:'B',d:'D12',c:'D12.C4',dok:2,q:'What distinguishes venoarterial from venovenous ECMO?',
+ o:['Cannula size','Venoarterial supports circulation as well as oxygenation','Venovenous requires anticoagulation','Only venoarterial uses a membrane'],a:1,
+ why:'Venoarterial returns blood to the arterial system and supports cardiac output. Venovenous supports gas exchange only.'},
+
+/* D13, 2 */
+{id:'GB41',form:'B',d:'D13',c:'D13.C1',dok:2,q:'In the NBG pacemaker code, what does the second position indicate?',
+ o:['Chamber paced','Chamber sensed','Response to sensing','Rate modulation'],a:1,
+ why:'First position is chamber paced, second is chamber sensed, third is the response, fourth is rate modulation.'},
+{id:'GB42',form:'B',d:'D13',c:'D13.C4',dok:2,q:'A pacing spike appears in the middle of an intrinsic QRS complex. What is this?',
+ o:['Failure to capture','Failure to sense','Oversensing','Normal function'],a:1,
+ why:'The device did not see the intrinsic beat and paced into it. The danger is a spike landing on a T wave.'},
+
+/* D14, 4 */
+{id:'GB43',form:'B',d:'D14',c:'D14.C2',dok:2,q:'Which agent worsens torsades de pointes?',
+ o:['Magnesium','Amiodarone','Overdrive pacing','Potassium repletion'],a:1,
+ why:'Amiodarone prolongs the QT, which is the substrate. The others shorten it or suppress the triggering pauses.'},
+{id:'GB44',form:'B',d:'D14',c:'D14.C3',dok:2,q:'Why is dobutamine often preferred over milrinone in renal impairment?',
+ o:['It is a stronger inotrope','Milrinone is renally cleared and accumulates','Dobutamine causes less tachycardia','Milrinone has no inotropic effect'],a:1,
+ why:'Milrinone has a long half-life and renal clearance, so its effects including hypotension persist. Dobutamine is short acting and easier to titrate.'},
+{id:'GB45',form:'B',d:'D14',c:'D14.C1',dok:2,q:'A platelet count falls from 240,000 to 85,000 on day six of heparin, with a new clot. What is the correct action?',
+ o:['Continue heparin and transfuse platelets','Stop all heparin and start a non-heparin anticoagulant','Stop heparin and start warfarin alone','Halve the heparin dose'],a:1,
+ why:'Heparin-induced thrombocytopenia is prothrombotic. All heparin stops and an alternative anticoagulant starts; warfarin alone early risks venous limb gangrene.'}
+
+];
+
+/* ============================================================
+   ECG & CVRN Review Course
+   PRACTICAL POOL  ·  the lab half of the gap finder
+
+   These are not multiple choice items with a picture attached.
+   Each one renders a live tracing from the ECG engine and asks
+   the learner to do something to it:
+
+     identify  name the rhythm from a generated strip
+     measure   put calipers on the strip and enter a value,
+               graded against a tolerance, not a lookup
+     localize  read a generated 12-lead and name the territory
+     decide    strip plus vitals, choose the action
+
+   Knowledge and skill fail independently. A nurse can name every
+   rhythm on a flashcard and still not measure a PR interval, so
+   the two gap finders are scored and reported separately.
+
+   Fields:
+     id, form, kind, d (domain), c (competency), dok
+     rhythm    a key from RHYTHMS in the ECG engine
+     pattern   a key from PATTERNS, for 12-lead items
+     rate      optional rate override for the generator
+     q         the prompt
+     o, a      options and answer index (identify, localize, decide)
+     target, tol, unit                      (measure)
+     why       what the item is testing
+   ============================================================ */
+window.CVRN_PRACTICAL_POOL = [
+
+/* ================= FORM A ================= */
+
+/* --- identify: is it the rhythm you think it is --- */
+{id:'PA01',form:'A',kind:'identify',d:'D2',c:'D2.C3',dok:2,rhythm:'afib',
+ q:'Name this rhythm.',
+ o:['Atrial flutter','Atrial fibrillation','Multifocal atrial tachycardia','Sinus arrhythmia'],a:1,
+ why:'Irregularly irregular with a fibrillatory baseline and no organised P waves. Sinus arrhythmia varies with respiration but keeps a P before every QRS.'},
+{id:'PA02',form:'A',kind:'identify',d:'D2',c:'D2.C3',dok:2,rhythm:'aflut',
+ q:'Name this rhythm.',
+ o:['Sinus tachycardia','Atrial flutter with 2 to 1 conduction','Supraventricular tachycardia','Atrial fibrillation'],a:1,
+ why:'A regular ventricular rate near 150 with sawtooth atrial activity at about 300. Look for flutter waves buried in the T wave before calling it sinus tach.'},
+{id:'PA03',form:'A',kind:'identify',d:'D2',c:'D2.C5',dok:2,rhythm:'wenck',
+ q:'Name this rhythm. Track the PR interval across several beats before answering.',
+ o:['First degree AV block','Mobitz type I','Mobitz type II','Third degree AV block'],a:1,
+ why:'The PR lengthens progressively and then a QRS drops. Reading one complex instead of the sequence is how this gets called Mobitz II.'},
+{id:'PA04',form:'A',kind:'identify',d:'D2',c:'D2.C5',dok:2,rhythm:'chb',
+ q:'Name this rhythm.',
+ o:['Mobitz type II','Third degree AV block','Junctional escape','Sinus bradycardia'],a:1,
+ why:'P waves and QRS complexes march at independent rates with no fixed relationship. The dissociation is the finding, not the slow rate.'},
+{id:'PA05',form:'A',kind:'identify',d:'D2',c:'D2.C4',dok:2,rhythm:'bigem',
+ q:'Name this rhythm.',
+ o:['Ventricular trigeminy','Ventricular bigeminy','Atrial fibrillation','Sinus with couplets'],a:1,
+ why:'Every second beat is a wide premature ventricular complex with a compensatory pause. Bigeminy is every second beat, trigeminy every third.'},
+{id:'PA06',form:'A',kind:'identify',d:'D2',c:'D2.C4',dok:2,rhythm:'torsade',
+ q:'Name this rhythm.',
+ o:['Ventricular fibrillation','Monomorphic ventricular tachycardia','Torsades de pointes','Coarse atrial fibrillation'],a:2,
+ why:'Polymorphic ventricular tachycardia with the axis twisting around the baseline. It sits on a long QT, so magnesium and stopping the offending drug enter the plan.'},
+{id:'PA07',form:'A',kind:'identify',d:'D13',c:'D13.C3',dok:2,rhythm:'paced',
+ q:'Name this rhythm.',
+ o:['Left bundle branch block','Ventricular paced rhythm','Idioventricular rhythm','Third degree AV block'],a:1,
+ why:'A sharp pacing spike precedes each wide QRS. Without the spike this reads as left bundle branch block, which is why both share the same ischaemia problem.'},
+{id:'PA08',form:'A',kind:'identify',d:'D2',c:'D2.C4',dok:2,rhythm:'junc',
+ q:'Name this rhythm.',
+ o:['Sinus bradycardia','Junctional rhythm','Idioventricular rhythm','First degree AV block'],a:1,
+ why:'Narrow QRS at 40 to 60 with an inverted P close to the QRS. Narrow means it came from at or above the junction.'},
+
+/* --- measure: can you actually work the calipers --- */
+{id:'PA09',form:'A',kind:'measure',d:'D2',c:'D2.C1',dok:2,rhythm:'nsr',
+ q:'Measure the PR interval.',target:160,tol:25,unit:'ms',
+ why:'Onset of P to onset of QRS. Normal is 120 to 200 ms, three to five small boxes. Measure onset to onset, not peak to peak.'},
+{id:'PA10',form:'A',kind:'measure',d:'D2',c:'D2.C1',dok:2,rhythm:'avb1',
+ q:'Measure the PR interval.',target:300,tol:35,unit:'ms',
+ why:'Over 200 ms with every P conducted is first degree AV block. A conduction delay, not a dropped beat.'},
+{id:'PA11',form:'A',kind:'measure',d:'D2',c:'D2.C2',dok:2,rhythm:'nsr',
+ q:'Measure the R to R interval and give the rate.',target:75,tol:9,unit:'bpm',
+ why:'Rate is 60000 divided by the R to R in milliseconds. At 800 ms that is 75.'},
+{id:'PA12',form:'A',kind:'measure',d:'D2',c:'D2.C2',dok:2,rhythm:'brady',
+ q:'Give the rate.',target:45,tol:8,unit:'bpm',
+ why:'Under 60 with an otherwise normal complex is sinus bradycardia. The number alone decides nothing; symptoms do.'},
+{id:'PA13',form:'A',kind:'measure',d:'D2',c:'D2.C1',dok:2,rhythm:'hyperk',
+ q:'Measure the QRS duration.',target:150,tol:30,unit:'ms',
+ why:'First deflection off baseline to the return. Over 120 ms is wide. Here the widening is metabolic, so the fix is potassium, not a device.'},
+{id:'PA14',form:'A',kind:'measure',d:'D2',c:'D2.C2',dok:2,rhythm:'tach',
+ q:'Give the rate.',target:126,tol:15,unit:'bpm',
+ why:'Sinus tachycardia is a response, not a diagnosis. Rate controlling a compensatory tachycardia removes the compensation.'},
+
+/* --- localize: read the 12-lead --- */
+{id:'PA15',form:'A',kind:'localize',d:'D9',c:'D9.C4',dok:3,pattern:'infstemi',
+ q:'Which wall is infarcting, and which vessel is the likely culprit?',
+ o:['Anterior, left anterior descending','Inferior, right coronary artery','Lateral, circumflex','Posterior, circumflex'],a:1,
+ why:'Elevation in II, III, and aVF with reciprocal depression in I and aVL. Greater elevation in III than II points to the right coronary artery.'},
+{id:'PA16',form:'A',kind:'localize',d:'D9',c:'D9.C4',dok:3,pattern:'antstemi',
+ q:'Which territory is involved?',
+ o:['Inferior','Anterior, V1 through V4','Lateral only','Posterior'],a:1,
+ why:'ST elevation across V1 to V4 with inferior reciprocal change. Proximal to mid LAD until proven otherwise, so watch for pump failure and new block.'},
+{id:'PA17',form:'A',kind:'localize',d:'D9',c:'D9.C3',dok:2,pattern:'lbbb',
+ q:'What conduction abnormality is present?',
+ o:['Right bundle branch block','Left bundle branch block','Left anterior fascicular block','Pre-excitation'],a:1,
+ why:'Broad monophasic R in I, V5, and V6 with a deep QS in V1. ST and T changes are discordant and expected, so do not read ischaemia off discordance alone.'},
+{id:'PA18',form:'A',kind:'localize',d:'D9',c:'D9.C6',dok:2,pattern:'hyperk',
+ q:'What metabolic abnormality does this tracing suggest?',
+ o:['Hypokalaemia','Hyperkalaemia','Hypercalcaemia','Hypomagnesaemia'],a:1,
+ why:'Peaked narrow-based T waves with flattened P waves and a widening QRS. Treat the ECG, not the lab turnaround time.'},
+{id:'PA19',form:'A',kind:'localize',d:'D9',c:'D9.C5',dok:3,pattern:'pericard',
+ q:'What explains this pattern?',
+ o:['Multivessel STEMI','Acute pericarditis','Early repolarisation','Left ventricular aneurysm'],a:1,
+ why:'Diffuse concave elevation crossing coronary territories with reciprocal change only in aVR, plus PR depression. Elevation that ignores anatomy is pericardial.'},
+
+/* --- decide: the tracing plus the patient --- */
+{id:'PA20',form:'A',kind:'decide',d:'D2',c:'D2.C4',dok:3,rhythm:'vt',
+ q:'A 68 year old with a prior anterior MI is awake and talking. Blood pressure 82 over 48, reports chest pressure. What is the next action?',
+ o:['Defibrillate immediately','Synchronised cardioversion after sedation','Adenosine 6 mg rapid push','Observe and repeat the ECG in 15 minutes'],a:1,
+ why:'Wide complex tachycardia with a pulse and instability is cardioverted, not defibrillated. Adenosine is for regular narrow complex tachycardia.'},
+
+/* ================= FORM B ================= */
+
+{id:'PB01',form:'B',kind:'identify',d:'D2',c:'D2.C5',dok:2,rhythm:'mobitz2',
+ q:'Name this rhythm. Check whether the PR interval is constant.',
+ o:['Mobitz type I','Mobitz type II','First degree AV block','Sinus with blocked PACs'],a:1,
+ why:'Constant PR with a beat dropped without warning. The lesion is infranodal, so atropine often fails and pacing readiness comes at the same time.'},
+{id:'PB02',form:'B',kind:'identify',d:'D2',c:'D2.C4',dok:2,rhythm:'vfib',
+ q:'Name this rhythm. The patient is unresponsive with no pulse.',
+ o:['Asystole','Ventricular fibrillation','Torsades de pointes','Artifact'],a:1,
+ why:'Chaotic undulating baseline with no identifiable QRS. Defibrillate. Synchronisation is impossible because there is no R wave to sense.'},
+{id:'PB03',form:'B',kind:'identify',d:'D2',c:'D2.C3',dok:2,rhythm:'svt',
+ q:'Name this rhythm.',
+ o:['Sinus tachycardia','Supraventricular tachycardia','Atrial flutter','Ventricular tachycardia'],a:1,
+ why:'Regular, narrow, and fast enough that P waves are buried. Narrow rules out a ventricular origin.'},
+{id:'PB04',form:'B',kind:'identify',d:'D2',c:'D2.C4',dok:2,rhythm:'pvc',
+ q:'What is the abnormality in this rhythm?',
+ o:['Premature atrial contractions','Premature ventricular contractions','Junctional escape beats','Paced beats'],a:1,
+ why:'Wide, early, no preceding P, followed by a compensatory pause. PACs are narrow and reset the sinus node.'},
+{id:'PB05',form:'B',kind:'identify',d:'D2',c:'D2.C2',dok:2,rhythm:'arrhy',
+ q:'Name this rhythm.',
+ o:['Atrial fibrillation','Sinus arrhythmia','Wandering atrial pacemaker','Sinus with frequent PACs'],a:1,
+ why:'The rate varies with respiration but every QRS has an upright P of consistent shape. Normal, especially in younger patients.'},
+{id:'PB06',form:'B',kind:'identify',d:'D2',c:'D2.C4',dok:2,rhythm:'vt',
+ q:'Name this rhythm.',
+ o:['Supraventricular tachycardia with aberrancy','Monomorphic ventricular tachycardia','Atrial flutter','Accelerated idioventricular rhythm'],a:1,
+ why:'Wide, regular, fast, and uniform. In structural heart disease this is ventricular tachycardia until proven otherwise.'},
+{id:'PB07',form:'B',kind:'identify',d:'D2',c:'D2.C2',dok:2,rhythm:'asys',
+ q:'Name this rhythm. Confirm in a second lead before acting.',
+ o:['Fine ventricular fibrillation','Asystole','Lead disconnection','Pulseless electrical activity'],a:1,
+ why:'A flat line. Confirming in a second lead is what separates true asystole from a disconnected lead, and it changes what you do next.'},
+{id:'PB08',form:'B',kind:'identify',d:'D13',c:'D13.C3',dok:3,rhythm:'paced',
+ q:'Each spike is followed by a wide QRS. What does that confirm?',
+ o:['Failure to capture','Capture','Oversensing','Failure to sense'],a:1,
+ why:'A spike followed by a resulting complex is capture. Electrical capture still has to be confirmed against a pulse for mechanical capture.'},
+
+{id:'PB09',form:'B',kind:'measure',d:'D2',c:'D2.C1',dok:2,rhythm:'nsr',
+ q:'Measure the QRS duration.',target:90,tol:25,unit:'ms',
+ why:'Normal is under 120 ms. Anything wider means the ventricles were activated outside the rapid conduction system.'},
+{id:'PB10',form:'B',kind:'measure',d:'D2',c:'D2.C2',dok:2,rhythm:'chb',
+ q:'Give the ventricular rate.',target:38,tol:8,unit:'bpm',
+ why:'A ventricular escape in the 20 to 40 range. This rhythm is the only thing perfusing the patient, so it is supported, never suppressed.'},
+{id:'PB11',form:'B',kind:'measure',d:'D2',c:'D2.C2',dok:2,rhythm:'svt',
+ q:'Give the rate.',target:186,tol:18,unit:'bpm',
+ why:'Above about 150, count over a longer window or use calipers. Eyeballing at this rate is where errors start.'},
+{id:'PB12',form:'B',kind:'measure',d:'D2',c:'D2.C1',dok:2,rhythm:'nsr',
+ q:'Measure the QT interval.',target:400,tol:50,unit:'ms',
+ why:'QRS onset to the end of the T wave. It shortens as rate rises, which is why it is corrected before it is judged.'},
+{id:'PB13',form:'B',kind:'measure',d:'D2',c:'D2.C2',dok:2,rhythm:'afib',
+ q:'Give the average ventricular rate. The rhythm is irregular, so the shortcuts do not apply.',target:110,tol:20,unit:'bpm',
+ why:'On an irregular rhythm, count complexes over six seconds and multiply by ten, or average several R to R intervals with calipers.'},
+{id:'PB14',form:'B',kind:'measure',d:'D2',c:'D2.C1',dok:2,rhythm:'wenck',
+ q:'Measure the PR interval on the first conducted beat after a dropped QRS.',target:160,tol:30,unit:'ms',
+ why:'The cycle resets after the dropped beat, so the first conducted PR is the shortest. Seeing that reset is what confirms Wenckebach.'},
+
+{id:'PB15',form:'B',kind:'localize',d:'D9',c:'D9.C4',dok:3,pattern:'latstemi',
+ q:'Which territory is involved?',
+ o:['Inferior','Anterior','Lateral, I, aVL, V5, V6','Septal only'],a:2,
+ why:'Elevation in I, aVL, V5, and V6 with inferior reciprocal change. Circumflex territory, and the one most often called non-diagnostic on first look.'},
+{id:'PB16',form:'B',kind:'localize',d:'D9',c:'D9.C4',dok:3,pattern:'posterior',
+ q:'Tall R waves with ST depression in V1 to V3 and upright T waves. What is this?',
+ o:['Anterior ischaemia','Posterior infarction','Right ventricular hypertrophy','Normal variant'],a:1,
+ why:'This is a mirror image, not anterior ischaemia. Place posterior leads V7 to V9; elevation there confirms it and makes this a reperfusion case.'},
+{id:'PB17',form:'B',kind:'localize',d:'D9',c:'D9.C3',dok:2,pattern:'rbbb',
+ q:'What conduction abnormality is present?',
+ o:['Left bundle branch block','Right bundle branch block','Pre-excitation','Third degree block'],a:1,
+ why:'rSR prime in V1 with a broad slurred S in I and V6. Unlike left bundle branch block, ST analysis elsewhere stays interpretable.'},
+{id:'PB18',form:'B',kind:'localize',d:'D9',c:'D9.C2',dok:2,pattern:'lvh',
+ q:'What does this tracing show?',
+ o:['Acute lateral ischaemia','Left ventricular hypertrophy with strain','Pericarditis','Hyperkalaemia'],a:1,
+ why:'Voltage criteria with downsloping ST depression and asymmetric T inversion laterally. Strain, not acute ischaemia, but hypertrophy raises the false positive rate.'},
+{id:'PB19',form:'B',kind:'localize',d:'D9',c:'D9.C3',dok:2,pattern:'wpw',
+ q:'What is the abnormality?',
+ o:['Left bundle branch block','Pre-excitation with a delta wave','First degree AV block','Junctional rhythm'],a:1,
+ why:'Short PR with a slurred upstroke into a widened QRS. It matters most when atrial fibrillation arrives, because AV nodal blockers can accelerate the accessory pathway.'},
+
+{id:'PB20',form:'B',kind:'decide',d:'D2',c:'D2.C5',dok:3,rhythm:'chb',
+ q:'A 74 year old is dizzy and pale. Blood pressure 78 over 44, skin cool, no medication changes. What is the next action?',
+ o:['Fluid bolus and reassess','Atropine while preparing transcutaneous pacing','Withhold treatment since she is awake','Dopamine infusion as the only intervention'],a:1,
+ why:'Symptomatic complete block with hypoperfusion. Atropine often fails because the escape is below the node, so pacing is prepared at the same time, not after.'}
 
 ];
 
@@ -5110,6 +5932,7 @@ window.CVRN_EXAM_POOL = [
 var el=function(i){return document.getElementById(i);};
 var C = window.CVRN_COMPETENCIES||[];
 var POOL = window.CVRN_EXAM_POOL||[];
+var DPOOL = window.CVRN_DIAGNOSTIC_POOL||[];
 var SKEY='cvrn-setup', PKEY='cvrn-progress', XKEY='cvrn-exams';
 var DOMS={};
 C.forEach(function(c){ if(!DOMS[c.domain]) DOMS[c.domain]={id:c.domain,name:c.domainName,weight:c.domainWeight,weightL1:c.weightL1,weightL2:c.weightL2,level:c.level,comps:[]}; DOMS[c.domain].comps.push(c); });
@@ -5174,13 +5997,13 @@ function plan(){
 function renderPlan(){
   var p=plan();
   el('planCard').hidden=false;
-  el('sDays').textContent = p.dte==null?'—':p.dte;
+  el('sDays').textContent = p.dte==null?'not set':p.dte;
   el('sDate').textContent = p.dte==null?'set an exam date':(p.studyDays+' study days at '+S.days+' per week');
-  el('sAvail').textContent = p.availMin==null?'—':Math.round(p.availMin/60);
+  el('sAvail').textContent = p.availMin==null?'not set':Math.round(p.availMin/60);
   el('sNeed').textContent = Math.round(p.needMin/60);
   el('sNeedSub').textContent = p.scope.length+' competencies in scope';
   var pace = (p.studyDays&&p.studyDays>0)? (p.scope.length/p.studyDays) : 0;
-  el('sPace').textContent = pace? pace.toFixed(1):'—';
+  el('sPace').textContent = pace? pace.toFixed(1):'not set';
 
   var v=el('verdict');
   if(p.availMin==null){ v.setAttribute('data-k','tight'); v.innerHTML='<strong>Set a date</strong><p style="margin:0">Enter your approximate exam date and the pace calculation turns on. Everything else works without it, but the schedule is the part that keeps people honest.</p>'; }
@@ -5256,31 +6079,83 @@ el('gapStart').addEventListener('click',function(){
   host.appendChild(card);
 });
 
+/* ============================================================
+   WRITTEN GAP FINDER
+   Draws only from the diagnostic pool. The reserved exam pool
+   is never touched here, so a practice exam score later stays
+   an honest estimate rather than a memory test.
+
+   Runs rotate through forms. A repeat run draws items you have
+   not seen, and the report compares runs so a domain is not
+   called a gap on the strength of one small sample.
+   ============================================================ */
+var GKEY='cvrn-gap-runs';
+function gLoadRuns(){ try{ return JSON.parse(localStorage.getItem(GKEY)||'[]'); }catch(e){ return []; } }
+function gSaveRun(r){ var a=gLoadRuns(); a.push(r); try{ localStorage.setItem(GKEY, JSON.stringify(a)); }catch(e){} }
+function gWritten(){ return gLoadRuns().filter(function(r){ return r.mode==='written'; }); }
+function gPractical(){ return gLoadRuns().filter(function(r){ return r.mode==='practical'; }); }
+function gForms(){ var f={}; DPOOL.forEach(function(i){ f[i.form]=1; }); return Object.keys(f).sort(); }
+function gNext(){
+  var F=gForms(); if(!F.length) return null;
+  var n=gWritten().length;
+  return {form:F[n%F.length], pass:Math.floor(n/F.length)+1, run:n+1, forms:F.length};
+}
+function gFormNote(){
+  var node=el('gapFormNote'); if(!node) return;
+  var n=gNext();
+  if(!n){ node.textContent='No diagnostic items are loaded. Add cvrn-diagnostic-bank.js to the page and this builds itself.'; return; }
+  var cnt=DPOOL.filter(function(i){ return i.form===n.form; }).length;
+  var w=gWritten().length, pr=gPractical().length;
+  node.textContent='Written: '+w+' run'+(w===1?'':'s')+' completed, next draws form '+n.form+' at '+cnt+' items. Practical: '+pr+' run'+(pr===1?'':'s')+' completed. '+
+    'There are '+n.forms+' written forms, so your second run sees a completely different set of items.';
+}
+
+function gDomName(d){ return (DOMS[d]&&DOMS[d].name)||d; }
+function gRead(n,c){
+  if(n<3) return {k:'untested', t:'Too thin to call'};
+  var f=c/n;
+  return f>=0.8 ? {k:'mastered', t:'Holding'} : f>=0.5 ? {k:'fragile', t:'Fragile'} : {k:'gap', t:'Priority'};
+}
+
 var DIAG=null;
-el('gapDiag').addEventListener('click',function(){
-  /* Build a diagnostic: weakest self-rated domains plus the heaviest domains regardless of rating */
-  var doms=DOMLIST.filter(function(d){return d.level<=S.level;});
-  var scored=doms.map(function(d){
-    var r=ent('dom:'+d.id).selfRate; if(r==null) r=1;
-    return {d:d, pri: domWt(d)*(3-r+0.5)};
-  }).sort(function(a,b){return b.pri-a.pri;});
-  var picked=[], seen={};
-  scored.forEach(function(s){
-    var items=POOL.filter(function(q){ return q.d===s.d.id && !seen[q.id]; });
-    items.slice(0, picked.length<10?2:1).forEach(function(q){ seen[q.id]=1; picked.push(q); });
-  });
-  picked=picked.slice(0,18);
-  if(!picked.length){ el('gapHost').innerHTML='<div class="card"><h2>Diagnostic not available yet</h2><p class="lede">No items in the pool match the domains in scope. Add items to cvrn-exam-bank.js and this builds itself.</p></div>'; return; }
-  DIAG={items:picked, i:0, correct:0, byDom:{}};
+function buildForm(short){
+  var n=gNext(); if(!n) return null;
+  var items=DPOOL.filter(function(q){ return q.form===n.form; });
+  var scope=DOMLIST.filter(function(d){ return d.level<=S.level; }).map(function(d){ return d.id; });
+  items=items.filter(function(q){ return scope.indexOf(q.d)>=0; });
+  if(short){
+    /* keep the blueprint shape, just fewer items: take proportionally from each domain */
+    var by={}; items.forEach(function(q){ (by[q.d]=by[q.d]||[]).push(q); });
+    var keys=Object.keys(by), out=[], want=20;
+    var total=items.length;
+    keys.forEach(function(d){
+      var take=Math.max(1, Math.round(by[d].length/total*want));
+      out=out.concat(by[d].slice(0,take));
+    });
+    items=out.slice(0,want);
+  }
+  return {items:items, meta:n};
+}
+function startWritten(short){
+  var built=buildForm(short);
+  if(!built || !built.items.length){
+    el('gapHost').innerHTML='<div class="card"><h2>Diagnostic not available yet</h2><p class="lede">No diagnostic items match the domains in scope for your level. Add items to cvrn-diagnostic-bank.js and this builds itself.</p></div>';
+    return;
+  }
+  DIAG={items:built.items, i:0, correct:0, byDom:{}, missed:[], form:built.meta.form, run:built.meta.run, pass:built.meta.pass, short:!!short};
   runDiag();
-});
+}
+el('gapDiag').addEventListener('click', function(){ startWritten(false); });
+el('gapShort').addEventListener('click', function(){ startWritten(true); });
+el('gapRuns').addEventListener('click', function(){ runHistory(); });
+
 function runDiag(){
   var host=el('gapHost');
   if(DIAG.i>=DIAG.items.length){ return diagReport(); }
   var q=DIAG.items[DIAG.i];
   host.innerHTML='';
   var card=document.createElement('div'); card.className='card';
-  card.innerHTML='<p class="eyebrow">Diagnostic &middot; item '+(DIAG.i+1)+' of '+DIAG.items.length+' &middot; '+DOMS[q.d].name+'</p><h2 style="font-size:18px;font-weight:600;line-height:1.5">'+q.q+'</h2>';
+  card.innerHTML='<p class="eyebrow">Written gap finder &middot; form '+DIAG.form+' &middot; item '+(DIAG.i+1)+' of '+DIAG.items.length+' &middot; '+gDomName(q.d)+'</p><h2 style="font-size:18px;font-weight:600;line-height:1.5">'+q.q+'</h2>';
   var ul=document.createElement('ul'); ul.className='opts'; var pick=null;
   q.o.forEach(function(o,i){
     var li=document.createElement('li'); var lab=document.createElement('label'); lab.className='opt';
@@ -5301,42 +6176,129 @@ function runDiag(){
     if(pick==null){ alert('Choose an answer.'); return; }
     if(sure==null){ alert('Mark how sure you are. That is what separates a gap from a misconception.'); return; }
     var ok = pick===q.a;
-    if(ok) DIAG.correct++;
+    if(ok) DIAG.correct++; else DIAG.missed.push({id:q.id, c:q.c, conf:!!sure});
     DIAG.byDom[q.d]=DIAG.byDom[q.d]||{n:0,c:0}; DIAG.byDom[q.d].n++; if(ok) DIAG.byDom[q.d].c++;
-    var e=ent(q.c); e.attempts++; if(ok) e.correct++; if(!ok&&sure) e.misconceptions++;
+    var e=ent(q.c); e.attempts++; if(ok) e.correct++; if(!ok&&sure) e.misconceptions=(e.misconceptions||0)+1;
     e.reviewedAt=new Date().toISOString().slice(0,10);
-    e.strength=Math.max(0, e.correct/e.attempts - e.misconceptions*0.08);
+    e.strength=Math.max(0, e.correct/e.attempts - (e.misconceptions||0)*0.08);
     e.nextRecall=new Date(Date.now()+(e.strength>0.85?7:e.strength>0.6?3:1)*864e5).toISOString().slice(0,10);
     put(q.c,e);
     var fb=document.createElement('div'); fb.className='fb'; fb.setAttribute('data-k', ok?'right':'wrong');
-    fb.innerHTML='<strong>'+(ok?'Correct':(sure?'Confident and incorrect, flagged as a misconception':'Not correct'))+'</strong><p style="margin:6px 0 0">'+q.why+'</p>';
+    fb.innerHTML='<strong>'+(ok?'Correct':(sure?'Confident and incorrect, flagged as a misconception':'Not correct'))+'</strong>'+
+      (ok?'':'<p style="margin:6px 0 0">Correct answer: '+q.o[q.a]+'</p>')+
+      '<p style="margin:6px 0 0">'+q.why+'</p>';
     card.appendChild(fb);
-    nx.textContent='Next'; nx.onclick=function(){ DIAG.i++; runDiag(); };
+    nx.textContent = (DIAG.i===DIAG.items.length-1) ? 'See the report' : 'Next';
+    nx.onclick=function(){ DIAG.i++; runDiag(); };
   });
   row.appendChild(nx); card.appendChild(row);
   host.appendChild(card);
+  window.scrollTo(0,0);
 }
+
 function diagReport(){
   var host=el('gapHost'); host.innerHTML='';
-  var card=document.createElement('div'); card.className='card';
   var pct=Math.round(DIAG.correct/DIAG.items.length*100);
-  card.innerHTML='<h2>Gap finder result</h2><p class="lede">'+DIAG.correct+' of '+DIAG.items.length+' correct, '+pct+' percent. This is a diagnostic, not a score estimate. It is a small sample chosen to find weak spots, so it reads lower than a full form for most people.</p>';
+  gSaveRun({mode:'written', form:DIAG.form, run:DIAG.run, pass:DIAG.pass, n:DIAG.items.length,
+            correct:DIAG.correct, byDom:DIAG.byDom, at:new Date().toISOString().slice(0,10)});
+  gFormNote();
+  var prior=gWritten().slice(0,-1);
+
+  var card=document.createElement('div'); card.className='card';
+  card.innerHTML='<h2>Written gap finder, run '+DIAG.run+'</h2><p class="lede">'+DIAG.correct+' of '+DIAG.items.length+' correct, '+pct+' percent, on form '+DIAG.form+'. This is a diagnostic, not a score estimate. It samples to find weak spots, so it reads lower than a full practice exam for most people. The practice exams do the scoring.</p>';
+
   var tbl=document.createElement('table');
-  tbl.innerHTML='<thead><tr><th>Domain</th><th>Sampled</th><th>Correct</th><th>Read</th></tr></thead>';
+  tbl.innerHTML='<thead><tr><th>Domain</th><th>Blueprint</th><th>Sampled</th><th>Correct</th><th>Read</th></tr></thead>';
   var tb=document.createElement('tbody');
-  Object.keys(DIAG.byDom).sort().forEach(function(d){
-    var r=DIAG.byDom[d], f=r.c/r.n;
-    var read = f>=0.8?'Holding':f>=0.5?'Fragile':'Priority';
-    var k = f>=0.8?'mastered':f>=0.5?'fragile':'gap';
-    tb.innerHTML+='<tr><td>'+DOMS[d].name+'</td><td>'+r.n+'</td><td>'+r.c+'</td><td><span class="pill" data-k="'+k+'">'+read+'</span></td></tr>';
+  Object.keys(DIAG.byDom).sort(function(a,b){ return parseInt(a.slice(1),10)-parseInt(b.slice(1),10); }).forEach(function(d){
+    var r=DIAG.byDom[d], rd=gRead(r.n,r.c);
+    var w=(DOMS[d]&&DOMS[d].weight)!=null ? DOMS[d].weight+'%' : '';
+    tb.innerHTML+='<tr><td>'+d+'. '+gDomName(d)+'</td><td>'+w+'</td><td>'+r.n+'</td><td>'+r.c+'</td><td><span class="pill" data-k="'+rd.k+'">'+rd.t+'</span></td></tr>';
   });
   tbl.appendChild(tb); card.appendChild(tbl);
-  var b=document.createElement('button'); b.className='act primary'; b.style.marginTop='16px'; b.textContent='Send this to my plan';
+  card.insertAdjacentHTML('beforeend','<p class="note">A domain sampled fewer than three times is marked too thin to call, not flagged as a gap. Small samples manufacture false gaps, and a false gap sends you to study something you already know while the real one stays hidden.</p>');
+
+  if(prior.length){
+    var last=prior[prior.length-1], lp=Math.round(last.correct/last.n*100), d=pct-lp;
+    var word = d>4 ? 'up by '+d+' points' : d<-4 ? 'down by '+Math.abs(d)+' points' : 'flat';
+    card.insertAdjacentHTML('beforeend',
+      '<h3 style="margin:24px 0 6px">Against your earlier runs</h3>'+
+      '<p class="lede">Run '+last.run+' on form '+last.form+' was '+lp+' percent. This run is '+pct+' percent, so overall you are '+word+
+      (word==='flat' ? '. On a sample this size a swing under five points is noise, not progress.' : '.')+'</p>');
+
+    var t3=document.createElement('table');
+    t3.innerHTML='<thead><tr><th>Domain</th><th>Last run</th><th>This run</th><th>Across all runs</th><th>Verdict</th></tr></thead>';
+    var b3=document.createElement('tbody');
+    var all=gWritten(), doms={};
+    all.forEach(function(r){ Object.keys(r.byDom||{}).forEach(function(k){ doms[k]=1; }); });
+    Object.keys(doms).sort(function(a,b){ return parseInt(a.slice(1),10)-parseInt(b.slice(1),10); }).forEach(function(dm){
+      var runs=all.filter(function(r){ return r.byDom&&r.byDom[dm]; });
+      var tot=runs.reduce(function(a,r){ return {n:a.n+r.byDom[dm].n, c:a.c+r.byDom[dm].c}; },{n:0,c:0});
+      var lastR=prior.filter(function(r){ return r.byDom&&r.byDom[dm]; }).pop();
+      var lastPct=lastR ? Math.round(lastR.byDom[dm].c/lastR.byDom[dm].n*100)+'%' : 'not sampled';
+      var thisPct=DIAG.byDom[dm] ? Math.round(DIAG.byDom[dm].c/DIAG.byDom[dm].n*100)+'%' : 'not sampled';
+      var weak=runs.filter(function(r){ return r.byDom[dm].n>=3 && r.byDom[dm].c/r.byDom[dm].n<0.5; }).length;
+      var v;
+      if(tot.n<4) v='<span class="pill" data-k="untested">Not enough data yet</span>';
+      else if(weak>=2) v='<span class="pill" data-k="gap">Confirmed gap, weak on '+weak+' runs</span>';
+      else if(weak===1) v='<span class="pill" data-k="fragile">Unstable read, run it again</span>';
+      else if(tot.c/tot.n>=0.8) v='<span class="pill" data-k="mastered">Holding across runs</span>';
+      else v='<span class="pill" data-k="fragile">Fragile</span>';
+      b3.innerHTML+='<tr><td>'+dm+'. '+gDomName(dm)+'</td><td>'+lastPct+'</td><td>'+thisPct+'</td><td>'+tot.c+' of '+tot.n+'</td><td>'+v+'</td></tr>';
+    });
+    t3.appendChild(b3); card.appendChild(t3);
+    card.insertAdjacentHTML('beforeend','<p class="note">A domain becomes a confirmed gap only after it reads weak on two separate runs with at least three items each. A single weak read is marked unstable and sent back for another run. This is the check that stops the system from routing your study time at something the sample got wrong about you.</p>');
+  } else {
+    card.insertAdjacentHTML('beforeend','<p class="note">This is your first written run, so nothing is confirmed yet. One run finds candidates. Two runs confirm them. Run the next form before you commit study time to anything flagged above.</p>');
+  }
+
+  if(!gPractical().length){
+    card.insertAdjacentHTML('beforeend','<div class="gapRow" style="margin-top:20px"><h3>You have not run the practical gap finder</h3><p style="margin:0 0 10px">This half of the result says nothing about whether you can read a tracing and act on it, which is a separate way to fail. Run the practical half before you treat this as a full picture.</p><a class="act" href="ecg-lab.html#p-pg" target="_top" style="text-decoration:none;display:inline-flex;align-items:center">Open the practical run</a></div>');
+  }
+
+  var row=document.createElement('div'); row.className='btnrow'; row.style.marginTop='18px';
+  var b=document.createElement('button'); b.className='act primary'; b.textContent='Send this to my plan';
   b.addEventListener('click',function(){ el('t-now').click(); });
-  card.appendChild(b);
-  card.insertAdjacentHTML('beforeend','<p class="note">Sample sizes here are small by design. A domain read from two items tells you where to look first, not how you will score. The practice exams do the scoring.</p>');
+  row.appendChild(b);
+  var b2=document.createElement('button'); b2.className='act'; b2.textContent='Run the next form';
+  b2.addEventListener('click',function(){ startWritten(false); });
+  row.appendChild(b2);
+  card.appendChild(row);
+  host.appendChild(card);
+  window.scrollTo(0,0);
+}
+
+function runHistory(){
+  var host=el('gapHost'); host.innerHTML='';
+  var runs=gLoadRuns();
+  var card=document.createElement('div'); card.className='card';
+  if(!runs.length){
+    card.innerHTML='<h2>No runs yet</h2><p class="lede">Run one of the two gap finders and this fills in. The comparison is where the value sits, so the second run is where it starts to be useful.</p>';
+    host.appendChild(card); return;
+  }
+  card.innerHTML='<h2>Run history</h2><p class="lede">Every gap finder run completed in this browser, written and practical kept separate. Nothing is sent anywhere and no identifying information is stored.</p>';
+  var t=document.createElement('table');
+  t.innerHTML='<thead><tr><th>Date</th><th>Finder</th><th>Form</th><th>Score</th><th>Percent</th></tr></thead>';
+  var tb=document.createElement('tbody');
+  runs.forEach(function(r){
+    tb.innerHTML+='<tr><td>'+r.at+'</td><td>'+(r.mode==='written'?'Written':'Practical')+'</td><td>'+r.form+'</td><td>'+r.correct+' of '+r.n+'</td><td>'+Math.round(r.correct/r.n*100)+'%</td></tr>';
+  });
+  t.appendChild(tb); card.appendChild(t);
+  var w=gWritten(), pr=gPractical();
+  if(w.length && pr.length){
+    var wp=Math.round(w[w.length-1].correct/w[w.length-1].n*100);
+    var pp=Math.round(pr[pr.length-1].correct/pr[pr.length-1].n*100);
+    var gapTxt = Math.abs(wp-pp)<8
+      ? 'Your written and practical results are close, so neither half is carrying the other. Study by blueprint weight.'
+      : (wp>pp ? 'Your practical result trails your written result by '+(wp-pp)+' points. Tracing work is where the points are leaking, so weight the ECG lab over more reading.'
+               : 'Your written result trails your practical result by '+(pp-wp)+' points. You can read a tracing. The content blocks are where the points are leaking, so weight the notes and the written forms.');
+    card.insertAdjacentHTML('beforeend','<h3 style="margin:24px 0 6px">Written against practical</h3><p class="lede">Written '+wp+' percent, practical '+pp+' percent. '+gapTxt+'</p>');
+  } else {
+    card.insertAdjacentHTML('beforeend','<p class="note">Run both finders at least once to see which half is costing you more. Until then this is only half a picture.</p>');
+  }
   host.appendChild(card);
 }
+gFormNote();
 
 /* ---------- PRIORITY ENGINE ---------- */
 function stateOf(c){
@@ -5723,12 +6685,20 @@ function Stream(key, rateOverride){
   wenckebach.n=mobitzII.n=pvcs.n=bigeminy.n=torsades.n=0;
   this.seed = 1;
 }
-Stream.prototype.ensure=function(t){
+/* fill builds beats forward and never discards. ensure adds the pruning
+   the live sweep needs so a long run does not grow the array without
+   limit. A static render has to call fill, not ensure: pruning against
+   the far end of the window would throw away every beat the render is
+   about to draw, which leaves a flat strip with one beat at the edge. */
+Stream.prototype.fill=function(t){
   var guard=0, before=this.beats.length;
-  while(this.tNext < t+2.5 && guard++<400){
+  while(this.tNext < t+2.5 && guard++<900){
     this.tNext = this.def.build(this.beats, this.tNext, this.rate, 0);
   }
   this.harvest(before);
+};
+Stream.prototype.ensure=function(t){
+  this.fill(t);
   while(this.beats.length && this.beats[0].t < t-3){ this.beats.shift(); }
   while(this.pulses.length && this.pulses[0].t < t-12){ this.pulses.shift(); }
 };
@@ -5873,7 +6843,7 @@ Monitor.prototype.eraseBand=function(from, w){
 Monitor.prototype.renderStatic=function(seconds){
   var x=this.x, c=this.c, p;
   this.grid();
-  this.stream.ensure(seconds+3);
+  this.stream.fill(seconds+2);
   x.lineWidth=this.traceWidth(); x.strokeStyle=this.traceColor(); x.lineCap='round'; x.lineJoin='round';
   x.beginPath();
   for(p=0;p<c.width;p++){
@@ -5970,6 +6940,7 @@ ICU.prototype.eraseBand=function(from,w){
 ICU.prototype.renderStatic=function(){
   var self=this,x=this.x,c=this.c,p;
   this.grid();
+  if(this.stream && this.stream.fill) this.stream.fill(1.0 + c.width/this.pxPerSec + 1);
   this.lanes.forEach(function(L){
     x.lineWidth=L.k==='ecg'?2.2:1.9; x.strokeStyle=L.col; x.lineCap='round'; x.lineJoin='round';
     x.beginPath();
@@ -6127,7 +7098,7 @@ function record(id, correct, confident){
 }
 
 /* ---- tabs ---- */
-var tabs=[['tab-mon','p-mon'],['tab-12','p-12'],['tab-pr','p-pr'],['tab-ms','p-ms']];
+var tabs=[['tab-mon','p-mon'],['tab-12','p-12'],['tab-pr','p-pr'],['tab-pg','p-pg'],['tab-ms','p-ms']];
 tabs.forEach(function(pair){
   el(pair[0]).addEventListener('click', function(){
     tabs.forEach(function(p){
@@ -6137,6 +7108,7 @@ tabs.forEach(function(pair){
     });
     if(pair[0]==='tab-12') draw12();
     if(pair[0]==='tab-ms') renderMastery();
+    if(pair[0]==='tab-pg') pgFormNote();
   });
 });
 el('paperBtn').addEventListener('click', function(){
@@ -6159,10 +7131,10 @@ Object.keys(RHYTHMS).forEach(function(k){
 var mon = new ICU(el('mon'), {rhythm:'nsr', autorun:true, mmWide:250});
 var running=true, lastTs=null;
 var cal = new Calipers(el('screen'), el('mon'), mon, function(d){
-  if(!d){ el('mMs').textContent='—'; el('mBox').textContent='—'; el('mRate').textContent='—'; el('mMv').textContent='—'; return; }
+  if(!d){ el('mMs').textContent='not set'; el('mBox').textContent='not set'; el('mRate').textContent='not set'; el('mMv').textContent='not set'; return; }
   el('mMs').textContent = Math.round(d.ms)+' ms';
   el('mBox').textContent = (d.boxes).toFixed(1)+' mm';
-  el('mRate').textContent = d.ms>60 ? Math.round(d.rate)+' bpm' : '—';
+  el('mRate').textContent = d.ms>60 ? Math.round(d.rate)+' bpm' : 'span too short';
   el('mMv').textContent = (d.mm/10).toFixed(2)+' mV wide-equiv';
 });
 
@@ -6336,7 +7308,7 @@ el('showFind').addEventListener('click', function(){
 var pmon = new Monitor(el('pMon'), {rhythm:'nsr', autorun:false, mmWide:250});
 pmon.gain=1;
 var pcal = new Calipers(el('pScreen'), el('pMon'), pmon, function(d){
-  el('pMeas').textContent = d ? (Math.round(d.ms)+' ms  |  '+d.boxes.toFixed(1)+' mm  |  '+(d.ms>60?Math.round(d.rate)+' bpm':'—')) : '—';
+  el('pMeas').textContent = d ? (Math.round(d.ms)+' ms  |  '+d.boxes.toFixed(1)+' mm  |  '+(d.ms>60?Math.round(d.rate)+' bpm':'span too short')) : 'no measurement yet';
 });
 el('pCalBtn').addEventListener('click', function(){ pcal.toggle(); this.setAttribute('aria-pressed', pcal.on?'true':'false'); });
 
@@ -6519,6 +7491,299 @@ function flash(msg){
   var fb=el('fb'); fb.hidden=false; fb.setAttribute('data-k','wrong');
   fb.innerHTML='<strong>Hold on</strong><p style="margin:0">'+msg+'</p>';
 }
+
+/* ============================================================
+   PRACTICAL GAP FINDER
+   Separate from the written gap finder on purpose. Reading a
+   tracing and knowing the content are different skills that
+   fail independently, and a blended score hides which one is
+   costing points. Every item here is worked off a live strip
+   or a 12-lead. Nothing is a description of a tracing.
+
+   Runs rotate through forms so a repeat run draws unseen items,
+   and the report compares runs so a thin sample that landed
+   badly does not get read as a real gap.
+   ============================================================ */
+var PGPOOL = window.CVRN_PRACTICAL_POOL || [];
+var PGKEY  = 'cvrn-gap-runs';
+var PGORDER = {identify:0, measure:1, localize:2, decide:3};
+var PGSTRAND = {identify:'ecg-e2', measure:'ecg-e1', localize:'ecg-e3', decide:'ecg-e5'};
+
+function pgLoadRuns(){ try{ return JSON.parse(localStorage.getItem(PGKEY)||'[]'); }catch(e){ return []; } }
+function pgSaveRun(r){ var a=pgLoadRuns(); a.push(r); try{ localStorage.setItem(PGKEY, JSON.stringify(a)); }catch(e){} }
+function pgPast(){ return pgLoadRuns().filter(function(r){ return r.mode==='practical'; }); }
+function pgForms(){ var f={}; PGPOOL.forEach(function(i){ f[i.form]=1; }); return Object.keys(f).sort(); }
+function pgNext(){
+  var F=pgForms(); if(!F.length) return null;
+  var n=pgPast().length;
+  return {form:F[n%F.length], pass:Math.floor(n/F.length)+1, run:n+1, forms:F.length};
+}
+function pgFormNote(){
+  var n=pgNext(), node=el('pgFormNote'); if(!node) return;
+  if(!n){ node.textContent='No practical items are loaded. Add cvrn-practical-bank.js to the page and this builds itself.'; return; }
+  var done=pgPast().length;
+  var cnt=PGPOOL.filter(function(i){ return i.form===n.form; }).length;
+  node.textContent = done===0
+    ? 'Next run draws form '+n.form+', '+cnt+' items. There are '+n.forms+' forms, so your second run sees a completely different set.'
+    : 'You have completed '+done+' run'+(done===1?'':'s')+'. Run '+n.run+' draws form '+n.form+', '+cnt+' items, pass '+n.pass+' through the forms.';
+}
+
+var PG=null, pgChosen=null, pgConf=null;
+var pgmon=null, pgcal=null;
+function pgBoot(){
+  if(pgmon) return;
+  pgmon = new Monitor(el('pgMon'), {rhythm:'nsr', autorun:false, mmWide:250});
+  pgcal = new Calipers(el('pgScreen'), el('pgMon'), pgmon, function(d){
+    el('pgMeas').textContent = d ? (Math.round(d.ms)+' ms  ·  '+d.boxes.toFixed(1)+' mm'+(d.ms>60?('  ·  '+Math.round(d.rate)+' bpm'):'')) : 'no measurement yet';
+  });
+  el('pgCalBtn').addEventListener('click', function(){
+    var on = this.getAttribute('aria-pressed')==='true';
+    pgcal.toggle(!on); this.setAttribute('aria-pressed', on?'false':'true');
+  });
+}
+
+el('pgStart').addEventListener('click', function(){
+  var n=pgNext();
+  if(!n){ el('pgReport').innerHTML='<div class="q"><h2>Nothing to run yet</h2><p class="usage">The practical item pool is empty in this build.</p></div>'; return; }
+  pgBoot();
+  var items = PGPOOL.filter(function(i){ return i.form===n.form; }).slice();
+  /* progressive order: name it, measure it, localize it, decide */
+  items.sort(function(a,b){ return (PGORDER[a.kind]-PGORDER[b.kind]) || (a.dok-b.dok) || (a.id<b.id?-1:1); });
+  PG = {items:items, i:0, correct:0, byDom:{}, byKind:{}, form:n.form, run:n.run, pass:n.pass, missed:[]};
+  el('pgIntro').hidden=true; el('pgReport').innerHTML=''; el('pgStage').hidden=false;
+  pgRender();
+});
+el('pgHist').addEventListener('click', function(){ pgHistory(); });
+
+function pgShow12(patKey){
+  var pat=PATTERNS[patKey], host=el('pgLeads');
+  host.hidden=false; host.innerHTML='';
+  if(!pat) return;
+  var leads=pat.lead();
+  var grid=document.createElement('div'); grid.className='leadGrid';
+  LEADS.forEach(function(L){
+    var d=document.createElement('div'); d.className='leadCell';
+    d.innerHTML='<canvas width="420" height="170" role="img" aria-label="Lead '+L+'"></canvas><span class="nm">'+L+'</span>';
+    grid.appendChild(d);
+  });
+  host.appendChild(grid);
+  LEADS.forEach(function(L,i){ drawLead(grid.children[i].querySelector('canvas'), L, leads[L], pat); });
+}
+
+function pgRender(){
+  if(PG.i>=PG.items.length) return pgReport();
+  var it=PG.items[PG.i];
+  pgChosen=null; pgConf=null;
+  el('pgFb').hidden=true; el('pgConf').hidden=false;
+  Array.prototype.forEach.call(el('pgConf').querySelectorAll('[data-pgconf]'), function(b){ b.setAttribute('aria-pressed','false'); });
+  el('pgProg').textContent='Practical gap finder · form '+PG.form+' · item '+(PG.i+1)+' of '+PG.items.length+' · '+it.kind;
+  var body=el('pgBody'); body.innerHTML='';
+  el('pgStem').textContent=it.q;
+
+  var showStrip = !!it.rhythm;
+  /* calipers go back to their default span for every item so the previous
+     item's measurement is never mistaken for this one's */
+  if(pgcal){ pgcal.a=el('pgMon').width*0.32; pgcal.b=el('pgMon').width*0.46; pgcal.draw(); }
+  el('pgMeas').textContent='no measurement yet';
+  el('pgScreen').hidden = !showStrip;
+  el('pgCalRow').style.display = showStrip ? '' : 'none';
+  if(showStrip){ pgmon.stream=new Stream(it.rhythm); pgmon.renderStatic(10); }
+  if(it.pattern){ pgShow12(it.pattern); } else { el('pgLeads').hidden=true; el('pgLeads').innerHTML=''; }
+
+  if(it.kind==='measure'){
+    var wrap=document.createElement('div'); wrap.className='measGrid';
+    wrap.innerHTML='<div class="field"><label for="pgNum">Your measurement in '+it.unit+'</label><input type="number" id="pgNum" step="1" inputmode="numeric"></div>';
+    body.appendChild(wrap);
+    if(pgcal && !pgcal.on){ pgcal.toggle(true); el('pgCalBtn').setAttribute('aria-pressed','true'); }
+  } else {
+    var ul=document.createElement('ul'); ul.className='opts';
+    it.o.forEach(function(o,ix){
+      var li=document.createElement('li'), lab=document.createElement('label');
+      lab.className='opt';
+      lab.innerHTML='<input type="radio" name="pgopt" value="'+ix+'"><span>'+o+'</span>';
+      lab.querySelector('input').addEventListener('change', function(){ pgChosen=ix; });
+      li.appendChild(lab); ul.appendChild(li);
+    });
+    body.appendChild(ul);
+  }
+  el('pgSubmit').textContent='Submit';
+  Array.prototype.forEach.call(el('pgConf').querySelectorAll('[data-pgconf]'), function(b){ b.style.display=''; });
+  var pgLab=el('pgConf').querySelector('.lab'); if(pgLab) pgLab.style.display='';
+  el('pgStage').scrollIntoView && el('pgStage').scrollIntoView({block:'start'});
+}
+
+Array.prototype.forEach.call(el('pgConf').querySelectorAll('[data-pgconf]'), function(b){
+  b.addEventListener('click', function(){
+    pgConf = this.getAttribute('data-pgconf')==='1';
+    Array.prototype.forEach.call(el('pgConf').querySelectorAll('[data-pgconf]'), function(x){ x.setAttribute('aria-pressed','false'); });
+    this.setAttribute('aria-pressed','true');
+  });
+});
+
+function pgFlash(m){
+  var fb=el('pgFb'); fb.hidden=false; fb.setAttribute('data-k','wrong');
+  fb.innerHTML='<strong>Hold on</strong><p style="margin:0">'+m+'</p>';
+}
+
+el('pgSubmit').addEventListener('click', function(){
+  if(!PG) return;
+  if(el('pgSubmit').textContent==='Next item' || el('pgSubmit').textContent==='See the report'){
+    PG.i++; pgRender(); return;
+  }
+  var it=PG.items[PG.i], ok=false, given='', target='';
+  if(it.kind==='measure'){
+    var v=parseFloat((el('pgNum')||{}).value);
+    if(isNaN(v)){ pgFlash('Enter a measurement first. Use the calipers on the strip above.'); return; }
+    given=v+' '+it.unit;
+    target=it.target+' '+it.unit+', accepted within '+it.tol+' '+it.unit;
+    ok=Math.abs(v-it.target)<=it.tol;
+  } else {
+    if(pgChosen==null){ pgFlash('Choose an answer first.'); return; }
+    given=it.o[pgChosen]; target=it.o[it.a];
+    ok=(pgChosen===it.a);
+  }
+  if(pgConf==null){ pgFlash('Mark how sure you are. Being confident and wrong is a different problem from not knowing, and it is treated differently in your queue.'); return; }
+
+  if(ok) PG.correct++;
+  var D=PG.byDom[it.d]=PG.byDom[it.d]||{n:0,c:0};
+  D.n++; if(ok) D.c++;
+  var K=PG.byKind[it.kind]=PG.byKind[it.kind]||{n:0,c:0};
+  K.n++; if(ok) K.c++;
+  if(!ok) PG.missed.push({id:it.id, kind:it.kind, c:it.c, conf:pgConf});
+
+  record(it.c, ok, pgConf);
+  record(PGSTRAND[it.kind]||'ecg-e2', ok, pgConf);
+
+  var fb=el('pgFb'); fb.hidden=false;
+  fb.setAttribute('data-k', ok?'right':(pgConf?'misc':'wrong'));
+  var head = ok ? 'Correct' : (pgConf ? 'Confident and incorrect, flagged as a misconception' : 'Not correct');
+  var extra = (!ok && pgConf) ? ' You were sure about this one. Items you are sure about and get wrong survive ordinary studying, so they move to the front of the review queue.' : '';
+  fb.innerHTML='<strong>'+head+'</strong>'+
+    (ok?'':'<p style="margin:0 0 8px">You answered: '+given+'. Expected: '+target+'.</p>')+
+    '<p style="margin:0">'+(it.why||'')+extra+'</p>';
+  el('pgConf').hidden=true;
+  el('pgSubmit').textContent = (PG.i===PG.items.length-1) ? 'See the report' : 'Next item';
+  el('pgConf').hidden=false;
+  Array.prototype.forEach.call(el('pgConf').querySelectorAll('[data-pgconf]'), function(b){ b.style.display='none'; });
+  el('pgConf').querySelector('.lab').style.display='none';
+});
+
+function pgRead(n,c){
+  if(n<3) return {k:'thin', t:'Too thin to call'};
+  var f=c/n;
+  return f>=0.8 ? {k:'hold', t:'Holding'} : f>=0.5 ? {k:'frag', t:'Fragile'} : {k:'pri', t:'Priority'};
+}
+function pgDomName(d){
+  var m={D1:'Bedside assessment',D2:'Basic ECG',D3:'Coronary artery disease',D4:'Hypertension',D5:'Cardiomyopathy',D6:'Heart failure',D7:'Non-invasive and interventional',D8:'Heart sounds and valves',D9:'12-lead ECG',D10:'Oxygenation',D11:'Hemodynamic monitoring',D12:'Assist devices',D13:'Pacemakers',D14:'Pharmacology'};
+  return m[d]||d;
+}
+
+function pgReport(){
+  el('pgStage').hidden=true; el('pgIntro').hidden=false;
+  var pct=Math.round(PG.correct/PG.items.length*100);
+  var run={mode:'practical', form:PG.form, run:PG.run, pass:PG.pass, n:PG.items.length, correct:PG.correct,
+           byDom:PG.byDom, byKind:PG.byKind, at:new Date().toISOString().slice(0,10)};
+  pgSaveRun(run);
+  pgFormNote();
+
+  var prior=pgPast().slice(0,-1);
+  var host=el('pgReport'); host.innerHTML='';
+  var card=document.createElement('div'); card.className='q';
+  card.innerHTML='<h2 style="margin-top:0">Practical gap finder, run '+PG.run+'</h2>'+
+    '<p class="usage">'+PG.correct+' of '+PG.items.length+' correct, '+pct+' percent, on form '+PG.form+'. '+
+    'This is a diagnostic, not a score estimate. It is a small sample built to find weak spots, so it reads lower than a full practice exam for most people.</p>';
+
+  /* by skill kind */
+  var t1=document.createElement('table');
+  t1.innerHTML='<caption class="eyebrow" style="text-align:left;padding:0 0 6px">By practical skill</caption>'+
+    '<thead><tr><th>Skill</th><th class="num">Items</th><th class="num">Correct</th><th>Read</th></tr></thead>';
+  var b1=document.createElement('tbody');
+  var KL={identify:'Name the rhythm', measure:'Measure with calipers', localize:'Localize on the 12-lead', decide:'Decide and act'};
+  Object.keys(PGORDER).forEach(function(k){
+    var r=PG.byKind[k]; if(!r) return;
+    var rd=pgRead(r.n,r.c);
+    b1.innerHTML+='<tr><td>'+KL[k]+'</td><td class="num">'+r.n+'</td><td class="num">'+r.c+'</td><td><span class="readpill" data-k="'+rd.k+'">'+rd.t+'</span></td></tr>';
+  });
+  t1.appendChild(b1); card.appendChild(t1);
+
+  /* by domain, with the thin sample guard */
+  var t2=document.createElement('table');
+  t2.innerHTML='<caption class="eyebrow" style="text-align:left;padding:14px 0 6px">By blueprint domain</caption>'+
+    '<thead><tr><th>Domain</th><th class="num">Sampled</th><th class="num">Correct</th><th>Read</th></tr></thead>';
+  var b2=document.createElement('tbody');
+  Object.keys(PG.byDom).sort(function(a,b){ return parseInt(a.slice(1),10)-parseInt(b.slice(1),10); }).forEach(function(d){
+    var r=PG.byDom[d], rd=pgRead(r.n,r.c);
+    b2.innerHTML+='<tr><td>'+d+'. '+pgDomName(d)+'</td><td class="num">'+r.n+'</td><td class="num">'+r.c+'</td><td><span class="readpill" data-k="'+rd.k+'">'+rd.t+'</span></td></tr>';
+  });
+  t2.appendChild(b2); card.appendChild(t2);
+  card.insertAdjacentHTML('beforeend','<p class="note">A domain sampled fewer than three times is marked too thin to call rather than flagged as a gap. Small samples produce false gaps, and a false gap sends you to study something you already know while the real one stays hidden.</p>');
+
+  /* comparison across runs */
+  if(prior.length){
+    var last=prior[prior.length-1];
+    var lp=Math.round(last.correct/last.n*100);
+    var d=pct-lp;
+    var word = d>4 ? 'up' : d<-4 ? 'down' : 'flat';
+    card.insertAdjacentHTML('beforeend',
+      '<h3 style="margin:22px 0 6px">Against your last run</h3>'+
+      '<p class="usage">Run '+last.run+' on form '+last.form+' was '+lp+' percent. This run is '+pct+' percent, so overall you are '+word+
+      (word==='flat' ? '. A difference under five points on a twenty item sample is noise, not improvement.' : ' by '+Math.abs(d)+' points.')+'</p>');
+    var t3=document.createElement('table');
+    t3.innerHTML='<caption class="eyebrow" style="text-align:left;padding:14px 0 6px">Domain trend, and whether the read is stable</caption>'+
+      '<thead><tr><th>Domain</th><th class="num">Last</th><th class="num">This</th><th>Verdict</th></tr></thead>';
+    var b3=document.createElement('tbody');
+    var doms={}; pgPast().forEach(function(r){ Object.keys(r.byDom||{}).forEach(function(k){ doms[k]=1; }); });
+    Object.keys(doms).sort(function(a,b){ return parseInt(a.slice(1),10)-parseInt(b.slice(1),10); }).forEach(function(dm){
+      var runs=pgPast().filter(function(r){ return r.byDom && r.byDom[dm]; });
+      var tot=runs.reduce(function(a,r){ return {n:a.n+r.byDom[dm].n, c:a.c+r.byDom[dm].c}; }, {n:0,c:0});
+      var lastR=prior.filter(function(r){ return r.byDom && r.byDom[dm]; }).pop();
+      var lastPct = lastR ? Math.round(lastR.byDom[dm].c/lastR.byDom[dm].n*100)+'%' : 'not sampled';
+      var thisPct = PG.byDom[dm] ? Math.round(PG.byDom[dm].c/PG.byDom[dm].n*100)+'%' : 'not sampled';
+      var priCount = runs.filter(function(r){ return r.byDom[dm].n>=3 && r.byDom[dm].c/r.byDom[dm].n<0.5; }).length;
+      var verdict;
+      if(tot.n<4) verdict='<span class="readpill" data-k="thin">Not enough data yet</span>';
+      else if(priCount>=2) verdict='<span class="readpill" data-k="pri">Confirmed gap, weak across runs</span>';
+      else if(priCount===1) verdict='<span class="readpill" data-k="frag">Unstable read, run it again</span>';
+      else if(tot.c/tot.n>=0.8) verdict='<span class="readpill" data-k="hold">Holding across runs</span>';
+      else verdict='<span class="readpill" data-k="frag">Fragile</span>';
+      b3.innerHTML+='<tr><td>'+dm+'. '+pgDomName(dm)+'</td><td class="num">'+lastPct+'</td><td class="num">'+thisPct+'</td><td>'+verdict+'</td></tr>';
+    });
+    t3.appendChild(b3); card.appendChild(t3);
+    card.insertAdjacentHTML('beforeend','<p class="note">A domain is only called a confirmed gap once it has read weak on two separate runs with at least three items each. One weak read is marked unstable and sent back for another run. This is what stops the system from sending you to study something the sample got wrong about you.</p>');
+  } else {
+    card.insertAdjacentHTML('beforeend','<p class="note">This is your first practical run, so nothing has been confirmed yet. Run the next form before you commit study time to anything flagged here. One run finds candidates. Two runs confirm them.</p>');
+  }
+
+  var again=document.createElement('div'); again.className='btnrow'; again.style.marginTop='16px';
+  var b=document.createElement('button'); b.className='act primary'; b.textContent='Run the next form';
+  b.addEventListener('click', function(){ el('pgStart').click(); });
+  again.appendChild(b);
+  var h=document.createElement('button'); h.className='act'; h.textContent='Show run history';
+  h.addEventListener('click', pgHistory);
+  again.appendChild(h);
+  card.appendChild(again);
+  host.appendChild(card);
+  host.scrollIntoView && host.scrollIntoView({block:'start'});
+}
+
+function pgHistory(){
+  var runs=pgPast(), host=el('pgReport'); host.innerHTML='';
+  var card=document.createElement('div'); card.className='q';
+  if(!runs.length){
+    card.innerHTML='<h2 style="margin-top:0">No practical runs yet</h2><p class="usage">Run one and this fills in. The value is in the comparison, so the second run is where it starts to be useful.</p>';
+    host.appendChild(card); return;
+  }
+  card.innerHTML='<h2 style="margin-top:0">Practical run history</h2><p class="usage">Every run you have completed in this browser. Nothing is sent anywhere and no identifying information is stored.</p>';
+  var t=document.createElement('table');
+  t.innerHTML='<thead><tr><th>Run</th><th>Date</th><th>Form</th><th class="num">Score</th><th class="num">Percent</th></tr></thead>';
+  var tb=document.createElement('tbody');
+  runs.forEach(function(r){
+    tb.innerHTML+='<tr><td>'+r.run+'</td><td>'+r.at+'</td><td>'+r.form+'</td><td class="num">'+r.correct+' of '+r.n+'</td><td class="num">'+Math.round(r.correct/r.n*100)+'%</td></tr>';
+  });
+  t.appendChild(tb); card.appendChild(t);
+  host.appendChild(card);
+}
+pgFormNote();
 
 /* ---- mastery ---- */
 function renderMastery(){
@@ -7038,6 +8303,12 @@ window.addEventListener('message', function(e){ if(e.data && e.data.type==='cvrn
       var map = { gap:'t-gap', now:'t-now', dash:'t-dash', exams:'t-ex', setup:'t-set' };
       var t = map[sub] && document.querySelector('#view-os #' + map[sub]);
       if(t) t.click();
+    }
+    /* sub route: open a specific tab inside the ECG lab */
+    if(name === 'ecg' && sub){
+      var emap = { gap:'tab-pg', monitor:'tab-mon', twelve:'tab-12', practice:'tab-pr', mastery:'tab-ms' };
+      var et = emap[sub] && document.querySelector('#view-ecg #' + emap[sub]);
+      if(et) et.click();
     }
     window.scrollTo(0,0);
     sendHeight();

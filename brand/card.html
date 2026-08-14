@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#070B14}
+.card{position:relative;width:1280px;height:720px;background:
+   radial-gradient(1100px 620px at 78% 12%, rgba(74,222,128,.16), transparent 62%),
+   radial-gradient(900px 560px at 8% 92%, rgba(56,140,255,.13), transparent 60%),
+   #070B14;
+  overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:78px 86px}
+.grid{position:absolute;inset:0;opacity:.5;
+  background-image:linear-gradient(rgba(74,222,128,.055) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(74,222,128,.055) 1px,transparent 1px);
+  background-size:40px 40px}
+.trace{position:absolute;left:0;right:0;bottom:0;height:150px;opacity:.42}
+.badge{display:inline-flex;align-items:center;gap:11px;font-size:16px;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;color:#86EFAC;margin-bottom:26px;position:relative}
+.badge::before{content:"";width:11px;height:11px;border-radius:99px;background:#4ADE80;
+  box-shadow:0 0 0 6px rgba(74,222,128,.18)}
+.mark{display:flex;align-items:center;gap:22px;position:relative;margin-bottom:22px}
+.mk{width:108px;height:108px;border-radius:30px;background:#0C1322;border:1px solid #22315A;
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+  box-shadow:0 22px 60px rgba(0,0,0,.55)}
+h1{font-size:98px;font-weight:800;letter-spacing:-.045em;color:#E8EDF8;line-height:1}
+h1 span{color:#4ADE80}
+.sub{font-size:29px;font-weight:700;color:#B7C3DA;letter-spacing:-.015em;position:relative;margin-bottom:16px}
+.lede{font-size:21px;color:#7E8BA8;max-width:60ch;line-height:1.5;position:relative}
+.chips{display:flex;gap:12px;margin-top:36px;position:relative;flex-wrap:wrap}
+.chip{font-size:15px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  padding:11px 20px;border-radius:99px;border:1px solid #22315A;color:#7E8BA8}
+.chip.on{border-color:#4ADE80;color:#4ADE80}
+.foot{position:absolute;left:86px;right:86px;bottom:44px;display:flex;justify-content:space-between;
+  align-items:center;font-size:15px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#4C5A78}
+</style></head><body>
+<div class="card">
+  <div class="grid"></div>
+  <svg class="trace" viewBox="0 0 1280 210" preserveAspectRatio="none">
+    <path d="M0 140h150l26-62 40 128 34-96 24 48h150l26-62 40 128 34-96 24 48h150l26-62 40 128 34-96 24 48h150l26-62 40 128 34-96 24 48h150"
+      fill="none" stroke="#4ADE80" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+  <div class="badge">ABCM CVRN-BC &middot; Levels I &amp; II</div>
+
+  <div class="mark">
+    <span class="mk">
+      <svg width="58" height="58" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.1"
+        stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h3.2l1.7-4.2 2.8 9 2.2-6.4 1.6 3.4H21"/></svg>
+    </span>
+    <h1>CVRN<span>/OS</span></h1>
+  </div>
+
+  <p class="sub">You choose the destination. The system chooses the route.</p>
+  <p class="lede">Exam pacing, a gap finder, a weakness dashboard weighted to the blueprint, a live ECG lab, and ten scored practice exams.</p>
+
+  <div class="chips">
+    <span class="chip on">Weakness Dashboard</span>
+    <span class="chip">ECG Lab</span>
+    <span class="chip">Study Notes</span>
+    <span class="chip">Practice Exams</span>
+  </div>
+
+  <div class="foot"><span>MedMasters Collaborative</span><span>Dr. Sharilyn Rennie</span></div>
+</div>
+</body></html>

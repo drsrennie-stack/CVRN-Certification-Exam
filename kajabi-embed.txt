@@ -1,0 +1,70 @@
+<!-- ============================================================
+     CVRN/OS  ·  Kajabi embed
+     Paste this whole block into a Kajabi Custom Code block.
+
+     CHANGE ONE LINE: the src="..." below.
+     Everything else, including the allowed origin, is worked
+     out from that URL. Nothing to set up site-wide.
+     ============================================================ -->
+
+<div style="max-width:1240px;margin:0 auto">
+
+  <iframe
+    data-cvrn-embed
+    src="https://drsrennie-stack.github.io/CVRN-Certification-Exam/index.html"
+    title="ECG and CVRN Review Course"
+    style="width:100%;border:0;display:block;height:1500px;background:#070B14;border-radius:10px"
+    loading="lazy"
+    allow="clipboard-write"
+    referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+  <noscript>
+    <p style="font-family:system-ui,sans-serif;font-size:14px;color:#64708A">
+      This course tool needs JavaScript enabled.
+    </p>
+  </noscript>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var MIN = 520, MAX = 24000, PAD = 8;
+
+  function frames() {
+    return Array.prototype.slice.call(document.querySelectorAll('iframe[data-cvrn-embed]'));
+  }
+
+  /* The allow list is derived from each iframe's own src, so the URL
+     above is the only thing you ever edit. */
+  function allowed(origin) {
+    if (origin === window.location.origin) return true;
+    return frames().some(function (f) {
+      try { return new URL(f.src, window.location.href).origin === origin; }
+      catch (e) { return false; }
+    });
+  }
+
+  window.addEventListener('message', function (e) {
+    if (!allowed(e.origin)) return;
+    var d = e.data;
+    if (!d || d.type !== 'cvrn:height') return;
+    var h = parseInt(d.height, 10);
+    if (isNaN(h)) return;
+    h = Math.max(MIN, Math.min(MAX, h + PAD));
+    frames().forEach(function (f) {
+      if (f.contentWindow === e.source) f.style.height = h + 'px';
+    });
+  }, false);
+
+  /* Ask for a height in case the tool finished loading before this ran. */
+  function poke() {
+    frames().forEach(function (f) {
+      try { f.contentWindow.postMessage({ type: 'cvrn:ping' }, '*'); } catch (err) {}
+    });
+  }
+  window.addEventListener('load', function () { setTimeout(poke, 300); setTimeout(poke, 1200); });
+  window.addEventListener('resize', function () { setTimeout(poke, 200); });
+  setTimeout(poke, 600);
+})();
+</script>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en" data-dark="on">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weakness Dashboard | CVRN/OS</title>
+<meta name="description" content="Readiness by blueprint weight, mastery mix, the weakness queue, and where the exam will actually cost you points.">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Weakness dashboard. Colour is validated, not eyeballed:
+   ordinal blue ramp for the mastery mix, sequential blue for
+   domain magnitude, two categorical slots for paired series,
+   status colours only ever with an icon and a label.
+   ============================================================ */
+:root{
+  --bg:#F5F7F9; --panel:#FFFFFF; --panel2:#EDF1F4; --barbg:#E3E8EE;
+  --ink:#141C2D; --mute:#64708A; --soft:#B4C0D8; --line:#DCE2EA;
+  --acc:#166534; --acc2:#15803D; --onacc:#FFFFFF;      /* dark green, 7.13:1 on white */
+  --blue:#0284C7; --amber:#B45309; --red:#B91C1C; --violet:#6D28D9; --cyan:#0E7490;
+  /* viz */
+  --surface:#FFFFFF;
+  --ord-1:#86b6ef; --ord-2:#3987e5; --ord-3:#1c5cab; --ord-4:#0d366b;
+  --ser-1:#2a78d6; --ser-2:#eb6834;
+  --seq-lo:#cde2fb; --seq-hi:#0d366b;
+  --st-good:#0ca30c; --st-warn:#fab219; --st-serious:#ec835a; --st-crit:#d03b3b;
+  --grid:rgba(20,28,45,.10); --axis:#64708A;
+  --r:10px;
+  --card:0 1px 3px rgba(10,19,34,.08), 0 1px 2px rgba(10,19,34,.05);
+  --lift:0 6px 16px rgba(10,19,34,.10), 0 3px 6px rgba(10,19,34,.06);
+}
+html[data-dark="on"]{
+  --bg:#070B14; --panel:#0C1322; --panel2:#111A2E; --barbg:#1A2440;
+  --ink:#E8EDF8; --mute:#7E8BA8; --soft:#414E66; --line:#1D2942;
+  --acc:#4ADE80; --acc2:#86EFAC; --onacc:#04200E;
+  --blue:#60A5FA; --amber:#FBBF24; --red:#F87171; --violet:#A78BFA; --cyan:#22D3EE;
+  --surface:#0C1322;
+  --ord-1:#cde2fb; --ord-2:#86b6ef; --ord-3:#3987e5; --ord-4:#184f95;
+  --ser-1:#3987e5; --ser-2:#d95926;
+  --seq-lo:#184f95; --seq-hi:#cde2fb;
+  --grid:rgba(232,237,248,.10); --axis:#7E8BA8;
+  --card:0 1px 3px rgba(0,0,0,.5); --lift:0 8px 22px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+em,i,cite,dfn,var{font-style:normal}
+body{background:var(--bg);color:var(--ink);
+  font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
+  font-size:15.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding:26px 20px 70px}
+.eyebrow{font-size:11.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--acc2);font-weight:700;margin-bottom:9px}
+h1{font-size:clamp(26px,4vw,34px);font-weight:800;letter-spacing:-.025em;line-height:1.12;margin-bottom:7px}
+.lede{color:var(--mute);max-width:70ch;margin-bottom:22px;font-size:15px}
+h2{font-size:15px;font-weight:800;letter-spacing:-.01em}
+.dsec{margin-top:22px}
+.dsechd{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin-bottom:11px;flex-wrap:wrap}
+.dsechd p{color:var(--mute);font-size:13px;margin:0}
+
+/* KPI row */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(184px,1fr));gap:13px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:15px 16px 13px;box-shadow:var(--card);position:relative;overflow:hidden}
+.kpi .k{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--mute);font-weight:700;display:block;margin-bottom:5px}
+.kpi .v{font-size:32px;font-weight:800;letter-spacing:-.035em;line-height:1.05;font-variant-numeric:tabular-nums}
+.kpi .u{font-size:14px;font-weight:700;color:var(--mute);margin-left:3px}
+.kpi .d{font-size:12px;font-weight:700;margin-top:4px;display:flex;align-items:center;gap:5px}
+.kpi .d svg{width:13px;height:13px;flex:0 0 auto}
+.kpi .spark{position:absolute;right:0;bottom:0;left:0;height:34px;opacity:.9}
+.kpi[data-tone="good"] .v{color:var(--acc)}
+.kpi[data-tone="warn"] .v{color:var(--amber)}
+.kpi[data-tone="crit"] .v{color:var(--red)}
+.kpi[data-tone="info"] .v{color:var(--blue)}
+
+/* panels */
+.grid2{display:grid;grid-template-columns:1.45fr 1fr;gap:14px}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:17px 18px;box-shadow:var(--card)}
+.panel h2{margin-bottom:3px}
+.panel .sub{color:var(--mute);font-size:12.5px;margin-bottom:13px}
+
+/* legend */
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:11px}
+.legend span{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--mute)}
+.legend i{width:11px;height:11px;border-radius:3px;display:block;flex:0 0 auto}
+
+/* charts */
+.chart{width:100%;display:block;overflow:visible}
+.chart text{font-family:'Plus Jakarta Sans',sans-serif}
+.tip{position:fixed;pointer-events:none;background:var(--panel2);color:var(--ink);border:1px solid var(--line);
+  border-radius:8px;padding:8px 11px;font-size:12.5px;box-shadow:var(--lift);z-index:99;opacity:0;transition:opacity 120ms}
+.tip b{display:block;font-size:13px;margin-bottom:2px}
+.tip .r{color:var(--mute)}
+
+/* queue table */
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;padding:8px 10px;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--mute);font-weight:700;border-bottom:1px solid var(--line)}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:var(--panel2)}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;padding:3px 9px 3px 6px;border-radius:99px;border:1px solid currentColor;white-space:nowrap}
+.chip svg{width:11px;height:11px}
+.chip[data-s="mastered"]{color:var(--blue)}
+.chip[data-s="fragile"]{color:var(--amber)}
+.chip[data-s="gap"]{color:var(--red)}
+.chip[data-s="misc"]{color:var(--violet)}
+.chip[data-s="untested"]{color:var(--mute)}
+.wt{font-variant-numeric:tabular-nums;font-weight:700}
+.btn{font-family:inherit;font-size:12.5px;font-weight:700;padding:8px 13px;min-height:38px;border-radius:8px;
+  cursor:pointer;border:1px solid var(--line);background:var(--panel2);color:var(--ink)}
+.btn:hover{border-color:var(--acc);box-shadow:var(--lift)}
+.btn[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
+.tblview[hidden]{display:none}
+.empty{color:var(--mute);font-size:14px;padding:18px 0}
+.note{color:var(--mute);font-size:12.5px;margin-top:11px;padding-top:11px;border-top:1px solid var(--line)}
+@media(prefers-reduced-motion:reduce){*{transition-duration:1ms !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <p class="eyebrow">Weakness dashboard</p>
+  <h1>Where the exam will cost you points</h1>
+  <p class="lede">Every figure here is weighted by the CVRN-BC blueprint, so a weak domain worth 22 percent outranks a weak domain worth 4 percent. Nothing is scored until there is evidence for it.</p>
+</header>
+
+<div class="kpis" id="kpis"></div>
+
+<div class="dsec grid2">
+  <div class="panel">
+    <h2>Readiness by domain</h2>
+    <p class="sub">Bar length is your mastery. Bar colour is depth of evidence, palest means barely tested. The number on the right is the domain's share of the exam.</p>
+    <div id="domChart"></div>
+    <button class="btn" id="domTbl" aria-pressed="false" style="margin-top:12px">Show as table</button>
+    <div class="tblview" id="domTable" hidden></div>
+  </div>
+
+  <div>
+    <div class="panel">
+      <h2>Mastery mix</h2>
+      <p class="sub">Every competency in scope, by state.</p>
+      <div class="legend" id="mixLegend"></div>
+      <div id="mixChart"></div>
+    </div>
+    <div class="panel" style="margin-top:14px">
+      <h2>Readiness trend</h2>
+      <p class="sub">One point per day you studied.</p>
+      <div id="trendChart"></div>
+    </div>
+  </div>
+</div>
+
+<div class="dsec panel">
+  <div class="dsechd">
+    <div><h2>Coverage against the blueprint</h2>
+      <p>Where your evidence is thin relative to what the exam weights. A short blue bar beside a tall orange one is a domain you have not tested enough.</p></div>
+  </div>
+  <div class="legend">
+    <span><i style="background:var(--ser-1)"></i>Your mastery</span>
+    <span><i style="background:var(--ser-2)"></i>Share of the exam</span>
+  </div>
+  <div id="covChart"></div>
+</div>
+
+<div class="dsec panel">
+  <div class="dsechd">
+    <div><h2>Weakness queue</h2><p>Ranked by blueprint weight, severity, time since you touched it, and whether other competencies depend on it.</p></div>
+  </div>
+  <div id="queue"></div>
+  <p class="note" id="queueNote"></p>
+</div>
+
+</div>
+<div class="tip" id="tip" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+"use strict";
+var C = window.CVRN_COMPETENCIES || [];
+var el = function(i){ return document.getElementById(i); };
+var ROOT = document.getElementById('view-dash') || document.documentElement;
+var V  = function(n){
+  var v = getComputedStyle(ROOT).getPropertyValue(n).trim();
+  if(!v) v = getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  return v;
+};
+
+/* ---------- state ---------- */
+function load(k,d){ try{ return JSON.parse(localStorage.getItem(k)||'null')||d; }catch(e){ return d; } }
+var S = load('cvrn-setup',{level:2,date:'',days:4,mins:45,exp:0.35,goal:0.85});
+var P = load('cvrn-progress',{});
+var X = load('cvrn-exams',{});
+var H = load('cvrn-history',{});
+
+function LV(){ return parseInt(S.level,10)||2; }
+function wt(c){ var w = LV()===1 ? c.weightL1 : c.weightL2; return (w==null? (c.domainWeight||5) : w); }
+function inScope(){ return C.filter(function(c){ return c.level<=LV(); }); }
+
+function stateOf(c){
+  var e=P[c.id];
+  if(!e || (!e.attempts && e.selfRate==null)) return {k:'untested',label:'Untested',score:0};
+  if(!e.attempts){ var r=e.selfRate; return {k: r<=1?'gap':'fragile', label:'Self-rated', score:(r||0)/3*0.5}; }
+  var s=e.strength!=null?e.strength:(e.correct/e.attempts);
+  if(e.misconceptions>0 && s<0.85) return {k:'misc',label:'Misconception',score:s};
+  if(s>=0.85) return {k:'mastered',label:'Mastered',score:s};
+  if(s>=0.5)  return {k:'fragile',label:'Fragile',score:s};
+  return {k:'gap',label:'Gap',score:s};
+}
+var SEV={misc:1.0,gap:0.8,fragile:0.4,untested:0.65,mastered:0.05};
+function decay(c){
+  var e=P[c.id]; if(!e||!e.reviewedAt) return 1;
+  var d=(Date.now()-new Date(e.reviewedAt+'T12:00:00'))/864e5;
+  return Math.min(1.6, 1 + d/21);
+}
+function priority(c){ return (wt(c)/14)*SEV[stateOf(c).k]*decay(c)*(c.dok>=3?1.15:1.0); }
+
+/* domain rollup */
+function domains(){
+  var m={};
+  inScope().forEach(function(c){
+    var d = m[c.domain] || (m[c.domain]={id:c.domain,name:c.domainName,weight:wt(c),n:0,tested:0,sum:0});
+    d.n++;
+    var e=P[c.id];
+    if(e && e.attempts){ d.tested++; d.sum += stateOf(c).score; }
+  });
+  return Object.keys(m).sort(function(a,b){return parseInt(a.slice(1))-parseInt(b.slice(1));})
+    .map(function(k){ var d=m[k]; d.mastery = d.n? d.sum/d.n : 0; d.evidence = d.n? d.tested/d.n : 0; return d; });
+}
+
+function readiness(){
+  var scope=inScope(), wtot=0, wsum=0;
+  scope.forEach(function(c){ var w=wt(c), e=P[c.id];
+    wtot+=w; wsum+=w*(e&&e.attempts?stateOf(c).score:0); });
+  return wtot? wsum/wtot : 0;
+}
+function daysToExam(){
+  if(!S.date) return null;
+  return Math.max(0, Math.round((new Date(S.date+'T12:00:00') - new Date())/864e5));
+}
+
+/* record today's readiness so the trend has something real to draw */
+(function stamp(){
+  var t=new Date().toISOString().slice(0,10);
+  var touched = inScope().some(function(c){ var e=P[c.id]; return e && e.attempts; });
+  if(touched){ H[t]=Math.round(readiness()*100);
+    try{ localStorage.setItem('cvrn-history', JSON.stringify(H)); }catch(e){} }
+})();
+
+/* ---------- svg helpers ---------- */
+var NS='http://www.w3.org/2000/svg';
+function svg(w,h,cls){ var s=document.createElementNS(NS,'svg');
+  s.setAttribute('viewBox','0 0 '+w+' '+h); s.setAttribute('class', cls||'chart');
+  s.setAttribute('role','img'); s.style.height=h+'px'; return s; }
+function mk(t,a){ var e=document.createElementNS(NS,t);
+  for(var k in a) e.setAttribute(k,a[k]); return e; }
+function txt(x,y,s,o){ var t=mk('text',Object.assign({x:x,y:y},o||{})); t.textContent=s; return t; }
+
+var tip=el('tip');
+function showTip(ev,html){
+  tip.innerHTML=html; tip.style.opacity='1';
+  var r=12;
+  tip.style.left=Math.min(window.innerWidth-tip.offsetWidth-8, ev.clientX+r)+'px';
+  tip.style.top=Math.max(8, ev.clientY-tip.offsetHeight-r)+'px';
+}
+function hideTip(){ tip.style.opacity='0'; }
+function hoverable(node, html){
+  node.style.cursor='default';
+  node.addEventListener('mousemove', function(e){ showTip(e, html); });
+  node.addEventListener('mouseleave', hideTip);
+  node.addEventListener('focus', function(e){
+    var b=node.getBoundingClientRect();
+    showTip({clientX:b.left+b.width/2, clientY:b.top+b.height/2}, html);
+  });
+  node.addEventListener('blur', hideTip);
+  node.setAttribute('tabindex','0');
+}
+
+/* interpolate the sequential ramp for evidence depth */
+function seq(t){
+  function hex(h,fb){
+    h=(h||'').trim();
+    if(!/^#?[0-9a-f]{6}$/i.test(h)) h=fb;
+    h=h.replace('#','');
+    return [parseInt(h.slice(0,2),16),parseInt(h.slice(2,4),16),parseInt(h.slice(4,6),16)];
+  }
+  var dark = document.documentElement.getAttribute('data-dark')==='on';
+  var A=hex(V('--seq-lo'), dark?'184f95':'cde2fb'), B=hex(V('--seq-hi'), dark?'cde2fb':'0d366b');
+  t=Math.max(0,Math.min(1,t));
+  return 'rgb('+A.map(function(v,i){ return Math.round(v+(B[i]-v)*t); }).join(',')+')';
+}
+
+/* ---------- KPIs ---------- */
+var ICON = {
+  up:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 13V3M3.5 7.5L8 3l4.5 4.5"/></svg>',
+  down:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v10M3.5 8.5L8 13l4.5-4.5"/></svg>',
+  flat:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8h10"/></svg>',
+  warn:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.6L14.5 13.4h-13z"/><path d="M8 6.6v3.2M8 11.8h.01"/></svg>',
+  check:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3.2L13 5"/></svg>',
+  clock:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 4.6V8l2.4 1.6"/></svg>'
+};
+function sparkline(vals, colour){
+  if(vals.length<2) return '';
+  var w=200,h=34, mx=Math.max.apply(null,vals), mn=Math.min.apply(null,vals);
+  var rng=(mx-mn)||1;
+  var pts=vals.map(function(v,i){
+    return [ i/(vals.length-1)*w, h-2 - (v-mn)/rng*(h-6) ];
+  });
+  var d='M'+pts.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1);}).join('L');
+  var area=d+'L'+w+','+h+'L0,'+h+'Z';
+  return '<svg class="spark" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" aria-hidden="true">'
+    +'<path d="'+area+'" fill="'+colour+'" opacity=".13"/>'
+    +'<path d="'+d+'" fill="none" stroke="'+colour+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>';
+}
+function renderKPIs(){
+  var scope=inScope(), rd=Math.round(readiness()*100), dte=daysToExam();
+  var touched=scope.filter(function(c){ var e=P[c.id]; return e&&e.attempts; }).length;
+  var misc=scope.reduce(function(a,c){ var e=P[c.id]; return a+((e&&e.misconceptions)||0); },0);
+  var today=new Date().toISOString().slice(0,10);
+  var due=scope.filter(function(c){ var e=P[c.id]; return e&&e.nextRecall&&e.nextRecall<=today; }).length;
+  var atRisk=domains().filter(function(d){ return d.mastery<0.5 && d.weight>=7; }).length;
+
+  var hist=Object.keys(H).sort().map(function(k){ return H[k]; });
+  var delta = hist.length>1 ? hist[hist.length-1]-hist[0] : 0;
+  var dIcon = delta>0?ICON.up:(delta<0?ICON.down:ICON.flat);
+  var dCol  = delta>0?'var(--acc)':(delta<0?'var(--red)':'var(--mute)');
+
+  var cards=[
+    {k:'Readiness', v:rd, u:'%', tone: rd>=75?'good':(rd>=50?'warn':'crit'),
+     d:'<span style="color:'+dCol+'">'+dIcon+(delta>0?'+':'')+delta+' pts since you started</span>',
+     spark: sparkline(hist.length>1?hist:[0,rd], V('--acc'))},
+    {k:'Days to exam', v: dte==null?'--':dte, u:'', tone:'info',
+     d:'<span style="color:var(--mute)">'+ICON.clock+(S.date? Math.floor(dte/7*(S.days||4))+' study days left':'set a date in the plan')+'</span>'},
+    {k:'Due for review', v:due, u:'', tone: due>12?'warn':'info',
+     d:'<span style="color:var(--mute)">'+ICON.clock+'of '+scope.length+' in scope</span>'},
+    {k:'Misconceptions', v:misc, u:'', tone: misc>0?'crit':'good',
+     d: misc>0 ? '<span style="color:var(--red)">'+ICON.warn+'confident and wrong</span>'
+               : '<span style="color:var(--acc)">'+ICON.check+'none flagged</span>'},
+    {k:'Heavy domains at risk', v:atRisk, u:'', tone: atRisk>0?'warn':'good',
+     d: atRisk>0 ? '<span style="color:var(--amber)">'+ICON.warn+'under 50 percent, worth 7 or more</span>'
+                 : '<span style="color:var(--acc)">'+ICON.check+'nothing heavy is weak</span>'},
+    {k:'Evidence', v:touched, u:'/'+scope.length, tone:'info',
+     d:'<span style="color:var(--mute)">'+ICON.check+'competencies tested</span>'}
+  ];
+  el('kpis').innerHTML = cards.map(function(c){
+    return '<div class="kpi" data-tone="'+c.tone+'"><span class="k">'+c.k+'</span>'
+      +'<div class="v">'+c.v+(c.u?'<span class="u">'+c.u+'</span>':'')+'</div>'
+      +'<div class="d">'+c.d+'</div>'+(c.spark||'')+'</div>';
+  }).join('');
+}
+
+/* ---------- domain readiness bars ---------- */
+function renderDomains(){
+  var D=domains(), host=el('domChart'); host.innerHTML='';
+  var rowH=28, padL=178, padR=126, w=780, h=D.length*rowH+16;
+  var s=svg(w,h); s.setAttribute('aria-label','Readiness by domain, horizontal bars');
+  var trackW = w-padL-padR;
+  D.forEach(function(d,i){
+    var y=i*rowH+6;
+    var nm = d.name.replace(/ and /g,' & ');
+    if(nm.length>27) nm = nm.slice(0,26).replace(/[ ,]+$/,'')+'\u2026';
+    s.appendChild(txt(padL-12, y+13, d.id+' '+nm,
+      {'text-anchor':'end','font-size':'11.5','font-weight':'600',fill:'var(--mute)'}));
+    s.appendChild(mk('rect',{x:padL,y:y+3,width:trackW,height:13,rx:4,fill:'var(--barbg)'}));
+    var bw=Math.max(d.mastery>0?4:0, trackW*d.mastery);
+    if(bw>0){
+      var bar=mk('rect',{x:padL,y:y+3,width:bw,height:13,rx:4,fill:seq(0.25+d.evidence*0.75)});
+      hoverable(bar,'<b>'+d.name+'</b>'
+        +'<span class="r">Mastery '+Math.round(d.mastery*100)+' percent<br>'
+        +'Evidence '+d.tested+' of '+d.n+' competencies tested<br>'
+        +'Worth '+d.weight+' percent of the exam</span>');
+      s.appendChild(bar);
+    }
+    s.appendChild(txt(w-padR+8, y+14, Math.round(d.mastery*100)+'%',
+      {'font-size':'11.5','font-weight':'700',fill:'var(--ink)'}));
+    s.appendChild(txt(w-6, y+14, d.weight+'% of exam',
+      {'text-anchor':'end','font-size':'10.5','font-weight':'700',fill:'var(--mute)'}));
+  });
+  host.appendChild(s);
+
+  el('domTable').innerHTML = '<table><thead><tr><th>Domain</th><th>Mastery</th><th>Tested</th><th>Exam share</th></tr></thead><tbody>'
+    + D.map(function(d){ return '<tr><td>'+d.id+' '+d.name+'</td><td class="wt">'+Math.round(d.mastery*100)
+      +'%</td><td class="wt">'+d.tested+' of '+d.n+'</td><td class="wt">'+d.weight+'%</td></tr>'; }).join('')
+    + '</tbody></table>';
+}
+el('domTbl').addEventListener('click', function(){
+  var open = el('domTable').hidden === false;
+  el('domTable').hidden = open;
+  this.setAttribute('aria-pressed', open?'false':'true');
+  this.textContent = open ? 'Show as table' : 'Hide table';
+});
+
+/* ---------- mastery mix, ordinal ramp ---------- */
+function renderMix(){
+  var scope=inScope(), counts={mastered:0,fragile:0,gap:0,misc:0,untested:0};
+  scope.forEach(function(c){ counts[stateOf(c).k]++; });
+  var order=[
+    {k:'mastered', label:'Mastered', col:'var(--ord-4)'},
+    {k:'fragile',  label:'Fragile',  col:'var(--ord-3)'},
+    {k:'gap',      label:'Gap',      col:'var(--ord-2)'},
+    {k:'misc',     label:'Misconception', col:'var(--ord-1)'},
+    {k:'untested', label:'Untested', col:'var(--barbg)'}
+  ];
+  el('mixLegend').innerHTML = order.map(function(o){
+    return '<span><i style="background:'+o.col+'"></i>'+o.label+' '+counts[o.k]+'</span>'; }).join('');
+
+  var w=380,h=44,host=el('mixChart'); host.innerHTML='';
+  var s=svg(w,h); s.setAttribute('aria-label','Mastery mix, stacked bar');
+  var total=scope.length||1, x=0;
+  order.forEach(function(o){
+    var seg = counts[o.k]/total*w;
+    if(seg<=0) return;
+    var gap = 2;                       /* 2px surface gap between fills */
+    var rect=mk('rect',{x:x,y:6,width:Math.max(1,seg-gap),height:20,rx:3,fill:o.col});
+    hoverable(rect,'<b>'+o.label+'</b><span class="r">'+counts[o.k]+' of '+total+' competencies, '
+      +Math.round(counts[o.k]/total*100)+' percent</span>');
+    s.appendChild(rect);
+    if(seg>44) s.appendChild(txt(x+ (seg-gap)/2, 40, Math.round(counts[o.k]/total*100)+'%',
+      {'text-anchor':'middle','font-size':'11','font-weight':'700',fill:'var(--mute)'}));
+    x+=seg;
+  });
+  host.appendChild(s);
+}
+
+/* ---------- readiness trend ---------- */
+function renderTrend(){
+  var keys=Object.keys(H).sort(), host=el('trendChart'); host.innerHTML='';
+  if(keys.length<2){
+    host.innerHTML='<p class="empty">Two study days will draw a line here. One point is recorded each day you answer something.</p>';
+    return;
+  }
+  var w=380,h=124,padL=28,padB=20,padT=8;
+  var s=svg(w,h); s.setAttribute('aria-label','Readiness over time, line chart');
+  var vals=keys.map(function(k){ return H[k]; });
+  var mx=Math.max(100, Math.max.apply(null,vals)), mn=0;
+  var X=function(i){ return padL + i/(keys.length-1)*(w-padL-8); };
+  var Y=function(v){ return padT + (1-(v-mn)/(mx-mn))*(h-padT-padB); };
+  [0,50,100].forEach(function(g){
+    s.appendChild(mk('line',{x1:padL,y1:Y(g),x2:w-8,y2:Y(g),stroke:'var(--grid)','stroke-width':1}));
+    s.appendChild(txt(padL-6, Y(g)+3.5, g, {'text-anchor':'end','font-size':'10',fill:'var(--axis)'}));
+  });
+  var d='M'+keys.map(function(k,i){ return X(i)+','+Y(H[k]); }).join('L');
+  s.appendChild(mk('path',{d:d+'L'+X(keys.length-1)+','+Y(0)+'L'+X(0)+','+Y(0)+'Z',
+    fill:'var(--ser-1)',opacity:'.13'}));
+  s.appendChild(mk('path',{d:d,fill:'none',stroke:'var(--ser-1)','stroke-width':2,
+    'stroke-linejoin':'round','stroke-linecap':'round'}));
+  keys.forEach(function(k,i){
+    var c=mk('circle',{cx:X(i),cy:Y(H[k]),r:4.5,fill:'var(--ser-1)',
+      stroke:'var(--surface)','stroke-width':2});
+    hoverable(c,'<b>'+H[k]+' percent ready</b><span class="r">'+k+'</span>');
+    s.appendChild(c);
+  });
+  s.appendChild(txt(padL, h-4, keys[0], {'font-size':'10',fill:'var(--axis)'}));
+  s.appendChild(txt(w-8, h-4, keys[keys.length-1], {'text-anchor':'end','font-size':'10',fill:'var(--axis)'}));
+  host.appendChild(s);
+}
+
+/* ---------- coverage: two series, grouped ---------- */
+function renderCoverage(){
+  var D=domains(), host=el('covChart'); host.innerHTML='';
+  var w=1000, colW=w/D.length, h=170, padB=34, padT=10;
+  var s=svg(w,h); s.setAttribute('aria-label','Your mastery against each domain share of the exam');
+  var maxW=Math.max.apply(null, D.map(function(d){ return d.weight; }));
+  var scale=Math.max(100, maxW);
+  D.forEach(function(d,i){
+    var cx=i*colW, bw=Math.min(17, colW/3.2), gapx=3;
+    var mH=(d.mastery*100)/scale*(h-padT-padB);
+    var wH=(d.weight)/scale*(h-padT-padB);
+    var b1=mk('rect',{x:cx+colW/2-bw-gapx/2,y:h-padB-mH,width:bw,height:Math.max(2,mH),rx:4,fill:'var(--ser-1)'});
+    var b2=mk('rect',{x:cx+colW/2+gapx/2,y:h-padB-wH,width:bw,height:Math.max(2,wH),rx:4,fill:'var(--ser-2)'});
+    hoverable(b1,'<b>'+d.name+'</b><span class="r">Your mastery '+Math.round(d.mastery*100)+' percent</span>');
+    hoverable(b2,'<b>'+d.name+'</b><span class="r">Worth '+d.weight+' percent of the exam</span>');
+    s.appendChild(b1); s.appendChild(b2);
+    s.appendChild(txt(cx+colW/2, h-padB+15, d.id, {'text-anchor':'middle','font-size':'11','font-weight':'700',fill:'var(--mute)'}));
+    if(d.mastery*100 < d.weight*2 && d.weight>=7)
+      s.appendChild(txt(cx+colW/2, h-padB+28, 'thin', {'text-anchor':'middle','font-size':'9.5','font-weight':'700',fill:'var(--red)'}));
+  });
+  s.appendChild(mk('line',{x1:0,y1:h-padB,x2:w,y2:h-padB,stroke:'var(--grid)','stroke-width':1}));
+  host.appendChild(s);
+}
+
+/* ---------- weakness queue ---------- */
+var CHIP={
+  mastered:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3.2L13 5"/></svg>',
+  fragile:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><path d="M8 3v6M8 12.5h.01"/></svg>',
+  gap:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2.6L14.5 13.4h-13z"/><path d="M8 6.6v3M8 11.6h.01"/></svg>',
+  misc:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="8" cy="8" r="5.6"/><path d="M6 6l4 4M10 6l-4 4"/></svg>',
+  untested:'<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="5.6" stroke-dasharray="2.4 2.4"/></svg>'
+};
+function renderQueue(){
+  var r = inScope().map(function(c){ return {c:c,p:priority(c),st:stateOf(c)}; })
+          .sort(function(a,b){ return b.p-a.p; }).slice(0,12);
+  if(!r.length){ el('queue').innerHTML='<p class="empty">Nothing in scope yet.</p>'; return; }
+  el('queue').innerHTML='<table><thead><tr><th style="width:44px">#</th><th>Competency</th><th>Domain</th><th>State</th><th style="width:90px">Exam share</th></tr></thead><tbody>'
+    + r.map(function(x,i){
+        return '<tr><td class="wt">'+(i+1)+'</td><td>'+x.c.name+'</td><td style="color:var(--mute)">'+x.c.domain+'</td>'
+        +'<td><span class="chip" data-s="'+x.st.k+'">'+CHIP[x.st.k]+x.st.label+'</span></td>'
+        +'<td class="wt">'+wt(x.c)+'%</td></tr>'; }).join('')
+    + '</tbody></table>';
+  var untested=inScope().filter(function(c){ var e=P[c.id]; return !e||!e.attempts; }).length;
+  el('queueNote').textContent = untested
+    ? untested+' of '+inScope().length+' competencies have no evidence yet, so they sit at a neutral priority rather than a false zero. Run the gap finder to replace guesses with data.'
+    : 'Every competency in scope has evidence behind it.';
+}
+
+function renderAll(){ renderKPIs(); renderDomains(); renderMix(); renderTrend(); renderCoverage(); renderQueue(); }
+renderAll();
+window.addEventListener('cvrn:refresh', renderAll);
+window.addEventListener('resize', function(){ hideTip(); });
+
+function sendHeight(){
+  try{ window.parent.postMessage({type:'cvrn:height', id:'cvrn-dashboard',
+    height:document.documentElement.scrollHeight}, '*'); }catch(e){}
+}
+if(window.ResizeObserver) new ResizeObserver(sendHeight).observe(document.body);
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+document.addEventListener('click', function(){ setTimeout(sendHeight,60); });
+window.addEventListener('message', function(e){ if(e.data && e.data.type==='cvrn:ping') sendHeight(); });
+})();
+</script>
+</body>
+</html>

@@ -108,7 +108,13 @@ CH.append(dict(id="D2", num="1", title="Conduction and the Basic ECG",
 </ol>
 <p>These three answers determine the rhythm. Naming it is the last step, not the first.</p>
 
-<p><strong>Automaticity.</strong> Pacemaker cells have no stable resting membrane potential. During phase 4, inward sodium and calcium current exceeds outward potassium current, so the membrane depolarises spontaneously until it reaches threshold and fires. This is the funny current. The cell group with the steepest phase 4 slope reaches threshold first and sets the heart rate, which under normal conditions is the sinoatrial node.{cite(1,2)}</p>
+<div class="key"><h4>Key points</h4>
+<ul class="bul">
+  <li><strong>Pacemaker cells have no stable resting potential.</strong> They drift toward threshold on their own.</li>
+  <li><strong>Phase 4 drift.</strong> Inward sodium and calcium exceed outward potassium. This is the funny current.</li>
+  <li><strong>Fastest drift wins.</strong> The steepest phase 4 slope reaches threshold first and sets the rate, normally the sinoatrial node.</li>
+  <li><strong>Everything else is a backup.</strong> Lower sites only surface when the site above them fails.{cite(1,2)}</li>
+</ul></div>
 
 <div class="rates">
   <table>
@@ -131,7 +137,13 @@ CH.append(dict(id="D2", num="1", title="Conduction and the Basic ECG",
   <li>The atrioventricular node delays conduction. This delay allows atrial emptying to complete before ventricular systole, and it accounts for most of the <strong>PR interval</strong>.</li>
   <li>The bundle of His, the right and left bundle branches, and the Purkinje fibres conduct rapidly through both ventricles, producing a narrow <strong>QRS complex</strong>.</li>
 </ol>
-<p>Clinical consequence: an impulse that does not use this rapid pathway must travel myocyte to myocyte, which is slower. A QRS of 0.12 seconds or more therefore indicates abnormal ventricular activation, from bundle branch block, a ventricular focus, ventricular pacing, or a metabolic cause such as hyperkalaemia.{cite(1,7,8)}</p>
+<p><strong>Clinical consequence.</strong> An impulse that skips this rapid pathway travels myocyte to myocyte, which is slower. A QRS of 0.12 seconds or more means abnormal ventricular activation. Four causes:</p>
+<ul class="bul">
+  <li>Bundle branch block</li>
+  <li>A ventricular focus, including escape rhythms and ventricular tachycardia</li>
+  <li>Ventricular pacing</li>
+  <li>A metabolic cause, most often hyperkalaemia{cite(1,7,8)}</li>
+</ul>
 
 <h3>What each part of the tracing represents</h3>
 <ul class="def">
@@ -158,7 +170,10 @@ CH.append(dict(id="D2", num="1", title="Conduction and the Basic ECG",
   <li><strong>Irregular rhythm.</strong> Neither shortcut applies. Count QRS complexes in a six second strip and multiply by ten.</li>
   <li><strong>QT correction.</strong> Bazett formula: QTc equals QT divided by the square root of the R to R interval in seconds. A QTc above approximately 500 ms is associated with markedly increased risk of torsades de pointes.</li>
 </ol>
-<p>Measure from the earliest onset to the latest offset across several leads, since a single lead may not show the full duration.{cite(7,9)}</p>
+<ul class="bul">
+  <li><strong>Measure across leads,</strong> earliest onset to latest offset. One lead may not show the full duration.</li>
+  <li><strong>Calipers beat eyeballing</strong> whenever the rhythm is irregular or the complex is wide.{cite(7,9)}</li>
+</ul>
 
 <h3>Atrioventricular block</h3>
 <p>All three degrees answer two questions: does every atrial impulse reach the ventricles, and is the PR interval constant?</p>
@@ -168,7 +183,12 @@ CH.append(dict(id="D2", num="1", title="Conduction and the Basic ECG",
   <li><strong>Second degree, Mobitz type II.</strong> PR interval constant, then a P wave fails to conduct without warning. The lesion is usually infranodal. Carries a risk of progression to complete block, and the escape rhythm below the lesion is slow and unreliable.</li>
   <li><strong>Third degree (complete).</strong> No atrial impulses conduct. P waves and QRS complexes occur at independent rates with no fixed relationship. This atrioventricular dissociation is the diagnostic finding.</li>
 </ol>
-<p>Because the lesion in Mobitz type II and complete block usually sits below the atrioventricular node, atropine frequently fails, and temporary pacing capability is prepared at the same time it is given.{cite(8,5)}</p>
+<div class="key"><h4>The distinction that changes management</h4>
+<ul class="bul">
+  <li><strong>Nodal lesion</strong> (first degree, Mobitz I): atropine usually works. The escape below it is reliable.</li>
+  <li><strong>Infranodal lesion</strong> (Mobitz II, complete block): atropine frequently fails. The escape is slow and unreliable.</li>
+  <li><strong>Therefore:</strong> in Mobitz II and complete block, pacing capability is prepared at the same time atropine is given, not after it disappoints.{cite(8,5)}</li>
+</ul></div>
 
 <div class="mem"><h4>Memory tool</h4>
 <p><strong>Longer, longer, longer, drop, then you have a Wenckebach.</strong> Constant PR with a dropped beat is Mobitz II. P waves and QRS complexes marching independently is third degree. The distinguishing step in all three is measuring the PR interval across several consecutive beats rather than looking at one complex.</p></div>
@@ -212,7 +232,12 @@ CH.append(dict(id="D3", num="2", title="Coronary Artery Disease and Acute Corona
   weight="L1 22% \u00b7 L2 14%", sub="Oxygen supply, oxygen demand, and plaque rupture",
   body=f"""
 <h3>Start with the physiology</h3>
-<p>Myocardium is obligately aerobic and extracts approximately 70 to 80 percent of delivered oxygen at rest, compared with about 25 percent in most other tissues. Because extraction is already near maximal, the myocardium cannot meet increased demand by extracting more oxygen. It must increase coronary blood flow.{cite(1,4)}</p>
+<div class="key"><h4>Key points</h4>
+<ul class="bul">
+  <li><strong>Extraction is already maximal.</strong> Myocardium takes 70 to 80 percent of delivered oxygen at rest, against about 25 percent elsewhere.</li>
+  <li><strong>No extraction reserve.</strong> The heart cannot meet extra demand by pulling more oxygen from the same blood.</li>
+  <li><strong>So flow is the only lever.</strong> Increased demand must be met by increased coronary blood flow.{cite(1,4)}</li>
+</ul></div>
 
 <p><strong>Coronary perfusion occurs during diastole.</strong> Systolic contraction compresses the intramyocardial vessels, particularly in the left ventricular subendocardium. Two clinical consequences follow directly:</p>
 <ol class="steps">
@@ -238,7 +263,10 @@ CH.append(dict(id="D3", num="2", title="Coronary Artery Disease and Acute Corona
     <tr><th>Priority</th><td>Antithrombotic therapy, risk stratification</td><td>Antithrombotic therapy, early invasive strategy</td><td>Immediate reperfusion</td></tr>
   </tbody>
 </table>
-<p>Unstable angina and NSTEMI are distinguished only by troponin. They can present identically, which is why serial biomarkers are obtained rather than the diagnosis being made on presentation alone.{cite(10,11)}</p>
+<ul class="bul">
+  <li><strong>Unstable angina and NSTEMI can look identical</strong> at the bedside and on the ECG.</li>
+  <li><strong>Troponin is the only separator.</strong> That is why serial biomarkers are drawn instead of deciding at presentation.{cite(10,11)}</li>
+</ul>
 
 <h3>Biomarkers</h3>
 <p>High sensitivity cardiac troponin detects very small quantities of myocardial injury. It has high sensitivity and lower specificity, so it excludes myocardial infarction well and confirms it less well. Troponin elevation occurs in sepsis, pulmonary embolism, myocarditis, renal impairment, tachyarrhythmia, and decompensated heart failure, none of which are coronary occlusion.{cite(11)}</p>
@@ -247,7 +275,11 @@ CH.append(dict(id="D3", num="2", title="Coronary Artery Disease and Acute Corona
   <li><strong>Acute injury</strong> requires a rise or fall across serial measurements, the delta.</li>
   <li><strong>Myocardial infarction</strong> requires acute injury plus clinical evidence of ischaemia: symptoms, ECG changes, imaging evidence, or angiographic findings.</li>
 </ol>
-<p>A stably elevated troponin in chronic kidney disease is chronic myocardial injury. A value that rises significantly over one to three hours is acute.{cite(11)}</p>
+<ul class="bul">
+  <li><strong>Flat and high</strong> across serial draws, as in chronic kidney disease, is chronic myocardial injury.</li>
+  <li><strong>Rising over one to three hours</strong> is acute injury.</li>
+  <li><strong>The delta decides,</strong> not the single number.{cite(11)}</li>
+</ul>
 
 <div class="clin"><h4>The guideline pathway</h4>
 <p>Reperfusion timing for STEMI, per the 2025 ACC/AHA acute coronary syndrome guideline:{cite(10)}</p>
@@ -301,7 +333,13 @@ CH.append(dict(id="D6", num="3", title="Heart Failure",
 </ol>
 <p>Heart failure is the clinical syndrome in which cardiac structural or functional impairment prevents the ventricle from delivering an output adequate to metabolic demand, or does so only at elevated filling pressures.{cite(13)} Both presentations follow from that definition: reduced forward output, and congestion from elevated filling pressures. Most patients have some of each.</p>
 
-<p><strong>The Frank-Starling relationship.</strong> Increasing sarcomere stretch improves actin and myosin overlap and increases the force of the subsequent contraction, up to an optimum. In the failing ventricle the curve is flattened and shifted rightward, so a given increase in filling volume produces less additional stroke volume and a substantially greater rise in filling pressure. This is why volume loading a failing ventricle produces congestion rather than improved output.{cite(1,4)}</p>
+<p><strong>The Frank-Starling relationship.</strong></p>
+<ul class="bul">
+  <li><strong>Normal ventricle.</strong> More stretch improves actin and myosin overlap, so the next contraction is stronger, up to an optimum.</li>
+  <li><strong>Failing ventricle.</strong> The curve is flattened and shifted rightward.</li>
+  <li><strong>Result.</strong> The same added volume buys much less stroke volume and a much larger rise in filling pressure.</li>
+  <li><strong>Which is why</strong> volume loading a failing ventricle congests it instead of improving output.{cite(1,4)}</li>
+</ul>
 
 <h3>Compensatory mechanisms</h3>
 <p>When cardiac output falls, the body activates the same reflexes it uses for hypovolaemia. Each is beneficial acutely and harmful when sustained.{cite(4,13)}</p>
@@ -325,7 +363,12 @@ CH.append(dict(id="D6", num="3", title="Heart Failure",
     <tr><th>SGLT2 inhibitor</th><td>Multiple, including natriuresis and altered myocardial substrate use</td><td>Volume status, genital mycotic infection, euglycaemic ketoacidosis. Benefit is independent of diabetes status.</td></tr>
   </tbody>
 </table>
-<p>A modest rise in creatinine after initiating an ACE inhibitor, ARNI, or mineralocorticoid receptor antagonist reflects expected haemodynamic change rather than renal injury, and is not by itself an indication to discontinue therapy.{cite(13)}</p>
+<div class="key"><h4>The rule that saves the regimen</h4>
+<ul class="bul">
+  <li><strong>A modest creatinine rise</strong> after starting an ACE inhibitor, ARNI, or mineralocorticoid receptor antagonist is expected haemodynamics, not renal injury.</li>
+  <li><strong>It is not, by itself,</strong> a reason to stop the drug.</li>
+  <li><strong>The common harm</strong> is stopping everything when one number moves, which costs the patient the drugs that reduce mortality.{cite(13)}</li>
+</ul></div>
 
 <h3>Assessing congestion and perfusion</h3>
 <p>Two independent questions determine management. The resulting four profiles were described by Stevenson and validated by Nohria and colleagues.{cite(14)}</p>
@@ -342,7 +385,14 @@ CH.append(dict(id="D6", num="3", title="Heart Failure",
     <tr><th>Cold (hypoperfused)</th><td>Profile L. Underfilled or over-diuresed. Cautious volume.</td><td>Profile C. Highest mortality. Decongestion with consideration of inotropic support.</td></tr>
   </tbody>
 </table>
-<p>Profile C is the most frequently mismanaged. Crackles suggest aggressive diuresis, but low output means aggressive diuresis alone may further reduce perfusion. A narrow pulse pressure, cool extremities, altered mental status, and rising creatinine identify the cold patient.{cite(14,5)}</p>
+<p><strong>Profile C is the most frequently mismanaged.</strong> Four findings identify the cold patient:</p>
+<ul class="bul">
+  <li>Narrow pulse pressure</li>
+  <li>Cool extremities</li>
+  <li>Altered mental status</li>
+  <li>Rising creatinine</li>
+</ul>
+<p>Crackles pull toward aggressive diuresis, but with low output that alone can further reduce perfusion.{cite(14,5)}</p>
 
 <h3>Self care and transition of care</h3>
 <p>Readmission within 30 days is driven substantially by what occurs in the first two weeks after discharge. Effective teaching is specific and gives the patient an action threshold rather than general advice.{cite(13,6)}</p>
@@ -625,6 +675,19 @@ ol.steps li::before{{content:counter(st);position:absolute;left:0;top:9px;width:
 ol.steps.tight li{{padding:4px 0 4px 40px;margin-bottom:0}}
 ol.steps.tight li::before{{top:4px}}
 .ti{{font-style:normal;font-weight:600}}
+ul.bul{{list-style:none;margin:0 0 16px}}
+ul.bul li{{position:relative;padding:5px 0 5px 21px;line-height:1.62}}
+ul.bul li::before{{content:"";position:absolute;left:2px;top:14px;width:6px;height:6px;border-radius:2px;background:var(--gold)}}
+.sec[data-t="physio"] ul.bul li::before{{background:var(--t-physio)}}
+.sec[data-t="patho"] ul.bul li::before{{background:var(--t-patho)}}
+.sec[data-t="practice"] ul.bul li::before{{background:var(--t-practice)}}
+ul.bul ul{{list-style:none;margin:4px 0 0}}
+ul.bul ul li{{padding:3px 0 3px 18px}}
+ul.bul ul li::before{{width:5px;height:2px;border-radius:0;top:15px;opacity:.7}}
+.key{{background:var(--off-white);border:1px solid var(--rule-soft);border-radius:var(--r);padding:14px 16px;margin:0 0 18px}}
+.key h4{{color:var(--terra-text);margin-bottom:7px}}
+.key ul.bul{{margin:0}}
+.key ul.bul li{{padding:4px 0 4px 21px}}
 sup.cite{{font-size:10.5px;font-weight:700;vertical-align:super;line-height:0;margin-left:2px}}
 sup.cite a{{color:var(--t-physio);text-decoration:none;padding:0 1px}}
 sup.cite a:hover{{text-decoration:underline}}

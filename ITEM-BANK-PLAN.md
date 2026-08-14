@@ -1,6 +1,50 @@
 # Item Bank Plan: 2,000 questions and cases
 
-Target set August 13, 2026. Quotas are proportional to the ABCM CVRN-BC Level II blueprint, so the bank stays exam-shaped as it fills rather than growing wherever writing is easiest.
+Target set August 13, 2026. Status updated August 14, 2026. Quotas are proportional to the ABCM CVRN-BC Level II blueprint, so the bank stays exam-shaped as it fills rather than growing wherever writing is easiest.
+
+## Current status
+
+| Pool | File | Items | Feeds |
+|---|---|---|---|
+| Reserved exam | cvrn-exam-bank.js | 103 | Ten scored practice forms, nothing else |
+| Written diagnostic | cvrn-diagnostic-bank.js | 90 | Written gap finder, forms A and B |
+| Practical diagnostic | cvrn-practical-bank.js | 40 | Practical gap finder, forms A and B |
+| ECG lab practice | ecg-lab.html | 23 | Open practice in the lab, unscored |
+| **Authored total** | | **256** | |
+
+### The four pool rule
+
+An item lives in exactly one pool and is never copied into a second. If an item moves into a practice deck it is deleted from the pool it came from. This is the single rule that keeps a practice exam score an estimate rather than a memory test.
+
+### Depth of knowledge in the reserved exam pool
+
+| DOK | Items | Share | Target |
+|---|---|---|---|
+| 1 Recall | 16 | 15.5% | 15% |
+| 2 Application | 47 | 45.6% | 45% |
+| 3 Analysis | 35 | 34.0% | 35% |
+| 4 Synthesis | 5 | 4.9% | 5% |
+
+The pool previously held zero DOK 1 items and zero DOK 4 items, with DOK 3 at 57 percent. That skew made every form harder than the real exam at the top while giving the learner nothing that confirmed the foundation was in place at the bottom. Both ends are now authored and the distribution matches target.
+
+### Next blocks, in order
+
+1. Reserved exam pool to 300, so ten forms of 30 need no reuse. Remaining: 197.
+2. Written diagnostic to 270, six forms of 45, so a learner can run the written gap finder six times before an item repeats. Remaining: 180.
+3. Practical diagnostic to 120, six forms of 20. Remaining: 80.
+4. Practice and recall decks to roughly 1100. This is the bulk, and none of it touches the scored pools.
+5. ECG lab practice banks to roughly 150, generated against live tracings.
+
+### Validation run on every write
+
+1. No duplicate ids
+2. Every competency id resolves against cvrn-competencies.js
+3. Domain prefix matches the competency
+4. Four options, valid answer index, no duplicate options
+5. Rationale present and substantive
+6. No stem appears in more than one pool
+7. No em dashes in stem, options, or rationale
+8. Every rhythm and pattern key in the practical pool exists in the ECG engine
 
 ## Item format, v2
 
@@ -51,7 +95,7 @@ Target: roughly one case per competency, 78 cases, about 250 case-linked items c
 | D12 Cardiac Assist Devices | 4% | 80 | 56 | 24 | 3 | 77 |
 | D13 Pacemaker Interpretation | 5% | 100 | 70 | 30 | 4 | 96 |
 | D14 Cardiovascular Pharmacology | 8% | 160 | 112 | 48 | 6 | 154 |
-| **Total** | **100%** | **2000** | **1400** | **600** | **60** | **1940** |
+| **Total** | **100%** | **2000** | **1400** | **600** | **256** | **1744** |
 
 The reserved exam pool never overlaps the practice and recall decks. That separation is what makes a practice exam score an estimate rather than a memory test.
 

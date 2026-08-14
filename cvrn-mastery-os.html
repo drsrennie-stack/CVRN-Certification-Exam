@@ -7,10 +7,11 @@
 <meta name="description" content="Goal-paced CVRN-BC review. Set your exam date, run the gap finder, and the system builds the route: targeted study, spaced recall, and ten scored practice exams.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   /* Aligned to cardiacconductionsystem.html */
+  --acc:#166534; --acc2:#15803D; --onacc:#FFFFFF;
   --base:#FFFFFF; --deepest:#06080F; --panel:#FFFFFF; --panel-2:#F8F8F8; --panel-3:#EEF1F5;
   --line:rgba(11,21,48,.12); --line-soft:rgba(11,21,48,.07);
   --ink:#0B1530; --ink-soft:#3A465F; --ink-mute:#5A6478;
@@ -22,6 +23,7 @@
   --shadow-hover:0 8px 16px rgba(11,21,48,.11);
 }
 html[data-dark="on"]{
+  --acc:#4ADE80; --acc2:#86EFAC; --onacc:#04200E;
   --base:#060A18; --deepest:#06080F; --panel:#0B1530; --panel-2:#111C3A; --panel-3:#182549;
   --line:rgba(255,255,255,.14); --line-soft:rgba(255,255,255,.08);
   --ink:#EEF2FF; --ink-soft:#BCC6DD; --ink-mute:#8F9BB5;
@@ -38,7 +40,7 @@ body{background:var(--base);color:var(--ink);font-family:'Plus Jakarta Sans',sys
 .skip:focus{left:0;top:0}
 :focus-visible{outline:3px solid var(--focus);outline-offset:3px;border-radius:6px}
 .wrap{max-width:1120px;margin:0 auto;padding:28px 20px 72px}
-.eyebrow{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra-hi);font-weight:700;margin:0 0 10px}
+.eyebrow{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--terra-hi);font-weight:700;margin:0 0 10px}
 h1{font-size:clamp(28px,4vw,40px);font-weight:800;margin:0 0 6px;letter-spacing:-.02em}
 .subhead{font-weight:600;font-size:19px;color:var(--terra-hi);margin:0 0 8px}
 .lede{color:var(--ink-soft);max-width:72ch;margin:0 0 26px;font-size:15px}
@@ -53,47 +55,48 @@ h3{font-size:15px;font-weight:700;margin:0 0 8px}
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 20px;border-bottom:1px solid var(--line);padding-bottom:14px}
 .tab{background:transparent;border:1px solid var(--line);color:var(--ink-soft);font-family:inherit;font-size:14px;font-weight:600;padding:9px 16px;border-radius:999px;cursor:pointer;transition:background 180ms,color 180ms,border-color 180ms}
 .tab:hover{border-color:var(--gold);color:var(--ink)}
-.tab[aria-selected="true"]{background:var(--gold);border-color:var(--gold);color:#141414}
+.tab[aria-selected="true"]{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
 .panel[hidden]{display:none}
 .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
-.field label{font-family:'DM Sans',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.field label{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
 select,input,textarea{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:15px;padding:10px 12px;border-radius:9px;min-height:44px;width:100%}
 button.act{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:14px;font-weight:600;padding:11px 18px;border-radius:9px;cursor:pointer;min-height:44px;transition:transform 200ms,box-shadow 200ms,border-color 200ms,background 200ms}
 button.act:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
-button.primary{background:var(--gold);border-color:var(--gold);color:#141414}
-button.primary:hover{background:var(--gold-hi);border-color:var(--gold-hi)}
-button.act[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#141414}
+button.primary{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
+button.primary:hover{background:var(--acc2);border-color:var(--acc2);color:var(--onacc)}
+button.act[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
 .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
 .stat{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px 17px}
-.stat .lab{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.stat .lab{font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
 .stat .val{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.15;color:var(--ink)}
 .stat .sub{font-size:12px;color:var(--ink-mute)}
 .verdict{border-radius:12px;padding:16px 18px;border:1px solid var(--line);background:var(--panel-2);margin-top:14px}
 .verdict[data-k="ok"]{border-color:var(--gold)}
 .verdict[data-k="tight"]{border-color:var(--alert)}
 .verdict[data-k="short"]{border-color:var(--pulse)}
-.verdict strong{display:block;font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.verdict strong{display:block;font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
 .bar{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:10px}
-.bar i{display:block;height:100%;background:var(--gold);border-radius:99px;transition:width 400ms ease}
+.bar i{display:block;height:100%;background:var(--acc);border-radius:99px;transition:width 400ms ease}
 .dTile{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px;transition:transform 200ms,box-shadow 200ms,border-color 200ms}
 .dTile:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
 .dTile[data-state="locked"]{border-style:dashed;border-color:var(--ink-mute);opacity:.6}
 .dTile[data-state="unlocked"]{border-color:var(--gold)}
 .dTile[data-state="done"]{border-color:var(--ink);background:var(--panel-3)}
-.dTile .st{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.dTile .st{font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
 .dTile h3{margin:2px 0 4px;font-size:14px}
 .dTile p{margin:0;font-size:12px;color:var(--ink-mute)}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line-soft)}
-th{font-family:'DM Sans',sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
-.pill{display:inline-block;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid var(--line)}
+th{font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.pill{display:inline-block;font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid var(--line)}
 .pill[data-k="gap"]{border-color:var(--pulse);color:var(--pulse)}
 .pill[data-k="misc"]{border-color:var(--alert);color:var(--alert)}
 .pill[data-k="fragile"]{border-color:var(--gold);color:var(--gold-hi);background:transparent}
 .pill[data-k="mastered"]{border-color:var(--ink-mute);color:var(--ink-mute)}
+.pill[data-k="untested"]{border-color:var(--line);color:var(--ink-soft)}
 .rate{display:flex;gap:6px;flex-wrap:wrap}
 .rate button{flex:1;min-width:64px;background:var(--panel);border:1px solid var(--line);color:var(--ink-soft);font-family:inherit;font-size:13px;font-weight:600;padding:9px 6px;border-radius:9px;cursor:pointer;min-height:44px}
-.rate button[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#141414}
+.rate button[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
 .gapRow{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px 17px;margin-bottom:11px}
 .gapRow h3{margin:0 0 3px}
 .gapRow p{margin:0 0 11px;font-size:13px;color:var(--ink-soft)}
@@ -110,7 +113,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 
 /* ---- Study tools launcher ---- */
 .tools{margin-top:34px}
-.tools .hd{font-family:'DM Sans',sans-serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra-hi);font-weight:700;margin:0 0 16px}
+.tools .hd{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--terra-hi);font-weight:700;margin:0 0 16px}
 .toolgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
 .tcard{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px;
   background:#0B1530;border:1px solid #182549;border-radius:18px;padding:24px 20px 20px;
@@ -125,7 +128,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 .tcard[data-c="deep"] .ic{background:linear-gradient(150deg,#8A97B4,#2A3960)}
 .tcard h3{font-size:19px;font-weight:800;margin:0;color:#FFFFFF;letter-spacing:-.01em}
 .tcard p{margin:0;font-size:13.5px;line-height:1.45;color:#BCC6DD;max-width:22ch}
-.tcard .go{margin-top:6px;font-family:'DM Sans',sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#E8D4A8}
+.tcard .go{margin-top:6px;font-family:'Plus Jakarta Sans',sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#E8D4A8}
 .tcard[aria-current="page"]{border-color:#C9A14A}
 .tcard[aria-current="page"] .go{color:#8F9BB5}
 @media(prefers-reduced-motion:reduce){*{transition-duration:1ms !important;animation-duration:1ms !important}}
@@ -203,10 +206,10 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   <div class="card" id="planCard" hidden>
     <h2>Your plan</h2>
     <div class="grid3" style="margin-top:14px">
-      <div class="stat"><span class="lab">Days to exam</span><div class="val" id="sDays">—</div><span class="sub" id="sDate"></span></div>
-      <div class="stat"><span class="lab">Study time available</span><div class="val" id="sAvail">—</div><span class="sub">hours before exam day</span></div>
-      <div class="stat"><span class="lab">Content time needed</span><div class="val" id="sNeed">—</div><span class="sub" id="sNeedSub">hours at your starting point</span></div>
-      <div class="stat"><span class="lab">Required pace</span><div class="val" id="sPace">—</div><span class="sub">competencies per study day</span></div>
+      <div class="stat"><span class="lab">Days to exam</span><div class="val" id="sDays">not set</div><span class="sub" id="sDate"></span></div>
+      <div class="stat"><span class="lab">Study time available</span><div class="val" id="sAvail">not set</div><span class="sub">hours before exam day</span></div>
+      <div class="stat"><span class="lab">Content time needed</span><div class="val" id="sNeed">not set</div><span class="sub" id="sNeedSub">hours at your starting point</span></div>
+      <div class="stat"><span class="lab">Required pace</span><div class="val" id="sPace">not set</div><span class="sub">competencies per study day</span></div>
     </div>
     <div class="verdict" id="verdict"></div>
     <h3 style="margin-top:22px">Week by week</h3>
@@ -218,11 +221,29 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 <!-- GAP FINDER -->
 <section class="panel" id="p-gap" role="tabpanel" aria-labelledby="t-gap" hidden>
   <div class="card">
-    <h2>Gap finder</h2>
-    <p class="lede">Two passes. First you rate yourself across every domain on the blueprint, which takes about three minutes. Then the system builds a short diagnostic from the domains you rated lowest and from the heaviest-weighted domains regardless of your rating, because self-assessment is reliable about what you know you do not know and unreliable about the rest.</p>
-    <div class="btnrow">
-      <button class="act primary" id="gapStart">Start pass one, self-rating</button>
-      <button class="act" id="gapDiag">Run pass two, diagnostic</button>
+    <h2>Two gap finders, because two things fail independently</h2>
+    <p class="lede">Knowing the content and reading a tracing are separate skills. Candidates fail on either one, and a single blended number hides which. So they are run separately, scored separately, and never averaged together. Both draw from their own item pool, and neither touches the reserved practice exam pool, so nothing you see here inflates a later score estimate.</p>
+    <div class="grid2">
+      <div class="gapRow">
+        <h3>Written gap finder</h3>
+        <p>Multiple choice across all fourteen blueprint domains, weighted the way the exam is weighted. Each run draws a different form.</p>
+        <div class="btnrow">
+          <button class="act primary" id="gapDiag">Run a full form</button>
+          <button class="act" id="gapShort">Short scan</button>
+        </div>
+      </div>
+      <div class="gapRow">
+        <h3>Practical gap finder</h3>
+        <p>Worked off live tracings in the ECG lab. Name the rhythm, measure with calipers, localize on the 12-lead, then decide and act.</p>
+        <div class="btnrow">
+          <a class="act primary" href="ecg-lab.html#p-pg" target="_top" style="text-decoration:none;display:inline-flex;align-items:center" id="gapPrac">Open the practical run</a>
+        </div>
+      </div>
+    </div>
+    <p class="note" id="gapFormNote"></p>
+    <div class="btnrow" style="margin-top:14px">
+      <button class="act" id="gapStart">Self-rating pass, optional</button>
+      <button class="act" id="gapRuns">Run history, both finders</button>
     </div>
   </div>
   <div id="gapHost"></div>
@@ -242,10 +263,10 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   <div class="card">
     <h2>Readiness</h2>
     <div class="grid3" style="margin-top:14px">
-      <div class="stat"><span class="lab">Estimated readiness</span><div class="val" id="rdVal">—</div><span class="sub" id="rdSub">weighted across the blueprint</span></div>
-      <div class="stat"><span class="lab">Competencies touched</span><div class="val" id="rdTouch">—</div><span class="sub" id="rdTouchSub"></span></div>
-      <div class="stat"><span class="lab">Flagged misconceptions</span><div class="val" id="rdMisc">—</div><span class="sub">confident and wrong</span></div>
-      <div class="stat"><span class="lab">ANCC CV-BC read</span><div class="val" id="rdAncc">—</div><span class="sub" id="rdAnccSub">secondary lens, same evidence</span></div>
+      <div class="stat"><span class="lab">Estimated readiness</span><div class="val" id="rdVal">not set</div><span class="sub" id="rdSub">weighted across the blueprint</span></div>
+      <div class="stat"><span class="lab">Competencies touched</span><div class="val" id="rdTouch">not set</div><span class="sub" id="rdTouchSub"></span></div>
+      <div class="stat"><span class="lab">Flagged misconceptions</span><div class="val" id="rdMisc">not set</div><span class="sub">confident and wrong</span></div>
+      <div class="stat"><span class="lab">ANCC CV-BC read</span><div class="val" id="rdAncc">not set</div><span class="sub" id="rdAnccSub">secondary lens, same evidence</span></div>
     </div>
     <div class="bar" style="margin-top:16px"><i id="rdBar" style="width:0%"></i></div>
   </div>
@@ -318,12 +339,14 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 
 <script src="cvrn-competencies.js"></script>
 <script src="cvrn-exam-bank.js"></script>
+<script src="cvrn-diagnostic-bank.js"></script>
 <script>
 (function(){
 "use strict";
 var el=function(i){return document.getElementById(i);};
 var C = window.CVRN_COMPETENCIES||[];
 var POOL = window.CVRN_EXAM_POOL||[];
+var DPOOL = window.CVRN_DIAGNOSTIC_POOL||[];
 var SKEY='cvrn-setup', PKEY='cvrn-progress', XKEY='cvrn-exams';
 var DOMS={};
 C.forEach(function(c){ if(!DOMS[c.domain]) DOMS[c.domain]={id:c.domain,name:c.domainName,weight:c.domainWeight,weightL1:c.weightL1,weightL2:c.weightL2,level:c.level,comps:[]}; DOMS[c.domain].comps.push(c); });
@@ -388,13 +411,13 @@ function plan(){
 function renderPlan(){
   var p=plan();
   el('planCard').hidden=false;
-  el('sDays').textContent = p.dte==null?'—':p.dte;
+  el('sDays').textContent = p.dte==null?'not set':p.dte;
   el('sDate').textContent = p.dte==null?'set an exam date':(p.studyDays+' study days at '+S.days+' per week');
-  el('sAvail').textContent = p.availMin==null?'—':Math.round(p.availMin/60);
+  el('sAvail').textContent = p.availMin==null?'not set':Math.round(p.availMin/60);
   el('sNeed').textContent = Math.round(p.needMin/60);
   el('sNeedSub').textContent = p.scope.length+' competencies in scope';
   var pace = (p.studyDays&&p.studyDays>0)? (p.scope.length/p.studyDays) : 0;
-  el('sPace').textContent = pace? pace.toFixed(1):'—';
+  el('sPace').textContent = pace? pace.toFixed(1):'not set';
 
   var v=el('verdict');
   if(p.availMin==null){ v.setAttribute('data-k','tight'); v.innerHTML='<strong>Set a date</strong><p style="margin:0">Enter your approximate exam date and the pace calculation turns on. Everything else works without it, but the schedule is the part that keeps people honest.</p>'; }
@@ -470,31 +493,83 @@ el('gapStart').addEventListener('click',function(){
   host.appendChild(card);
 });
 
+/* ============================================================
+   WRITTEN GAP FINDER
+   Draws only from the diagnostic pool. The reserved exam pool
+   is never touched here, so a practice exam score later stays
+   an honest estimate rather than a memory test.
+
+   Runs rotate through forms. A repeat run draws items you have
+   not seen, and the report compares runs so a domain is not
+   called a gap on the strength of one small sample.
+   ============================================================ */
+var GKEY='cvrn-gap-runs';
+function gLoadRuns(){ try{ return JSON.parse(localStorage.getItem(GKEY)||'[]'); }catch(e){ return []; } }
+function gSaveRun(r){ var a=gLoadRuns(); a.push(r); try{ localStorage.setItem(GKEY, JSON.stringify(a)); }catch(e){} }
+function gWritten(){ return gLoadRuns().filter(function(r){ return r.mode==='written'; }); }
+function gPractical(){ return gLoadRuns().filter(function(r){ return r.mode==='practical'; }); }
+function gForms(){ var f={}; DPOOL.forEach(function(i){ f[i.form]=1; }); return Object.keys(f).sort(); }
+function gNext(){
+  var F=gForms(); if(!F.length) return null;
+  var n=gWritten().length;
+  return {form:F[n%F.length], pass:Math.floor(n/F.length)+1, run:n+1, forms:F.length};
+}
+function gFormNote(){
+  var node=el('gapFormNote'); if(!node) return;
+  var n=gNext();
+  if(!n){ node.textContent='No diagnostic items are loaded. Add cvrn-diagnostic-bank.js to the page and this builds itself.'; return; }
+  var cnt=DPOOL.filter(function(i){ return i.form===n.form; }).length;
+  var w=gWritten().length, pr=gPractical().length;
+  node.textContent='Written: '+w+' run'+(w===1?'':'s')+' completed, next draws form '+n.form+' at '+cnt+' items. Practical: '+pr+' run'+(pr===1?'':'s')+' completed. '+
+    'There are '+n.forms+' written forms, so your second run sees a completely different set of items.';
+}
+
+function gDomName(d){ return (DOMS[d]&&DOMS[d].name)||d; }
+function gRead(n,c){
+  if(n<3) return {k:'untested', t:'Too thin to call'};
+  var f=c/n;
+  return f>=0.8 ? {k:'mastered', t:'Holding'} : f>=0.5 ? {k:'fragile', t:'Fragile'} : {k:'gap', t:'Priority'};
+}
+
 var DIAG=null;
-el('gapDiag').addEventListener('click',function(){
-  /* Build a diagnostic: weakest self-rated domains plus the heaviest domains regardless of rating */
-  var doms=DOMLIST.filter(function(d){return d.level<=S.level;});
-  var scored=doms.map(function(d){
-    var r=ent('dom:'+d.id).selfRate; if(r==null) r=1;
-    return {d:d, pri: domWt(d)*(3-r+0.5)};
-  }).sort(function(a,b){return b.pri-a.pri;});
-  var picked=[], seen={};
-  scored.forEach(function(s){
-    var items=POOL.filter(function(q){ return q.d===s.d.id && !seen[q.id]; });
-    items.slice(0, picked.length<10?2:1).forEach(function(q){ seen[q.id]=1; picked.push(q); });
-  });
-  picked=picked.slice(0,18);
-  if(!picked.length){ el('gapHost').innerHTML='<div class="card"><h2>Diagnostic not available yet</h2><p class="lede">No items in the pool match the domains in scope. Add items to cvrn-exam-bank.js and this builds itself.</p></div>'; return; }
-  DIAG={items:picked, i:0, correct:0, byDom:{}};
+function buildForm(short){
+  var n=gNext(); if(!n) return null;
+  var items=DPOOL.filter(function(q){ return q.form===n.form; });
+  var scope=DOMLIST.filter(function(d){ return d.level<=S.level; }).map(function(d){ return d.id; });
+  items=items.filter(function(q){ return scope.indexOf(q.d)>=0; });
+  if(short){
+    /* keep the blueprint shape, just fewer items: take proportionally from each domain */
+    var by={}; items.forEach(function(q){ (by[q.d]=by[q.d]||[]).push(q); });
+    var keys=Object.keys(by), out=[], want=20;
+    var total=items.length;
+    keys.forEach(function(d){
+      var take=Math.max(1, Math.round(by[d].length/total*want));
+      out=out.concat(by[d].slice(0,take));
+    });
+    items=out.slice(0,want);
+  }
+  return {items:items, meta:n};
+}
+function startWritten(short){
+  var built=buildForm(short);
+  if(!built || !built.items.length){
+    el('gapHost').innerHTML='<div class="card"><h2>Diagnostic not available yet</h2><p class="lede">No diagnostic items match the domains in scope for your level. Add items to cvrn-diagnostic-bank.js and this builds itself.</p></div>';
+    return;
+  }
+  DIAG={items:built.items, i:0, correct:0, byDom:{}, missed:[], form:built.meta.form, run:built.meta.run, pass:built.meta.pass, short:!!short};
   runDiag();
-});
+}
+el('gapDiag').addEventListener('click', function(){ startWritten(false); });
+el('gapShort').addEventListener('click', function(){ startWritten(true); });
+el('gapRuns').addEventListener('click', function(){ runHistory(); });
+
 function runDiag(){
   var host=el('gapHost');
   if(DIAG.i>=DIAG.items.length){ return diagReport(); }
   var q=DIAG.items[DIAG.i];
   host.innerHTML='';
   var card=document.createElement('div'); card.className='card';
-  card.innerHTML='<p class="eyebrow">Diagnostic &middot; item '+(DIAG.i+1)+' of '+DIAG.items.length+' &middot; '+DOMS[q.d].name+'</p><h2 style="font-size:18px;font-weight:600;line-height:1.5">'+q.q+'</h2>';
+  card.innerHTML='<p class="eyebrow">Written gap finder &middot; form '+DIAG.form+' &middot; item '+(DIAG.i+1)+' of '+DIAG.items.length+' &middot; '+gDomName(q.d)+'</p><h2 style="font-size:18px;font-weight:600;line-height:1.5">'+q.q+'</h2>';
   var ul=document.createElement('ul'); ul.className='opts'; var pick=null;
   q.o.forEach(function(o,i){
     var li=document.createElement('li'); var lab=document.createElement('label'); lab.className='opt';
@@ -515,42 +590,129 @@ function runDiag(){
     if(pick==null){ alert('Choose an answer.'); return; }
     if(sure==null){ alert('Mark how sure you are. That is what separates a gap from a misconception.'); return; }
     var ok = pick===q.a;
-    if(ok) DIAG.correct++;
+    if(ok) DIAG.correct++; else DIAG.missed.push({id:q.id, c:q.c, conf:!!sure});
     DIAG.byDom[q.d]=DIAG.byDom[q.d]||{n:0,c:0}; DIAG.byDom[q.d].n++; if(ok) DIAG.byDom[q.d].c++;
-    var e=ent(q.c); e.attempts++; if(ok) e.correct++; if(!ok&&sure) e.misconceptions++;
+    var e=ent(q.c); e.attempts++; if(ok) e.correct++; if(!ok&&sure) e.misconceptions=(e.misconceptions||0)+1;
     e.reviewedAt=new Date().toISOString().slice(0,10);
-    e.strength=Math.max(0, e.correct/e.attempts - e.misconceptions*0.08);
+    e.strength=Math.max(0, e.correct/e.attempts - (e.misconceptions||0)*0.08);
     e.nextRecall=new Date(Date.now()+(e.strength>0.85?7:e.strength>0.6?3:1)*864e5).toISOString().slice(0,10);
     put(q.c,e);
     var fb=document.createElement('div'); fb.className='fb'; fb.setAttribute('data-k', ok?'right':'wrong');
-    fb.innerHTML='<strong>'+(ok?'Correct':(sure?'Confident and incorrect, flagged as a misconception':'Not correct'))+'</strong><p style="margin:6px 0 0">'+q.why+'</p>';
+    fb.innerHTML='<strong>'+(ok?'Correct':(sure?'Confident and incorrect, flagged as a misconception':'Not correct'))+'</strong>'+
+      (ok?'':'<p style="margin:6px 0 0">Correct answer: '+q.o[q.a]+'</p>')+
+      '<p style="margin:6px 0 0">'+q.why+'</p>';
     card.appendChild(fb);
-    nx.textContent='Next'; nx.onclick=function(){ DIAG.i++; runDiag(); };
+    nx.textContent = (DIAG.i===DIAG.items.length-1) ? 'See the report' : 'Next';
+    nx.onclick=function(){ DIAG.i++; runDiag(); };
   });
   row.appendChild(nx); card.appendChild(row);
   host.appendChild(card);
+  window.scrollTo(0,0);
 }
+
 function diagReport(){
   var host=el('gapHost'); host.innerHTML='';
-  var card=document.createElement('div'); card.className='card';
   var pct=Math.round(DIAG.correct/DIAG.items.length*100);
-  card.innerHTML='<h2>Gap finder result</h2><p class="lede">'+DIAG.correct+' of '+DIAG.items.length+' correct, '+pct+' percent. This is a diagnostic, not a score estimate. It is a small sample chosen to find weak spots, so it reads lower than a full form for most people.</p>';
+  gSaveRun({mode:'written', form:DIAG.form, run:DIAG.run, pass:DIAG.pass, n:DIAG.items.length,
+            correct:DIAG.correct, byDom:DIAG.byDom, at:new Date().toISOString().slice(0,10)});
+  gFormNote();
+  var prior=gWritten().slice(0,-1);
+
+  var card=document.createElement('div'); card.className='card';
+  card.innerHTML='<h2>Written gap finder, run '+DIAG.run+'</h2><p class="lede">'+DIAG.correct+' of '+DIAG.items.length+' correct, '+pct+' percent, on form '+DIAG.form+'. This is a diagnostic, not a score estimate. It samples to find weak spots, so it reads lower than a full practice exam for most people. The practice exams do the scoring.</p>';
+
   var tbl=document.createElement('table');
-  tbl.innerHTML='<thead><tr><th>Domain</th><th>Sampled</th><th>Correct</th><th>Read</th></tr></thead>';
+  tbl.innerHTML='<thead><tr><th>Domain</th><th>Blueprint</th><th>Sampled</th><th>Correct</th><th>Read</th></tr></thead>';
   var tb=document.createElement('tbody');
-  Object.keys(DIAG.byDom).sort().forEach(function(d){
-    var r=DIAG.byDom[d], f=r.c/r.n;
-    var read = f>=0.8?'Holding':f>=0.5?'Fragile':'Priority';
-    var k = f>=0.8?'mastered':f>=0.5?'fragile':'gap';
-    tb.innerHTML+='<tr><td>'+DOMS[d].name+'</td><td>'+r.n+'</td><td>'+r.c+'</td><td><span class="pill" data-k="'+k+'">'+read+'</span></td></tr>';
+  Object.keys(DIAG.byDom).sort(function(a,b){ return parseInt(a.slice(1),10)-parseInt(b.slice(1),10); }).forEach(function(d){
+    var r=DIAG.byDom[d], rd=gRead(r.n,r.c);
+    var w=(DOMS[d]&&DOMS[d].weight)!=null ? DOMS[d].weight+'%' : '';
+    tb.innerHTML+='<tr><td>'+d+'. '+gDomName(d)+'</td><td>'+w+'</td><td>'+r.n+'</td><td>'+r.c+'</td><td><span class="pill" data-k="'+rd.k+'">'+rd.t+'</span></td></tr>';
   });
   tbl.appendChild(tb); card.appendChild(tbl);
-  var b=document.createElement('button'); b.className='act primary'; b.style.marginTop='16px'; b.textContent='Send this to my plan';
+  card.insertAdjacentHTML('beforeend','<p class="note">A domain sampled fewer than three times is marked too thin to call, not flagged as a gap. Small samples manufacture false gaps, and a false gap sends you to study something you already know while the real one stays hidden.</p>');
+
+  if(prior.length){
+    var last=prior[prior.length-1], lp=Math.round(last.correct/last.n*100), d=pct-lp;
+    var word = d>4 ? 'up by '+d+' points' : d<-4 ? 'down by '+Math.abs(d)+' points' : 'flat';
+    card.insertAdjacentHTML('beforeend',
+      '<h3 style="margin:24px 0 6px">Against your earlier runs</h3>'+
+      '<p class="lede">Run '+last.run+' on form '+last.form+' was '+lp+' percent. This run is '+pct+' percent, so overall you are '+word+
+      (word==='flat' ? '. On a sample this size a swing under five points is noise, not progress.' : '.')+'</p>');
+
+    var t3=document.createElement('table');
+    t3.innerHTML='<thead><tr><th>Domain</th><th>Last run</th><th>This run</th><th>Across all runs</th><th>Verdict</th></tr></thead>';
+    var b3=document.createElement('tbody');
+    var all=gWritten(), doms={};
+    all.forEach(function(r){ Object.keys(r.byDom||{}).forEach(function(k){ doms[k]=1; }); });
+    Object.keys(doms).sort(function(a,b){ return parseInt(a.slice(1),10)-parseInt(b.slice(1),10); }).forEach(function(dm){
+      var runs=all.filter(function(r){ return r.byDom&&r.byDom[dm]; });
+      var tot=runs.reduce(function(a,r){ return {n:a.n+r.byDom[dm].n, c:a.c+r.byDom[dm].c}; },{n:0,c:0});
+      var lastR=prior.filter(function(r){ return r.byDom&&r.byDom[dm]; }).pop();
+      var lastPct=lastR ? Math.round(lastR.byDom[dm].c/lastR.byDom[dm].n*100)+'%' : 'not sampled';
+      var thisPct=DIAG.byDom[dm] ? Math.round(DIAG.byDom[dm].c/DIAG.byDom[dm].n*100)+'%' : 'not sampled';
+      var weak=runs.filter(function(r){ return r.byDom[dm].n>=3 && r.byDom[dm].c/r.byDom[dm].n<0.5; }).length;
+      var v;
+      if(tot.n<4) v='<span class="pill" data-k="untested">Not enough data yet</span>';
+      else if(weak>=2) v='<span class="pill" data-k="gap">Confirmed gap, weak on '+weak+' runs</span>';
+      else if(weak===1) v='<span class="pill" data-k="fragile">Unstable read, run it again</span>';
+      else if(tot.c/tot.n>=0.8) v='<span class="pill" data-k="mastered">Holding across runs</span>';
+      else v='<span class="pill" data-k="fragile">Fragile</span>';
+      b3.innerHTML+='<tr><td>'+dm+'. '+gDomName(dm)+'</td><td>'+lastPct+'</td><td>'+thisPct+'</td><td>'+tot.c+' of '+tot.n+'</td><td>'+v+'</td></tr>';
+    });
+    t3.appendChild(b3); card.appendChild(t3);
+    card.insertAdjacentHTML('beforeend','<p class="note">A domain becomes a confirmed gap only after it reads weak on two separate runs with at least three items each. A single weak read is marked unstable and sent back for another run. This is the check that stops the system from routing your study time at something the sample got wrong about you.</p>');
+  } else {
+    card.insertAdjacentHTML('beforeend','<p class="note">This is your first written run, so nothing is confirmed yet. One run finds candidates. Two runs confirm them. Run the next form before you commit study time to anything flagged above.</p>');
+  }
+
+  if(!gPractical().length){
+    card.insertAdjacentHTML('beforeend','<div class="gapRow" style="margin-top:20px"><h3>You have not run the practical gap finder</h3><p style="margin:0 0 10px">This half of the result says nothing about whether you can read a tracing and act on it, which is a separate way to fail. Run the practical half before you treat this as a full picture.</p><a class="act" href="ecg-lab.html#p-pg" target="_top" style="text-decoration:none;display:inline-flex;align-items:center">Open the practical run</a></div>');
+  }
+
+  var row=document.createElement('div'); row.className='btnrow'; row.style.marginTop='18px';
+  var b=document.createElement('button'); b.className='act primary'; b.textContent='Send this to my plan';
   b.addEventListener('click',function(){ el('t-now').click(); });
-  card.appendChild(b);
-  card.insertAdjacentHTML('beforeend','<p class="note">Sample sizes here are small by design. A domain read from two items tells you where to look first, not how you will score. The practice exams do the scoring.</p>');
+  row.appendChild(b);
+  var b2=document.createElement('button'); b2.className='act'; b2.textContent='Run the next form';
+  b2.addEventListener('click',function(){ startWritten(false); });
+  row.appendChild(b2);
+  card.appendChild(row);
+  host.appendChild(card);
+  window.scrollTo(0,0);
+}
+
+function runHistory(){
+  var host=el('gapHost'); host.innerHTML='';
+  var runs=gLoadRuns();
+  var card=document.createElement('div'); card.className='card';
+  if(!runs.length){
+    card.innerHTML='<h2>No runs yet</h2><p class="lede">Run one of the two gap finders and this fills in. The comparison is where the value sits, so the second run is where it starts to be useful.</p>';
+    host.appendChild(card); return;
+  }
+  card.innerHTML='<h2>Run history</h2><p class="lede">Every gap finder run completed in this browser, written and practical kept separate. Nothing is sent anywhere and no identifying information is stored.</p>';
+  var t=document.createElement('table');
+  t.innerHTML='<thead><tr><th>Date</th><th>Finder</th><th>Form</th><th>Score</th><th>Percent</th></tr></thead>';
+  var tb=document.createElement('tbody');
+  runs.forEach(function(r){
+    tb.innerHTML+='<tr><td>'+r.at+'</td><td>'+(r.mode==='written'?'Written':'Practical')+'</td><td>'+r.form+'</td><td>'+r.correct+' of '+r.n+'</td><td>'+Math.round(r.correct/r.n*100)+'%</td></tr>';
+  });
+  t.appendChild(tb); card.appendChild(t);
+  var w=gWritten(), pr=gPractical();
+  if(w.length && pr.length){
+    var wp=Math.round(w[w.length-1].correct/w[w.length-1].n*100);
+    var pp=Math.round(pr[pr.length-1].correct/pr[pr.length-1].n*100);
+    var gapTxt = Math.abs(wp-pp)<8
+      ? 'Your written and practical results are close, so neither half is carrying the other. Study by blueprint weight.'
+      : (wp>pp ? 'Your practical result trails your written result by '+(wp-pp)+' points. Tracing work is where the points are leaking, so weight the ECG lab over more reading.'
+               : 'Your written result trails your practical result by '+(pp-wp)+' points. You can read a tracing. The content blocks are where the points are leaking, so weight the notes and the written forms.');
+    card.insertAdjacentHTML('beforeend','<h3 style="margin:24px 0 6px">Written against practical</h3><p class="lede">Written '+wp+' percent, practical '+pp+' percent. '+gapTxt+'</p>');
+  } else {
+    card.insertAdjacentHTML('beforeend','<p class="note">Run both finders at least once to see which half is costing you more. Until then this is only half a picture.</p>');
+  }
   host.appendChild(card);
 }
+gFormNote();
 
 /* ---------- PRIORITY ENGINE ---------- */
 function stateOf(c){

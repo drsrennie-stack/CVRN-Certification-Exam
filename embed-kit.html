@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CVRN Embed Kit | MedMasters Collaborative</title>
 <meta name="description" content="Copy-paste iframe snippets for embedding the CVRN tools in Kajabi or any host page, with the parent-side auto-resizer.">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --navy:#0A1322; --navy-tint:#EDF1F3; --ink:#0A1322; --ink-soft:#14202F; --ink-muted:#3D4860;
@@ -17,7 +17,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 em,i,cite,dfn,var{font-style:normal}
-body{font-family:'Atkinson Hyperlegible',system-ui,sans-serif;background:var(--white);color:var(--ink);font-size:16.5px;line-height:1.7}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--white);color:var(--ink);font-size:16.5px;line-height:1.7}
 h1,h2,h3,h4,.eyebrow,.badge,button,code,pre{font-family:'Plus Jakarta Sans',system-ui,sans-serif}
 .skip{position:absolute;left:-9999px;background:var(--navy);color:#fff;padding:12px 18px;font-weight:700;z-index:99}
 .skip:focus{left:0;top:0}
@@ -78,7 +78,7 @@ footer{margin-top:56px;padding-top:20px;font-size:13.5px;color:var(--ink-muted)}
 <h2>Step one, set your base URL</h2>
 <div class="field">
   <label for="base">Where the tools are published</label>
-  <input type="text" id="base" value="https://drsrennie-stack.github.io/cvrn/" spellcheck="false">
+  <input type="text" id="base" value="https://drsrennie-stack.github.io/CVRN-Certification-Exam/" spellcheck="false">
 </div>
 <p>Change this and every snippet below updates. Whatever you set here also needs to appear in the <code class="inline">ALLOWED_ORIGINS</code> array inside <code class="inline">cvrn-embed.js</code>.</p>
 
@@ -90,61 +90,52 @@ footer{margin-top:56px;padding-top:20px;font-size:13.5px;color:var(--ink-muted)}
 </div>
 <p>If you would rather not host the file, paste the contents of <code class="inline">cvrn-embed.js</code> between <code class="inline">&lt;script&gt;</code> tags in the same footer block instead.</p>
 
-<h2>Step three, drop an iframe where you want the tool</h2>
-<p>In Kajabi, use a <strong>Custom Code</strong> block on the page or lesson. One block per tool.</p>
+<h2>Step three, drop in the iframe</h2>
+<p>In Kajabi, use a <strong>Custom Code</strong> block on the page or lesson.</p>
 
 <div class="snip">
-  <div class="hd"><h3>Mastery OS <span class="badge">plan, gap finder, exams</span></h3><button class="btn" type="button" data-copy="s-os">Copy</button></div>
-  <pre><code id="s-os">&lt;iframe
+  <div class="hd"><h3>The whole course, one embed <span class="badge">use this one</span></h3><button class="btn" type="button" data-copy="s-app">Copy</button></div>
+  <pre><code id="s-app">&lt;iframe
   data-cvrn-embed
-  src="BASEcvrn-mastery-os.html"
-  title="CVRN Mastery OS"
-  style="width:100%;border:0;height:1400px;display:block"
+  src="BASEindex.html"
+  title="ECG and CVRN Review Course"
+  style="width:100%;border:0;height:1500px;display:block"
   loading="lazy"
   referrerpolicy="no-referrer-when-downgrade"&gt;&lt;/iframe&gt;</code></pre>
 </div>
+<p><code class="inline">index.html</code> contains the card selector, the Mastery OS, the ECG Lab, and the Study Notes in one file, with one shared set of progress. This is the snippet for a normal install.</p>
 
+<h3>Landing on a specific tool</h3>
+<p>Add a hash to the source URL and the app opens straight to that tool. Useful when a Kajabi lesson should drop the learner into one place.</p>
 <div class="snip">
-  <div class="hd"><h3>ECG Learning Lab <span class="badge">live monitor</span></h3><button class="btn" type="button" data-copy="s-ecg">Copy</button></div>
-  <pre><code id="s-ecg">&lt;iframe
-  data-cvrn-embed
-  src="BASEecg-lab.html"
-  title="ECG Learning Lab"
-  style="width:100%;border:0;height:1600px;display:block"
-  loading="lazy"
-  referrerpolicy="no-referrer-when-downgrade"&gt;&lt;/iframe&gt;</code></pre>
+  <div class="hd"><h3>Route table</h3><button class="btn" type="button" data-copy="s-routes">Copy</button></div>
+  <pre><code id="s-routes">BASEindex.html#/home     the card selector
+BASEindex.html#/os       Mastery OS
+BASEindex.html#/ecg      ECG Lab
+BASEindex.html#/notes    Study Notes
+BASEindex.html#/os/gap   Gap Finder, opened directly
+BASEindex.html#/os/exams Practice Exams, opened directly
+BASEindex.html#/os/now   Right now queue
+BASEindex.html#/os/dash  Readiness dashboard</code></pre>
 </div>
 
+<h3>Separate files, if you want a tool on its own page</h3>
+<p>The three tools are still shipped as standalone files. Use these only when a page should hold one tool and nothing else. Progress does not carry between a standalone file and the merged app, because the browser stores it per page.</p>
 <div class="snip">
-  <div class="hd"><h3>Study Notes <span class="badge">expandable</span></h3><button class="btn" type="button" data-copy="s-notes">Copy</button></div>
-  <pre><code id="s-notes">&lt;iframe
-  data-cvrn-embed
-  src="BASEstudy-notes.html"
-  title="CVRN Study Notes"
-  style="width:100%;border:0;height:1200px;display:block"
-  loading="lazy"
-  referrerpolicy="no-referrer-when-downgrade"&gt;&lt;/iframe&gt;</code></pre>
-</div>
-
-<h3>Deep links</h3>
-<p>The Mastery OS accepts a topic parameter, which is what the QR codes in the study notes use. Swap the domain code for any of D1 through D14.</p>
-<div class="snip">
-  <div class="hd"><h3>Heart failure question bank, opened directly</h3><button class="btn" type="button" data-copy="s-topic">Copy</button></div>
-  <pre><code id="s-topic">&lt;iframe
-  data-cvrn-embed
-  src="BASEcvrn-mastery-os.html?topic=D6"
-  title="Heart failure question bank"
-  style="width:100%;border:0;height:1200px;display:block"
-  loading="lazy"&gt;&lt;/iframe&gt;</code></pre>
+  <div class="hd"><h3>Standalone sources</h3><button class="btn" type="button" data-copy="s-solo">Copy</button></div>
+  <pre><code id="s-solo">BASEcvrn-mastery-os.html
+BASEecg-lab.html
+BASEstudy-notes.html</code></pre>
 </div>
 
 <h2>Reference</h2>
 <table>
-  <thead><tr><th>Tool</th><th>File</th><th>Message id</th><th>Starting height</th></tr></thead>
+  <thead><tr><th>What</th><th>File</th><th>Message id</th><th>Starting height</th></tr></thead>
   <tbody>
-    <tr><td>Mastery OS</td><td>cvrn-mastery-os.html</td><td>cvrn-mastery-os</td><td>1400px</td></tr>
-    <tr><td>ECG Learning Lab</td><td>ecg-lab.html</td><td>cvrn-ecg-lab</td><td>1600px</td></tr>
-    <tr><td>Study Notes</td><td>study-notes.html</td><td>cvrn-study-notes</td><td>1200px</td></tr>
+    <tr><td>Whole course</td><td>index.html</td><td>cvrn-app</td><td>1500px</td></tr>
+    <tr><td>Mastery OS alone</td><td>cvrn-mastery-os.html</td><td>cvrn-mastery-os</td><td>1400px</td></tr>
+    <tr><td>ECG Lab alone</td><td>ecg-lab.html</td><td>cvrn-ecg-lab</td><td>1600px</td></tr>
+    <tr><td>Study Notes alone</td><td>study-notes.html</td><td>cvrn-study-notes</td><td>1200px</td></tr>
   </tbody>
 </table>
 <p>The starting height is only what shows before the first message arrives. Set it close to the real height so the page does not visibly jump if a learner is on a slow connection.</p>
@@ -160,7 +151,7 @@ footer{margin-top:56px;padding-top:20px;font-size:13.5px;color:var(--ink-muted)}
 
 <h2>Live check</h2>
 <p>This page runs the resizer on itself. If the frame below sizes to its content with no inner scrollbar, the pair is working.</p>
-<iframe data-cvrn-embed src="study-notes.html" title="Live embed test, CVRN Study Notes"
+<iframe data-cvrn-embed src="index.html" title="Live embed test, the full course app"
   style="width:100%;border:1px solid var(--rule-soft);border-radius:4px;height:700px;display:block"></iframe>
 
 </main>

@@ -226,6 +226,202 @@ window.CVRN_EXAM_POOL = [
  why:'Digoxin and potassium compete for the same binding site on the sodium potassium ATPase, so low potassium increases digoxin binding and toxicity at otherwise therapeutic levels. This matters because loop diuretics and digoxin are often prescribed together.'},
 {id:'X060',d:'D14',c:'D14.C1',dok:2,q:'Which agent reverses dabigatran?',
  o:['Protamine sulfate','Idarucizumab','Andexanet alfa','Vitamin K'],a:1,
- why:'Idarucizumab is the specific reversal agent for dabigatran, a direct thrombin inhibitor. Andexanet alfa reverses factor Xa inhibitors, protamine reverses heparin, and vitamin K reverses warfarin.'}
+ why:'Idarucizumab is the specific reversal agent for dabigatran, a direct thrombin inhibitor. Andexanet alfa reverses factor Xa inhibitors, protamine reverses heparin, and vitamin K reverses warfarin.'},
+
+/* ============================================================
+   DOK 1 BLOCK  (X061 to X075)
+   Straight recall. These exist so an exam form can open with
+   items that confirm the foundation is there before the form
+   asks the learner to apply anything.
+   ============================================================ */
+
+{id:'X061',d:'D1',c:'D1.C3',dok:1,q:'Which heart sound is produced by closure of the aortic and pulmonic valves?',
+ o:['S1','S2','S3','S4'],a:1,
+ why:'S2 marks closure of the semilunar valves, aortic and pulmonic, at the end of ventricular systole. S1 is closure of the mitral and tricuspid valves at the start of systole. S3 and S4 are filling sounds, not valve closure sounds.'},
+
+{id:'X062',d:'D2',c:'D2.C1',dok:1,q:'Which waveform on the ECG represents ventricular repolarization?',
+ o:['P wave','QRS complex','T wave','U wave'],a:2,
+ why:'The T wave is ventricular repolarization. The P wave is atrial depolarization, the QRS is ventricular depolarization, and the U wave, when visible, is thought to reflect late repolarization of the Purkinje system or papillary muscles.'},
+
+{id:'X063',d:'D2',c:'D2.C2',dok:1,q:'What is the normal intrinsic firing rate of the sinoatrial node in an adult?',
+ o:['20 to 40 per minute','40 to 60 per minute','60 to 100 per minute','100 to 140 per minute'],a:2,
+ why:'The sinoatrial node fires at 60 to 100 per minute and is therefore the dominant pacemaker. The AV junction is the first backup at 40 to 60, and the ventricular Purkinje escape rate is 20 to 40.'},
+
+{id:'X064',d:'D3',c:'D3.C1',dok:1,q:'Which coronary artery supplies the anterior wall of the left ventricle and most of the interventricular septum?',
+ o:['Right coronary artery','Left circumflex artery','Left anterior descending artery','Posterior descending artery'],a:2,
+ why:'The left anterior descending artery runs down the anterior interventricular groove and supplies the anterior wall, the anterior two thirds of the septum, and the apex. This is why an LAD occlusion carries the largest infarct burden and the highest risk of pump failure.'},
+
+{id:'X065',d:'D3',c:'D3.C3',dok:1,q:'Which laboratory marker is the most specific indicator of myocardial injury?',
+ o:['Creatine kinase, total','Myoglobin','Cardiac troponin','Lactate dehydrogenase'],a:2,
+ why:'Cardiac troponin I and T are structural proteins found in cardiac muscle, which makes them the most specific markers of myocardial injury. Myoglobin rises early but is released by any muscle. Total creatine kinase and lactate dehydrogenase are not cardiac specific.'},
+
+{id:'X066',d:'D4',c:'D4.C1',dok:1,q:'Under the 2017 ACC/AHA classification, which blood pressure defines stage 2 hypertension?',
+ o:['120 to 129 over less than 80','130 to 139 over 80 to 89','140 over 90 or higher','180 over 120 or higher'],a:2,
+ why:'Stage 2 begins at 140 systolic or 90 diastolic. The tier below it, 130 to 139 over 80 to 89, is stage 1, and 120 to 129 over less than 80 is elevated. Readings of 180 over 120 or higher are a hypertensive crisis, not a stage.'},
+
+{id:'X067',d:'D5',c:'D5.C1',dok:1,q:'Which type of cardiomyopathy is the most common?',
+ o:['Hypertrophic','Restrictive','Dilated','Arrhythmogenic right ventricular'],a:2,
+ why:'Dilated cardiomyopathy accounts for the majority of cases. Chamber enlargement with thin walls produces systolic failure. Hypertrophic is the most common inherited form, restrictive is the least common, and arrhythmogenic right ventricular cardiomyopathy is rare.'},
+
+{id:'X068',d:'D6',c:'D6.C1',dok:1,q:'What does New York Heart Association class III describe?',
+ o:['No limitation of physical activity','Slight limitation, comfortable at rest, ordinary activity causes symptoms','Marked limitation, comfortable at rest, less than ordinary activity causes symptoms','Symptoms at rest'],a:2,
+ why:'Class III is marked limitation. The patient is comfortable at rest but less than ordinary activity brings on symptoms. Class II is symptoms with ordinary activity, and class IV is symptoms at rest. NYHA class describes current function and can move in both directions, unlike ACC/AHA stages.'},
+
+{id:'X069',d:'D6',c:'D6.C4',dok:1,q:'Which four drug classes make up guideline-directed medical therapy for heart failure with reduced ejection fraction?',
+ o:['ACE inhibitor or ARNI, beta blocker, mineralocorticoid receptor antagonist, SGLT2 inhibitor','Digoxin, loop diuretic, nitrate, hydralazine','Calcium channel blocker, statin, aspirin, beta blocker','Amiodarone, warfarin, loop diuretic, ACE inhibitor'],a:0,
+ why:'The four pillars are renin angiotensin system inhibition preferably with an ARNI, a beta blocker proven in heart failure, a mineralocorticoid receptor antagonist, and an SGLT2 inhibitor. Each lowers mortality independently. Diuretics relieve symptoms but do not extend survival.'},
+
+{id:'X070',d:'D7',c:'D7.C1',dok:1,q:'Which non-invasive test measures ejection fraction, wall motion, and valve function at the bedside without radiation?',
+ o:['Transthoracic echocardiogram','Cardiac computed tomography angiography','Nuclear perfusion imaging','Exercise treadmill test'],a:0,
+ why:'Transthoracic echocardiography uses ultrasound, so it carries no radiation, needs no contrast in its basic form, and can be done at the bedside. It is the standard first test for ventricular function and valve disease.'},
+
+{id:'X071',d:'D8',c:'D8.C3',dok:1,q:'What separates a grade IV murmur from a grade III murmur?',
+ o:['A grade IV is heard without a stethoscope','A grade IV has a palpable thrill','A grade IV is holosystolic','A grade IV radiates to the neck'],a:1,
+ why:'Grade IV is the point at which a palpable thrill appears. Grades I through III are increasingly loud but have no thrill. Grade V needs only the edge of the stethoscope on the chest, and grade VI is audible with the stethoscope lifted off the chest.'},
+
+{id:'X072',d:'D9',c:'D9.C2',dok:1,q:'What is the upper limit of a normal QRS duration?',
+ o:['0.08 seconds','0.10 seconds','0.12 seconds','0.20 seconds'],a:2,
+ why:'A QRS of less than 0.12 seconds, meaning under three small boxes, is narrow and indicates supraventricular conduction through the His Purkinje system. At 0.12 seconds or more the complex is wide, which points to bundle branch block, ventricular origin, pacing, or a conduction poison such as hyperkalemia.'},
+
+{id:'X073',d:'D10',c:'D10.C4',dok:1,q:'A nasal cannula running at 4 liters per minute delivers approximately what fraction of inspired oxygen?',
+ o:['0.28','0.36','0.50','0.70'],a:1,
+ why:'A nasal cannula adds roughly 4 percentage points of FiO2 per liter above room air at 21 percent, so 4 liters gives about 36 percent. The number is an estimate only, because the actual value falls as minute ventilation rises and the patient entrains more room air.'},
+
+{id:'X074',d:'D11',c:'D11.C3',dok:1,q:'What is the normal range for central venous pressure?',
+ o:['0 to 1 mmHg','2 to 6 mmHg','8 to 12 mmHg','15 to 20 mmHg'],a:1,
+ why:'Normal central venous pressure is 2 to 6 mmHg measured at the phlebostatic axis at end expiration. It reflects right ventricular preload and is raised by volume overload, right heart failure, tamponade, and high intrathoracic pressure.'},
+
+{id:'X075',d:'D13',c:'D13.C2',dok:1,q:'In the NBG pacemaker code, what does the third letter describe?',
+ o:['The chamber paced','The chamber sensed','The response to a sensed event','The rate response feature'],a:2,
+ why:'Position one is the chamber paced, position two is the chamber sensed, and position three is the response to sensing, given as I for inhibited, T for triggered, D for dual, or O for none. Position four covers rate modulation.'},
+
+/* ============================================================
+   DOK 2 BLOCK  (X076 to X094)
+   Apply a rule, run a calculation, classify a finding.
+   ============================================================ */
+
+{id:'X076',d:'D1',c:'D1.C5',dok:2,q:'Over two hours a post-operative cardiac surgery patient moves from a blood pressure of 118 over 62 to 106 over 88, with the respiratory rate rising from 16 to 26 and new restlessness. Which interpretation is best supported?',
+ o:['The patient is stable because the systolic pressure is above 100','The narrowing pulse pressure with tachypnea and restlessness suggests falling stroke volume and warrants escalation','The changes reflect normal post-operative pain and can be treated with analgesia alone','A rising diastolic pressure indicates improving cardiac output'],a:1,
+ why:'Pulse pressure fell from 56 to 18. A narrowing pulse pressure means stroke volume is dropping while vasoconstriction holds the systolic number up. Tachypnea and restlessness are early compensation for low output or blood loss. Systolic pressure is the last number to fall, so waiting for it is waiting too long.'},
+
+{id:'X077',d:'D2',c:'D2.C6',dok:2,q:'A monitor shows low amplitude complexes that intermittently drop out. The patient is diaphoretic and the electrode gel is dry. What is the first action?',
+ o:['Increase the monitor gain and continue observing','Change the electrodes and prepare the skin before reapplying','Obtain a 12-lead ECG to look for a new conduction defect','Silence the alarm and reassess in one hour'],a:1,
+ why:'Dry gel and moist skin both break the electrode to skin interface, which produces low amplitude and dropout. Fix the source before adjusting the display. Raising the gain magnifies noise along with signal and can create false alarms.'},
+
+{id:'X078',d:'D3',c:'D3.C4',dok:2,q:'Forty minutes after fibrinolytic therapy for an inferior STEMI, the patient reports the chest pain has resolved and the ST elevation has fallen by more than half. What does this most likely indicate?',
+ o:['Reperfusion of the infarct related artery','Failed lysis requiring immediate rescue PCI','Development of pericarditis','A false positive initial diagnosis'],a:0,
+ why:'Successful reperfusion shows as relief of pain, resolution of at least 50 percent of the ST elevation by 60 to 90 minutes, and often accelerated idioventricular rhythm. Failed lysis shows the opposite and triggers transfer for rescue PCI.'},
+
+{id:'X079',d:'D3',c:'D3.C5',dok:2,q:'Six weeks after a myocardial infarction, a patient taking moderate intensity atorvastatin has an LDL cholesterol of 96 mg/dL. What is the appropriate next step?',
+ o:['Continue the current dose since the LDL is under 100','Stop the statin and start a fibrate','Intensify to high intensity statin therapy and recheck in four to twelve weeks','Add niacin to the current regimen'],a:2,
+ why:'After an acute coronary syndrome the LDL goal is less than 70 mg/dL, and less than 55 mg/dL for very high risk patients. Reaching 96 on moderate intensity therapy means the dose is not doing enough. Move to high intensity statin first, then consider ezetimibe or a PCSK9 inhibitor if the goal is still missed.'},
+
+{id:'X080',d:'D4',c:'D4.C3',dok:2,q:'A 54 year old Black patient with no heart failure, no chronic kidney disease, and no diabetes needs first line therapy for stage 2 hypertension. Which choice is preferred?',
+ o:['An ACE inhibitor alone','A thiazide type diuretic or a calcium channel blocker','A beta blocker alone','An alpha blocker alone'],a:1,
+ why:'In Black adults without a compelling indication, thiazide type diuretics and calcium channel blockers lower blood pressure more effectively than renin angiotensin blockers used alone, and they reduce stroke risk more. If heart failure or albuminuric kidney disease is present, an ACE inhibitor or ARB is added regardless.'},
+
+{id:'X081',d:'D5',c:'D5.C5',dok:2,q:'Which finding most supports placing an implantable defibrillator for primary prevention in nonischemic dilated cardiomyopathy?',
+ o:['An ejection fraction of 35 percent or less with NYHA class II or III symptoms after at least three months of optimal therapy','A single episode of nonsustained ventricular tachycardia on telemetry','A brain natriuretic peptide above 1000','A left ventricular end diastolic diameter above 60 mm'],a:0,
+ why:'Primary prevention criteria hinge on an ejection fraction of 35 percent or less with class II or III symptoms after at least three months of guideline directed therapy, plus an expected survival over one year. Ejection fraction is measured after therapy because many patients recover function and no longer qualify.'},
+
+{id:'X082',d:'D6',c:'D6.C3',dok:2,q:'A heart failure patient reports early satiety, abdominal fullness, and worsening leg swelling, but denies orthopnea and has clear lung fields. Which pattern does this fit?',
+ o:['Predominantly left sided congestion','Predominantly right sided congestion','Low output without congestion','Noncardiac abdominal disease only'],a:1,
+ why:'Early satiety, abdominal fullness from hepatic and gut congestion, and dependent edema are right sided congestion. Left sided congestion backs into the pulmonary circuit and shows as orthopnea, paroxysmal nocturnal dyspnea, and crackles. Clear lungs with a swollen abdomen point right, not left.'},
+
+{id:'X083',d:'D6',c:'D6.C5',dok:2,q:'A patient arrives with sudden severe dyspnea, diffuse crackles, an oxygen saturation of 84 percent, and a blood pressure of 196 over 104. Body weight is unchanged from last week. Which initial approach fits best?',
+ o:['Large dose intravenous diuretic as the single priority','Intravenous vasodilator with noninvasive positive pressure ventilation','Intravenous fluid bolus to improve preload','Immediate intubation and a beta blocker infusion'],a:1,
+ why:'This is sympathetic crashing acute pulmonary edema. The problem is redistribution of fluid into the lungs driven by a sudden rise in afterload, not total body volume overload, which is why the weight has not changed. Afterload reduction with nitroglycerin and positive pressure ventilation reverses it quickly. Heavy diuresis in this setting can leave the patient volume depleted.'},
+
+{id:'X084',d:'D7',c:'D7.C3',dok:2,q:'Four hours after radial artery access, a patient reports increasing hand pain with pallor and numbness. The compression band is in place at the access site. What is the priority action?',
+ o:['Tighten the band further to control bleeding','Remove the band completely and apply direct pressure','Release band pressure in small steps while watching for bleeding and reassessing perfusion','Elevate the arm and continue monitoring'],a:2,
+ why:'Pain, pallor, and numbness point to the band being tight enough to obstruct arterial inflow. Patent hemostasis means the least pressure that stops bleeding while flow continues. Step the pressure down gradually so the site is not left unsupported.'},
+
+{id:'X085',d:'D7',c:'D7.C4',dok:2,q:'A patient taking metformin with an eGFR of 42 is scheduled for coronary angiography with iodinated contrast. What is the appropriate medication action?',
+ o:['Continue metformin without change','Hold metformin at the time of the procedure and restart after 48 hours once renal function is confirmed stable','Stop metformin permanently','Double the metformin dose to offset contrast effects'],a:1,
+ why:'Metformin is cleared by the kidney. If contrast injures the kidney, metformin accumulates and raises the risk of lactic acidosis. With an eGFR from 30 to 60 receiving arterial contrast, hold the dose and restart after 48 hours once creatinine is confirmed stable.'},
+
+{id:'X086',d:'D8',c:'D8.C4',dok:2,q:'A patient with known severe aortic stenosis reports two episodes of syncope on exertion in the past month. What does this add?',
+ o:['Nothing, syncope is common and nonspecific','It marks symptomatic severe stenosis, which sharply shortens survival without valve replacement','It indicates the stenosis has become mild','It suggests the primary problem is vasovagal'],a:1,
+ why:'Once severe aortic stenosis becomes symptomatic the survival curve drops steeply. Average survival is roughly five years after angina, three years after syncope, and two years after heart failure symptoms. Symptoms move the patient from watchful waiting to valve replacement.'},
+
+{id:'X087',d:'D9',c:'D9.C3',dok:2,q:'A 12-lead shows a QRS duration of 0.14 seconds, a broad monophasic R wave in leads I and V6, and a deep QS complex in V1. What is this?',
+ o:['Right bundle branch block','Left bundle branch block','Ventricular paced rhythm with normal function','Left ventricular hypertrophy with strain'],a:1,
+ why:'A wide QRS with a broad monophasic R in the lateral leads and a QS or rS in V1 is left bundle branch block. Right bundle branch block produces the opposite, an rSR pattern in V1 with a wide slurred S in I and V6. This pattern also obscures ordinary ST criteria for infarction, which is why Sgarbossa criteria exist.'},
+
+{id:'X088',d:'D10',c:'D10.C2',dok:2,q:'A patient has an oxygen saturation of 90 percent with a normal pH and temperature. What is the approximate arterial oxygen tension?',
+ o:['40 mmHg','60 mmHg','80 mmHg','100 mmHg'],a:1,
+ why:'Three reference points anchor the oxyhemoglobin dissociation curve: saturation 90 matches a PaO2 near 60, saturation 80 matches 50, and saturation 70 matches 40. Saturation 90 sits at the top of the steep part of the curve, so any further fall produces a rapid drop in oxygen content.'},
+
+{id:'X089',d:'D11',c:'D11.C5',dok:2,q:'A patient has a mean arterial pressure of 62 mmHg, a central venous pressure of 8 mmHg, and a cardiac output of 5.0 liters per minute. What is the systemic vascular resistance?',
+ o:['432 dynes per second per cm to the fifth','864 dynes per second per cm to the fifth','1120 dynes per second per cm to the fifth','1400 dynes per second per cm to the fifth'],a:1,
+ why:'SVR equals mean arterial pressure minus central venous pressure, divided by cardiac output, times 80. That is 62 minus 8, which is 54, divided by 5, which is 10.8, times 80, which is 864. Normal is roughly 800 to 1200, so this sits at the low end and fits a vasodilated state.'},
+
+{id:'X090',d:'D12',c:'D12.C2',dok:2,q:'A patient on a percutaneous left ventricular assist device develops a suction alarm, a flattened motor current waveform, and a rising plasma free hemoglobin. What is the most likely cause?',
+ o:['The device is correctly positioned and the alarm is artifact','The inlet is against the ventricular wall or the ventricle is underfilled','The patient has developed aortic regurgitation','The purge solution concentration is too high'],a:1,
+ why:'Suction alarms mean the inlet cannot get enough volume, either because the catheter has migrated against the wall or because preload has dropped. Continued suction shears red cells, which is why plasma free hemoglobin rises. Assess position with imaging and treat volume status before assuming device failure.'},
+
+{id:'X091',d:'D12',c:'D12.C4',dok:2,q:'A patient on femoral venoarterial ECMO has a right radial arterial saturation of 84 percent while the circuit post-oxygenator saturation is 100 percent and the left femoral arterial saturation is 99 percent. What does this indicate?',
+ o:['Oxygenator failure','Differential hypoxia, with poorly oxygenated native cardiac output perfusing the upper body','Circuit recirculation','A miscalibrated pulse oximeter'],a:1,
+ why:'This is differential hypoxia, also called harlequin or north south syndrome. As the native heart recovers, it ejects blood that passed through injured lungs into the aortic root and up the arch, while the retrograde femoral circuit flow serves the lower body. Monitor the right radial artery, since it reflects what the brain and right coronary receive. Treatment options include improving native lung gas exchange or converting to a venoarteriovenous configuration.'},
+
+{id:'X092',d:'D13',c:'D13.C3',dok:2,q:'A pacemaker dependent patient has spikes at the programmed rate with no QRS after most of them. Potassium is 6.1 mmol/L and the patient was started on a new antiarrhythmic yesterday. What is the most likely explanation?',
+ o:['Oversensing of myopotentials','A rise in the pacing threshold above the programmed output','Lead dislodgement into the atrium','Normal device function with fusion beats'],a:1,
+ why:'Hyperkalemia and class IC antiarrhythmics both raise the myocardial capture threshold, so the programmed output no longer depolarizes tissue. Spikes present with no capture points to threshold, not to sensing. Correct the potassium, review the drug, and expect the device to need output reprogramming.'},
+
+{id:'X093',d:'D14',c:'D14.C1',dok:2,q:'A patient on warfarin for atrial fibrillation has an INR of 6.2 with no bleeding and no planned procedure. What is the appropriate management?',
+ o:['Give four factor prothrombin complex concentrate now','Hold warfarin and monitor, with oral vitamin K considered if the risk of bleeding is high','Give fresh frozen plasma and hold warfarin','Continue the current dose and recheck in one week'],a:1,
+ why:'With an INR from 4.5 to 10 and no bleeding, holding doses and monitoring is enough for most patients, and low dose oral vitamin K is reserved for those at high bleeding risk. Prothrombin complex concentrate and plasma are for serious bleeding or urgent reversal, and both carry thrombotic and volume risks.'},
+
+{id:'X094',d:'D14',c:'D14.C7',dok:2,q:'Which practice most reduces harm from high alert vasoactive infusions?',
+ o:['Allowing each nurse to choose a familiar concentration','Standardized concentrations with smart pump limits and an independent double check at initiation and rate change','Documenting the rate every four hours','Rounding doses to whole numbers for easier calculation'],a:1,
+ why:'Errors with vasoactive drugs come from concentration confusion and mistyped rates. Standard concentrations remove one variable, smart pump dose limits catch the outliers, and an independent double check at start and at every rate change catches the rest. An independent check means a second clinician calculates separately, not simply agrees.'},
+
+/* ============================================================
+   DOK 4 BLOCK  (X095 to X099)
+   Extended reasoning. Each stem carries conflicting data and
+   asks the learner to weigh several competencies at once and
+   defend a plan, not to name a single finding.
+   ============================================================ */
+
+{id:'X095',d:'D3',c:'D3.C4',dok:4,q:'A 68 year old arrives 90 minutes into crushing chest pain. The 12-lead shows 3 mm of ST elevation in II, III, and aVF with reciprocal depression in I and aVL. Blood pressure is 82 over 54, heart rate 46, lungs clear, jugular veins distended. The nearest PCI center is 25 minutes away. A colleague has already drawn up nitroglycerin and morphine. Which plan best fits the whole picture?',
+ o:['Give the nitroglycerin, then activate the cath lab','Hold nitrates, obtain right sided leads, give a cautious fluid challenge, and activate the cath lab for primary PCI','Give fibrinolytics now because the pressure is too low for transfer','Treat the bradycardia with atropine and observe for one hour before deciding'],a:1,
+ why:'Four threads have to be pulled together. First, inferior ST elevation with hypotension, clear lungs, and distended neck veins is right ventricular infarction until proven otherwise, so V4R comes before any drug. Second, the right ventricle in that state is preload dependent, so nitrates and morphine can drop the pressure sharply. Third, transfer time of 25 minutes is well inside the 120 minute first medical contact to device window, so primary PCI beats fibrinolysis. Fourth, the bradycardia usually reflects the same right coronary occlusion and improves with reperfusion, so it is not the target. The order matters as much as the elements.'},
+
+{id:'X096',d:'D6',c:'D6.C4',dok:4,q:'A patient with an ejection fraction of 28 percent is on sacubitril-valsartan, carvedilol, and spironolactone. Today the creatinine has risen from 1.1 to 1.5 mg/dL, potassium is 5.3 mmol/L, blood pressure is 96 over 58, and the patient feels better than last month with no orthopnea and no edema. An SGLT2 inhibitor has not been started. What is the most defensible plan?',
+ o:['Stop the spironolactone and the sacubitril-valsartan and recheck in one week','Hold nothing, reduce the diuretic, recheck chemistry in three to five days, counsel on potassium sources, and start the SGLT2 inhibitor','Increase the loop diuretic to protect the kidney','Stop all four pillar medications until the creatinine returns to baseline'],a:1,
+ why:'The temptation is to read a rising creatinine as harm and pull back therapy. Look at what changed instead. The patient is dry by exam and feels better, which points at over diuresis as the driver rather than the disease drugs. A creatinine rise up to about 30 percent above baseline that plateaus is expected with renin angiotensin blockade and does not by itself require stopping. Potassium at 5.3 is manageable with dietary review before dose changes. The SGLT2 inhibitor is the missing mortality benefit and produces its own small early creatinine dip that then recovers. Stopping pillars is the single most common cause of avoidable readmission in this population.'},
+
+{id:'X097',d:'D9',c:'D9.C5',dok:4,q:'A 52 year old with 40 minutes of chest pain has a 12-lead showing 2 mm of ST depression in V1 through V3 with tall R waves in V2 and upright T waves, plus 1 mm of ST depression in I and aVL. Troponin is pending, blood pressure is 138 over 80. The emergency physician plans a stress test in the morning. What is the strongest interpretation and action?',
+ o:['This is a nonspecific pattern and a morning stress test is reasonable','This is anterior subendocardial ischemia and heparin alone is enough','This is a posterior STEMI equivalent, so obtain V7 to V9 and activate the cath lab','This is early repolarization and needs no further workup'],a:2,
+ why:'Anterior ST depression is not always anterior ischemia. Leads V1 through V3 look at the posterior wall from the front, so a posterior injury current shows up inverted, as ST depression with tall R waves and upright T waves. Posterior leads V7 to V9 convert the mirror image back into recognizable ST elevation, and 0.5 mm there is diagnostic. The reciprocal depression in I and aVL fits a circumflex territory event. Treating this as a non-STEMI and waiting for a morning stress test lets a full thickness infarct complete overnight. This is the classic missed STEMI on the certification exam and in practice.'},
+
+{id:'X098',d:'D11',c:'D11.C6',dok:4,q:'A patient two days after mitral valve replacement has a blood pressure of 84 over 52, heart rate 118, central venous pressure 18 mmHg, pulmonary artery occlusion pressure 19 mmHg, cardiac index 1.6, systemic vascular resistance 1580, and mixed venous oxygen saturation 51 percent. Chest radiograph shows a widened mediastinum and the heart sounds are muffled. Which reading of the data is best supported?',
+ o:['Distributive shock, so start norepinephrine and give fluid','Cardiogenic shock from ventricular failure, so start dobutamine and diurese','Obstructive shock from tamponade, so support filling and prepare for urgent surgical evaluation','Hypovolemic shock, so give two liters of crystalloid'],a:2,
+ why:'Read the numbers as a set. Low cardiac index with high systemic vascular resistance and low mixed venous saturation says the problem is forward flow, not vasodilation, which rules out distributive shock. What separates tamponade from pump failure is the equalization of filling pressures, with central venous pressure and occlusion pressure nearly the same at 18 and 19, combined with muffled sounds and a widened mediastinum two days after cardiac surgery. Diuresis would remove the preload this patient depends on, and inotropes cannot fill a ventricle that is being squeezed from outside. Support filling, avoid anything that drops preload, and get the surgical team now.'},
+
+{id:'X099',d:'D14',c:'D14.C2',dok:4,q:'A patient admitted with heart failure is on amiodarone, digoxin, furosemide, and warfarin. Levofloxacin was started yesterday for pneumonia and ondansetron was given twice for nausea. Today: potassium 3.2 mmol/L, magnesium 1.4 mg/dL, QTc 530 ms, and a run of polymorphic ventricular tachycardia. Which analysis best explains the event and directs care?',
+ o:['Digoxin toxicity is the sole cause, so give digoxin immune Fab','Several QT prolonging drugs stacked on top of low potassium and low magnesium, so repair the electrolytes, give magnesium, and remove the avoidable QT offenders','This is monomorphic ventricular tachycardia from ischemia, so give more amiodarone','The warfarin interaction with levofloxacin caused the arrhythmia'],a:1,
+ why:'No single agent explains this. Amiodarone, levofloxacin, and ondansetron each prolong repolarization, and their effects add. Furosemide drove potassium and magnesium down, and both losses lengthen the QT further and destabilize the membrane. That combination produces torsades de pointes, which is polymorphic by definition. Management is magnesium regardless of the serum level, aggressive potassium replacement to the high normal range, and stopping every avoidable QT prolonging drug. Adding more amiodarone would extend the QT and worsen it. The warfarin and levofloxacin interaction raises INR and bleeding risk but has nothing to do with repolarization.'}
+,
+
+/* ---------- D3 top-up: coronary artery disease is the single
+     heaviest block on the blueprint at 14 percent, so the pool
+     carries proportional weight rather than nominal coverage ---------- */
+
+{id:'X100',d:'D3',c:'D3.C2',dok:1,q:'Which term describes chest pain that is brought on by a predictable amount of exertion and relieved within minutes by rest or nitroglycerin?',
+ o:['Unstable angina','Stable angina','Prinzmetal angina','Acute myocardial infarction'],a:1,
+ why:'Stable angina is reproducible, predictable, and relieved by rest or nitroglycerin within about five minutes. Unstable angina is new, occurs at rest, or has become more frequent or severe. Prinzmetal angina comes from coronary vasospasm and typically occurs at rest, often at night.'},
+
+{id:'X101',d:'D3',c:'D3.C1',dok:2,q:'A patient has a 10 year atherosclerotic cardiovascular disease risk of 9.4 percent, an LDL of 142 mg/dL, no diabetes, and a blood pressure of 134 over 84. Which management step fits current risk based guidance?',
+ o:['No pharmacologic therapy is indicated at any risk level below 10 percent','Discuss moderate intensity statin therapy, since this is intermediate risk, and use risk enhancing factors to settle the decision','Start high intensity statin plus ezetimibe immediately','Repeat the lipid panel in five years'],a:1,
+ why:'A 10 year risk of 7.5 to 19.9 percent is intermediate, and the guideline calls for a clinician and patient discussion rather than an automatic yes or no. Risk enhancing factors such as family history of premature disease, persistent LDL of 160 or more, chronic kidney disease, inflammatory disease, or a raised lipoprotein(a) tip the decision toward starting a moderate intensity statin. A coronary calcium score can settle the question when the decision stays uncertain.'},
+
+{id:'X102',d:'D3',c:'D3.C3',dok:2,q:'A patient with chest pain has a high sensitivity troponin of 8 ng/L on arrival and 47 ng/L at one hour, with the assay upper reference limit at 14 ng/L. How is this best read?',
+ o:['A single value below the reference limit rules out infarction','The rise across serial draws indicates acute myocardial injury and warrants an ischemic pathway','The result is a false positive because the first value was normal','Troponin should be repeated at six hours before any conclusion'],a:1,
+ why:'High sensitivity assays are read as a pattern, not a single number. A significant delta across a one hour or two hour protocol identifies acute injury even when the first draw is normal, because the first draw may have been taken before release began. A flat elevated value across draws suggests chronic injury instead. Waiting six hours discards the advantage the high sensitivity assay provides.'},
+
+{id:'X103',d:'D3',c:'D3.C5',dok:3,q:'A patient six weeks after drug eluting stent placement asks to stop clopidogrel because of easy bruising, while continuing aspirin. Which response is best supported?',
+ o:['Stopping clopidogrel now is reasonable since aspirin alone prevents stent thrombosis','Early discontinuation of the P2Y12 inhibitor carries a high risk of stent thrombosis, so the bruising should be evaluated and the decision made with cardiology','Both antiplatelet agents should be stopped and restarted in one month','Switch to warfarin, which causes less bruising'],a:1,
+ why:'Until the stent endothelializes, the P2Y12 inhibitor is what prevents stent thrombosis, an event that presents as an acute infarct and carries high mortality. Minor bruising is expected on dual antiplatelet therapy and is not by itself a reason to stop. Evaluate for a real bleeding source, review interacting drugs, and make any change with the interventional team. Warfarin does not prevent platelet mediated stent thrombosis.'}
 
 ];

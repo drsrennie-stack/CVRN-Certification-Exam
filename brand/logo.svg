@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 72" width="320" height="72" role="img" aria-label="CVRN slash OS, ECG and CVRN-BC review, MedMasters Collaborative">
+  <title>CVRN/OS</title>
+  <defs>
+    <style>
+      .mk-bg{fill:#0C1322}
+      .mk-ring{fill:none;stroke:#1D2942;stroke-width:1.5}
+      .trace{fill:none;stroke:#4ADE80;stroke-width:3.4;stroke-linecap:round;stroke-linejoin:round}
+      .word{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:800;font-size:30px;letter-spacing:-.02em;fill:#E8EDF8}
+      .word .os{fill:#4ADE80}
+      .sub{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:700;font-size:9.5px;letter-spacing:.19em;fill:#7E8BA8}
+    </style>
+  </defs>
+
+  <!-- glyph: a beat inside a rounded square -->
+  <rect x="2" y="10" width="52" height="52" rx="15" class="mk-bg"/>
+  <rect x="2.75" y="10.75" width="50.5" height="50.5" rx="14.25" class="mk-ring"/>
+  <path class="trace" d="M11 36h6.4l3.6-9 5.6 18 4.6-13 3.2 6.6H45"/>
+
+  <!-- wordmark -->
+  <text class="word" x="68" y="42">CVRN<tspan class="os">/OS</tspan></text>
+  <text class="sub" x="69" y="57">ECG &amp; CVRN-BC REVIEW</text>
+</svg>
