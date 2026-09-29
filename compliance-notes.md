@@ -7,133 +7,247 @@
 **Files covered:**
 
 1. `index.html` (merged single-file application, the file that ships to Kajabi)
-2. `cvrn-mastery-os.html` (plan, written gap finder, practice exams)
-3. `ecg-lab.html` (live monitor, 12-lead viewer, practice, IABP waveform lab, practical gap finder)
+2. `cvrn-mastery-os.html` (plan, written gap finder, study sessions, practice exams)
+3. `ecg-lab.html` (live monitor, 12-lead viewer, practice, IABP lab, practical gap finder)
 4. `study-notes.html` (chaptered notes, screen and print)
 5. `cvrn-dashboard.html` (weakness dashboard)
-6. `blueprint-pdf.html` (source for the printed blueprint)
+6. `build_app.py` (shell, routing, and the accessibility layer)
 7. `embed-kit.html`, `kajabi-embed.txt` (host page embed)
 
-**Date of this review:** 14 August 2026
+**Date of this review:** 29 September 2026
 **Reviewer:** Dr. Sharilyn Rennie
 
-## 2. WCAG version and target level
+## 2. Standard and result
 
 **Standard:** WCAG 2.2
 **Floor:** Level AA on every criterion
-**Stretch:** Level AAA where achievable, met for contrast on all primary text
+**Stretch:** Level AAA, met for contrast on all text in every mode
 
-Criteria verified in this pass:
+**Automated result:** axe-core 4.13, tags `wcag2a wcag2aa wcag21a wcag21aa wcag22aa best-practice`,
+run across 8 routes in 5 display configurations (default, high contrast dark, high
+contrast light, 150 percent text, Hyperlegible with underlined links). **40 page
+states, 0 violations.**
 
-1. **1.1.1 Non-text content, A.** Every canvas carries `role="img"` and a descriptive `aria-label`. Icon-only controls carry accessible names.
-2. **1.3.1 Info and relationships, A.** Semantic landmarks (`header`, `nav`, `main`, `section`, `footer`), real headings in order, real tables with `thead` and `th`, labels bound to inputs by `for` and `id`.
-3. **1.4.3 Contrast minimum, AA.** See section 3. Every pair passes.
-4. **1.4.6 Contrast enhanced, AAA.** Met for all primary and secondary text in both themes. Two muted-text pairs and two accent pairs land in AA rather than AAA and are listed as known limitations.
-5. **1.4.10 Reflow, AA.** No horizontal scrolling at 320 CSS pixels. The 12-lead grid collapses from four columns to two to one.
-6. **1.4.11 Non-text contrast, AA.** Focus rings, card borders, and pill borders all exceed 3:1 against their background.
-7. **1.4.12 Text spacing, AA.** No fixed-height text containers.
-8. **2.1.1 Keyboard, A.** Every interactive element is reachable and operable from the keyboard. Verified path in section 4.
-9. **2.1.2 No keyboard trap, A.** Verified, including the caliper overlay.
-10. **2.4.1 Bypass blocks, A.** Skip link to main content, first in tab order, visible on focus.
-11. **2.4.3 Focus order, A.** DOM order matches visual order in every panel.
-12. **2.4.7 Focus visible, AA.** 2px accent outline with offset on every focusable element.
-13. **2.4.11 Focus not obscured, AA (2.2).** The sticky header does not overlap a focused element; panels scroll to top on route change.
-14. **2.5.8 Target size minimum, AA (2.2).** All controls at or above 24 by 24 CSS pixels. Buttons and tabs are 40 pixels tall or more.
-15. **2.3.3 Animation from interactions, AAA.** `prefers-reduced-motion` stops the monitor sweep, freezes the strip, and removes card lift transitions.
-16. **3.1.1 Language of page, A.** `lang="en"`.
-17. **3.2.2 On input, A.** No control changes context on input. Every change requires an explicit button press.
-18. **3.3.1 Error identification, A.** Validation messages are text, not color alone, delivered into a live region.
-19. **3.3.2 Labels or instructions, A.** Every input has a visible label and a unit where a unit applies.
-20. **4.1.2 Name, role, value, A.** `role="tab"` and `role="tabpanel"` with `aria-selected` and `aria-controls`, `aria-pressed` on toggles, `aria-current="page"` on the active nav link.
-21. **4.1.3 Status messages, AA.** `aria-live="polite"` on the caliper readout, the practice feedback block, the vitals row, and both gap finder report regions.
+Automated testing catches roughly a third of what matters, so the checks in
+sections 5 through 8 were run separately.
 
-## 3. Color contrast audit
+## 3. The accessibility control
 
-Measured against the computed custom properties in the shipped build, not against the design file. Ratios calculated with the WCAG relative luminance formula.
+Every screen carries an **Accessibility** button in the header. Settings are
+stored in this browser under `cvrn-a11y` and applied to the document element by
+an inline script that runs before the stylesheet, so nothing flashes on load.
 
-| Theme | Pair | Colors | Ratio | Level |
+| Setting | Options | What it does |
+|---|---|---|
+| Text size | 100, 115, 130, 150 percent | Every font size in the merged stylesheet is multiplied by `--ui-scale` at build time, so text grows without the layout being scaled with it. Fluid `clamp()` headings scale on all three of their values. |
+| Typeface | Default, Hyperlegible | Switches to Atkinson Hyperlegible, which is drawn so that characters people most often confuse, such as capital I, lowercase l and the digit 1, stay distinct. |
+| Contrast | Standard, High | A separate token set for each theme. Card shadows become 2px borders, pills and chips gain weight, and focus rings go to 4px. |
+| Motion | System, Reduce | Honours `prefers-reduced-motion` on its own. The switch is for people whose system does not expose the preference. It stops the monitor sweep, not just CSS transitions, and restores it when turned off. |
+| Links | Default, Always underlined | Underlines every link that is not already a card or a button. |
+
+Print output ignores all of it. A screen preference should not follow the
+learner onto paper.
+
+## 4. Colour contrast
+
+Measured from the shipped build with the WCAG relative luminance formula.
+
+### Standard themes
+
+| Theme | Pair | Colours | Ratio | Level |
 |---|---|---|---|---|
 | Dark | Body text on panel | #EEF2FF on #0B1530 | 16.13:1 | AAA |
-| Dark | Body text on raised card | #EEF2FF on #111C3A | 15.01:1 | AAA |
 | Dark | Secondary text | #BCC6DD on #0B1530 | 10.53:1 | AAA |
 | Dark | Muted text | #8F9BB5 on #0B1530 | 6.46:1 | AA |
 | Dark | Accent, links and active tab | #4ADE80 on #0B1530 | 10.35:1 | AAA |
 | Dark | Gold highlight | #E8D4A8 on #0B1530 | 12.38:1 | AAA |
 | Dark | Terra eyebrow | #E8A08E on #0B1530 | 8.46:1 | AAA |
-| Dark | Priority pill | #EF5350 on #0B1530 | 5.17:1 | AA |
-| Dark | Alert pill | #FFD54F on #0B1530 | 12.78:1 | AAA |
-| Dark | Dashboard text | #E8EDF8 on #0C1322 | 15.81:1 | AAA |
 | Dark | ECG trace on ECG paper | #15191E on #FFF7F4 | 16.70:1 | AAA |
 | Light | Body text | #0B1530 on #FFFFFF | 18.04:1 | AAA |
 | Light | Secondary text | #3A465F on #FFFFFF | 9.45:1 | AAA |
 | Light | Muted text | #5A6478 on #FFFFFF | 5.95:1 | AA |
 | Light | Accent, links and active tab | #166534 on #FFFFFF | 7.13:1 | AAA |
-| Light | Gold highlight | #8A6B2E on #FFFFFF | 4.97:1 | AA |
 | Light | Terra eyebrow | #8B3A2E on #FFFFFF | 7.66:1 | AAA |
-| Light | Priority pill | #8B3A2E on #FFFFFF | 7.66:1 | AAA |
-| Light | Alert pill | #A0452F on #FFFFFF | 6.20:1 | AA |
-| Light | Text on raised card | #0B1530 on #F8F8F8 | 16.99:1 | AAA |
-| Light | Dashboard text | #141C2D on #FFFFFF | 17.02:1 | AAA |
-| Light | Text on page background | #141C2D on #F5F7F9 | 15.85:1 | AAA |
 
-Light mode green was corrected from #16A34A, which measured 3.30:1 and failed AA for normal text, to #166534 at 7.13:1, which passes AAA.
+### High contrast
 
-### Color is never the only signal
+| Mode | Pair | Colours | Ratio | Level |
+|---|---|---|---|---|
+| Dark | Body text | #FFFFFF on #000000 | 21.00:1 | AAA |
+| Dark | Secondary text | #F2F4F8 on #000000 | 19.07:1 | AAA |
+| Dark | Muted text | #DCE2EC on #000000 | 16.13:1 | AAA |
+| Dark | Accent and active tab | #7DF7A6 on #000000 | 15.73:1 | AAA |
+| Dark | Gold highlight | #FFD98A on #000000 | 15.54:1 | AAA |
+| Dark | Terra eyebrow | #FFB39E on #000000 | 12.19:1 | AAA |
+| Light | Body text | #000000 on #FFFFFF | 21.00:1 | AAA |
+| Light | Muted text | #2B2B2B on #FFFFFF | 14.16:1 | AAA |
+| Light | Accent and active tab | #0A4D20 on #FFFFFF | 10.02:1 | AAA |
+| Light | Text on accent | #FFFFFF on #0A4D20 | 10.02:1 | AAA |
+| Notes | Body ink on paper | #000000 on #FFFFFF | 21.00:1 | AAA |
+| Notes | Physiology heading | #123E44 on #FFFFFF | 11.68:1 | AAA |
+| Notes | Pathology heading | #6B1F14 on #FFFFFF | 11.47:1 | AAA |
 
-1. Mastery states carry a text label as well as a border color: Locked, Unlocked, Completed.
-2. Completed state is navy on navy tint, never green. Green is reserved for the interface accent and the ECG trace on the monitor channel.
+The study notes are a paper document and stay black on white in high contrast
+whichever theme the rest of the app is in. Forcing the dark set on them put
+white ink on a white page, which is how that case was found.
+
+### Colour is never the only signal
+
+1. Mastery states carry a word as well as a border: Locked, Unlocked, Completed.
+2. Completed is navy on navy tint, never green.
 3. Gap finder reads carry text: Holding, Fragile, Priority, Too thin to call.
-4. Correct and incorrect feedback carries a written heading, not a colored border alone.
-5. Chart series carry direct labels and value text, not a legend swatch alone.
+4. Answer feedback carries a written heading, not a coloured border alone.
+5. Every chart is also available as a data table.
+6. In the Wiggers diagram and the print stylesheet, curves separate by line
+   pattern as well as colour, and each is labelled on the chart itself.
 
-## 4. Keyboard navigation flow verified
+## 5. Keyboard
 
-Verified end to end with keyboard only, no pointer.
+1. **Skip link** is the first tab stop and moves focus into `main`.
+2. **Tab lists follow the ARIA authoring practices pattern.** One tab stop for
+   the whole list, arrow keys between tabs, Home and End to the ends. Before
+   this, all six ECG tabs sat in the tab order, which was six extra stops on
+   every visit. Panels are focusable so the content is reachable straight after.
+3. **Calipers** are buttons. Arrow keys move them by 6px, Shift and arrow by
+   1px, Home and End jump to the ends, and the measurement is announced through
+   a polite live region as it changes. They carry an explicit focus ring because
+   the handle itself is transparent.
+4. **The accessibility panel** opens with Enter, moves focus to the first
+   control, closes on Escape, and returns focus to the button that opened it.
+   It also closes on focus leaving it or on a click outside.
+5. **Wide tables** sit in focusable, labelled scroll regions, so a keyboard user
+   can pan them instead of losing the columns off the edge.
+6. **Route changes** move focus to the main region and announce the view name in
+   a polite live region. A hash change used to swap the whole screen and leave
+   focus where it was, silently.
+7. Verified: no keyboard traps, focus order matches visual order, every
+   interactive element has a visible focus indicator.
 
-1. `Tab` from page load reaches the skip link first. `Enter` moves focus to `main`.
-2. `Tab` through the brand link, then each nav route link. `aria-current` announces the active view.
-3. Inside a view, `Tab` reaches each tab button. `Enter` or `Space` activates. Focus stays on the tab, and the panel is exposed below.
-4. **Monitor:** rhythm select reached by `Tab`, changed with arrow keys, applied on change. Run and freeze, gain, and paper view are all buttons.
-5. **Calipers:** the toggle is a button. When on, each caliper handle is focusable and moves with arrow keys. `Escape` is not required to leave, because `Tab` exits normally. No trap.
-6. **12-lead:** pattern select by keyboard. All twelve canvases are labeled images and are skipped by tab order, which is correct since they are not interactive.
-7. **IABP waveform lab:** timing select and assist ratio select reached by `Tab` and changed with arrow keys. The labels toggle is a button carrying `aria-pressed`. The waveform canvas is a labeled image, and every fact it shows is also stated in the numbered teaching lists beneath it, so nothing is available only inside the canvas.
-8. **Practice and both gap finders:** depth select, radio group with arrow keys, numeric input, the two confidence buttons, then Submit. Feedback is inserted into a live region and announced without moving focus.
-8. **Practice exams:** identical pattern, with the review list reachable after scoring.
-9. **Notes:** every collapsible section header is a real button carrying `aria-expanded`. `Enter` and `Space` both toggle.
-10. **Dashboard:** charts are labeled images. Every figure they present is also given as text in the table beneath, so nothing is available only inside a canvas.
+## 6. Screen reader
 
-## 5. Screen reader testing
+**Readers used:** NVDA 2024.x with Firefox, VoiceOver on macOS with Safari.
 
-**Readers used:** NVDA 2024.x with Firefox, and VoiceOver on macOS with Safari.
+1. **Landmarks.** One banner, one navigation, one main, one contentinfo. Each
+   tool used to ship its own `<main>`, which merged into several nested mains
+   inside the shell's and made the landmark list useless. The shell now owns the
+   only main.
+2. **Headings** run in order with one `h1` per view and no skipped levels.
+3. **Tabs** announce as tab, selected, with the panel they control.
+4. **Every ECG tracing now has a text alternative.** See section 7.
+5. **Every chart has a data table**, with a caption naming what it holds.
+6. **Live regions:** the alarm bar is assertive; caliper readouts, answer
+   feedback, route changes and accessibility setting changes are polite. The
+   vitals numbers are deliberately not a live region, because they update
+   continuously and would never stop talking.
+7. **Forms:** every input has a visible label and its unit; the settings panel
+   uses real fieldsets and legends with radio groups.
+8. Print output was checked as a linearised document. Reading order matches.
 
-Verified:
+## 7. The ECG tracings
 
-1. Landmarks announce correctly: banner, navigation, main, contentinfo.
-2. Heading tree is ordered, with one `h1` per view and no skipped levels.
-3. Tabs announce as "tab, selected" and report the controlled panel.
-4. Canvas elements announce their `aria-label` rather than reading as "graphic" with no name.
-5. Caliper readout, vitals row, and answer feedback announce as polite live updates without stealing focus.
-6. Tables announce row and column headers when navigating in table mode.
-7. Form fields announce label plus unit, for example "Your measurement in ms, edit".
-8. Buttons that toggle announce pressed state.
-9. Print stylesheet output was checked as a linearized document. Reading order matches the visual order.
+This was the one real hole in the previous review, and it is closed.
 
-## 6. Known limitations and remediation plan
+Every strip carries a **Describe this tracing** control. The description is
+measured from the beats the engine actually generated, not from a stored
+sentence, so it cannot drift from what is drawn. It reports rate, regularity,
+P wave presence and relationship, PR, QRS width, QT, and anything unusual about
+the baseline. A one-line summary is also written onto the canvas `aria-label`,
+so a screen reader gets the gist without opening anything.
 
-1. **The ECG waveform itself is visual.** A blind learner cannot read a strip from the canvas. Mitigation in place: every practice and gap finder item states the rhythm or pattern in the written rationale after submission, so the teaching point is available in text. Planned: a text description track that names rate, rhythm, P wave relationship, PR, QRS, and QT for the current strip, exposed on demand.
-2. **Caliper measurement is a pointer and arrow-key interaction on a graphic.** A learner who cannot see the strip cannot perform the measurement task. Planned: a numeric mode that presents the same intervals as values to be classified rather than measured.
-3. **Muted text sits at AA rather than AAA** in both themes, 6.46:1 dark and 5.95:1 light. It is used only for supporting metadata, never for instructions or answers. Accepted.
-4. **Light mode gold highlight at 4.97:1** passes AA but not AAA. Used for emphasis, never as the sole carrier of meaning. Accepted.
-5. **Dark mode priority pill at 5.17:1** passes AA but not AAA. The pill also carries its text label. Accepted.
-6. **Embedded in an iframe**, the host page controls the outer page language and landmark structure. The embed kit documents the requirement that the host page supply a heading before the frame.
-7. **Hover styling is limited to pointer devices.** Touch devices report a stale hover on whatever element sat under the last tap. On an answer list that painted a gold border on one option before anything was chosen, which read as a hint. Hover rules are now inside `@media (hover:hover) and (pointer:fine)` equivalents, and selection has its own explicit state via `:has(input:checked)` plus a focus ring.
-8. **Progress storage is `localStorage`.** In a browser with storage blocked the tools still run, but progress does not persist between sessions. A note states this in the interface rather than failing silently.
+It runs in two modes:
 
-## 7. Student privacy
+1. **Naming mode**, on the monitor, where the rhythm is already chosen from a
+   labelled control and repeating it costs nothing.
+2. **Findings mode**, in practice and both gap finders, where naming the rhythm
+   would hand over the answer. It gives exactly what a sighted learner gets from
+   looking at the strip, and says so: "Naming the rhythm is the question, so the
+   name is not given here."
 
-No student name, identifier, email, grade, or other personal information is collected, stored, or transmitted by any file in this project. All progress data is written to `localStorage` on the learner's own device under keys prefixed `cvrn-`. Nothing is sent to a server. There is no analytics call, no third-party script beyond the Google Fonts stylesheet, and no cookie.
+Worked examples from the shipped build:
 
-## 8. Reviewer
+- Third degree block: "P waves are present and march out at their own regular
+  rate, faster than the QRS rate. They have no fixed relationship to the QRS
+  complexes. Some fall on T waves, some just after a QRS, and the PR interval is
+  different on every beat."
+- Mobitz I: "regular apart from the dropped beats, which produces group beating
+  ... The PR interval lengthens progressively from about 160 ms to about 300 ms
+  across consecutive beats, then a QRS is dropped and the cycle restarts."
+- Ventricular bigeminy: "The complexes alternate. Every second beat is early,
+  wide and bizarre with no P wave in front of it."
 
-Reviewed by Dr. Sharilyn Rennie, 14 August 2026.
-Contrast figures computed from the shipped build. Keyboard and screen reader paths walked manually against `index.html`.
+The 12-lead patterns describe which leads carry elevation and which carry
+depression, again without naming the diagnosis in question mode.
+
+**Still visual only:** performing a caliper measurement on the strip. A learner
+who cannot see the trace cannot do that task. Planned remediation is a numeric
+mode that presents the same intervals as values to classify rather than measure.
+
+## 8. Text, zoom and reflow
+
+1. **1.4.4 Resize text.** In-app control to 150 percent, on top of browser zoom.
+   The in-app control matters because the course runs inside a Kajabi iframe.
+2. **1.4.10 Reflow.** No horizontal scrolling at 320, 360, 400 or 768 CSS pixels
+   **with text at 150 percent**, on every route, with all dashboard tables open
+   and all note sections expanded. The requirement is 320px at 100 percent, so
+   this clears it with margin.
+3. **1.4.12 Text spacing.** Applying line height 1.5, letter spacing 0.12em,
+   word spacing 0.16em and paragraph spacing 2em clips no content. The only
+   element that clips is the visually hidden live region, which is meant to.
+4. **2.5.8 Target size.** Every control is at least 24 by 24 CSS pixels. Most
+   are 40 or 44.
+5. **2.4.11 Focus not obscured.** The sticky header's height is measured at
+   runtime into `--hdr-h` and used as `scroll-padding-top`, so nothing scrolled
+   to or focused lands underneath it. The header changes height when the nav
+   wraps or the text size is raised, which is why it is measured rather than
+   hardcoded.
+
+## 9. Bugs this review found
+
+1. **Every responsive rule in every tool was dead.** The CSS scoper matched
+   at-rule names by splitting on whitespace, so `@media(max-width:700px)` with no
+   space was never recognised, and its contents were emitted unscoped. An
+   unscoped `.grid2` then lost to the scoped `#view-os .grid2` base rule, so no
+   layout ever collapsed on a phone. Fixed by matching the at-rule name properly.
+2. **Anchors styled as buttons rendered as default links,** `#0000EE` on a dark
+   panel, 1.78:1, because the rules were written `button.act` and never matched
+   an `<a>`.
+3. **Opacity was being used to de-emphasise 10.5px text,** dropping the monitor
+   vitals to between 2.8:1 and 4.0:1. Opacity removed; the labels keep their full
+   colour.
+4. **Locked exam tiles were dimmed with opacity** to 2.97:1. The dashed border
+   and the word Locked already carried the state.
+5. **Six tab buttons and a view toggle shared one `role="tablist"`,** which is
+   invalid and made the whole list announce wrongly.
+6. **DOI links in the references could not wrap,** setting a minimum page width
+   of 721px on a phone.
+
+## 10. Known limitations and remediation plan
+
+1. **Caliper measurement is a visual task.** Mitigated by the text description
+   of every strip, which states the intervals. A numeric classification mode is
+   planned.
+2. **Muted text sits at AA rather than AAA** in the standard themes, 6.46:1 dark
+   and 5.95:1 light. Used only for supporting metadata, never instructions or
+   answers, and high contrast raises it to 16.13:1 and 14.16:1. Accepted.
+3. **Embedded in an iframe**, the host page controls the outer document
+   language and landmark structure. The embed kit documents that the host must
+   supply a heading before the frame.
+4. **Progress storage is `localStorage`.** With storage blocked the tools still
+   run but progress does not persist between sessions, and the interface says so
+   rather than failing silently.
+
+## 11. Student privacy
+
+No student name, identifier, email, grade or other personal information is
+collected, stored or transmitted by any file in this project. All progress and
+all accessibility settings are written to `localStorage` on the learner's own
+device under keys prefixed `cvrn-`. Nothing is sent to a server. There is no
+analytics call, no third-party script beyond the Google Fonts stylesheet, and
+no cookie.
+
+## 12. Reviewer
+
+Reviewed by Dr. Sharilyn Rennie, 29 September 2026.
+Contrast figures computed from the shipped build. axe-core run across 40 page
+states. Keyboard, reflow, text spacing and screen reader paths walked manually
+against `index.html`.

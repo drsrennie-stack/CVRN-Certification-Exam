@@ -56,7 +56,14 @@ def scope_css(css, sc):
         body = css[b + 1:j - 1]
         selt = sel.strip()
         if selt.startswith("@"):
-            at = selt.split("{")[0].split()[0].lower()
+            # "@media(max-width:700px)" has no space before the condition, so
+            # splitting on whitespace returned the whole query as the at-rule
+            # name and nothing inside ever got scoped. Every responsive rule in
+            # every tool was therefore emitted unscoped, at lower specificity
+            # than its own scoped base rule, so no layout ever collapsed on a
+            # phone. Match the at-rule name properly instead.
+            m_at = re.match(r"@[-a-zA-Z]+", selt)
+            at = m_at.group(0).lower() if m_at else ""
             if at in ("@media", "@supports", "@layer", "@container"):
                 res += sel + "{" + scope_css(body, sc) + "}"
             else:                                  # keyframes, page, font-face
@@ -95,7 +102,12 @@ def extract(tool):
     body = re.sub(r"<footer>.*?</footer>", "", body, flags=re.S)
 
     # unique the one colliding id
+    # Each tool shipped its own <main>. Merged into one page that produced several
+    # main landmarks nested inside the shell's, which is invalid and makes a screen
+    # reader's landmark list useless. The shell keeps the only <main>.
     body = body.replace('id="main"', 'id="main-%s"' % tool["key"])
+    body = re.sub(r'<main(\s[^>]*)?>', lambda m: '<div' + (m.group(1) or '') + '>', body)
+    body = body.replace('</main>', '</div>')
 
     return dict(css=scope_css(css, "#view-" + tool["key"]), body=body.strip(),
                 scripts=scripts, ext=ext)
@@ -141,7 +153,7 @@ CARDS = [
 def card(c):
     return f'''      <a class="tcard" data-c="{c['color']}" href="#/{c['route']}" data-route="{c['route']}">
         <span class="ic">{ICONS[c['icon']]}</span>
-        <h3>{c['title']}</h3>
+        <h2>{c['title']}</h2>
         <p>{c['desc']}</p>
         <span class="go">{c['meta']}</span>
       </a>'''
@@ -154,7 +166,7 @@ SHELL_CSS = """
    ============================================================ */
 :root{
   --s-bg:#F5F7F9; --s-panel:#FFFFFF; --s-panel2:#EDF1F4;
-  --s-ink:#141C2D; --s-mute:#64708A; --s-soft:#B4C0D8; --s-line:#DCE2EA;
+  --s-ink:#141C2D; --s-mute:#55607A; --s-soft:#B4C0D8; --s-line:#DCE2EA;
   --s-acc:#166534; --s-acc2:#15803D; --s-onacc:#FFFFFF;
   --s-blue:#0284C7; --s-amber:#B45309; --s-red:#B91C1C; --s-violet:#6D28D9;
   --s-card:0 1px 3px rgba(10,19,34,.08), 0 1px 2px rgba(10,19,34,.05);
@@ -173,13 +185,19 @@ html,body{margin:0;padding:0}
 body{background:var(--s-bg);color:var(--s-ink);
   font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;
   font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+main#main:focus{outline:none}
+main#main:focus-visible{outline:3px solid var(--s-acc);outline-offset:-3px}
+html{scroll-padding-top:var(--hdr-h,78px)}
+[id]{scroll-margin-top:var(--hdr-h,78px)}
 .skip{position:absolute;left:-9999px;background:var(--s-acc);color:var(--s-onacc);padding:12px 18px;font-weight:700;z-index:999}
 .skip:focus{left:0;top:0}
 :focus-visible{outline:3px solid var(--s-acc);outline-offset:3px;border-radius:6px}
 
 /* app bar */
-.appbar{position:sticky;top:0;z-index:60;background:var(--s-panel);border-bottom:1px solid var(--s-line)}
-.appbar .in{max-width:1180px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px}
+header.appbar{position:sticky;top:0;z-index:60;background:var(--s-panel);border-bottom:1px solid var(--s-line)}
+header.appbar .in{max-width:1180px;margin:0 auto;padding:10px 20px;display:flex;align-items:center;gap:12px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--s-ink);flex:0 0 auto}
 .brand .mk{width:30px;height:30px;border-radius:8px;background:var(--s-panel2);border:1px solid var(--s-line);
   display:flex;align-items:center;justify-content:center}
@@ -194,11 +212,16 @@ body{background:var(--s-bg);color:var(--s-ink);
 .navlinks a[aria-current="page"]{background:var(--s-acc);color:var(--s-onacc)}
 .themebtn{font-family:inherit;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;
   padding:9px 14px;min-height:40px;border-radius:99px;cursor:pointer;
-  background:var(--s-panel2);border:1px solid var(--s-line);color:var(--s-mute)}
+  background:var(--s-panel2);border:1px solid var(--s-line);color:var(--s-ink)}
 .themebtn:hover{color:var(--s-ink);border-color:var(--s-acc)}
 @media(max-width:820px){.navlinks a{padding:8px 9px;font-size:11px}}
 /* On a phone the nav used to wrap one link per line and push the tool a
    full screen down. It now scrolls sideways on one row instead. */
+@media(max-width:560px){
+  header.appbar .in{flex-wrap:wrap;row-gap:8px}
+  .navlinks{order:3;width:100%;margin-left:0}
+  .brand{margin-right:auto}
+}
 @media(max-width:700px){
   .appbar{flex-wrap:nowrap;gap:8px}
   .navlinks{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
@@ -230,7 +253,7 @@ body{background:var(--s-bg);color:var(--s-ink);
 .tcard[data-c="navy"]  .ic{background:linear-gradient(150deg,#7FD1F7,#0284C7)}
 .tcard[data-c="deep"]  .ic{background:linear-gradient(150deg,#86EFAC,#16A34A)}
 .tcard[data-c="slate"] .ic{background:linear-gradient(150deg,#C4B5FD,#6D28D9)}
-.tcard h3{font-size:18px;font-weight:800;margin:0;letter-spacing:-.015em}
+.tcard h2{font-size:18px;font-weight:800;margin:0;letter-spacing:-.015em}
 .tcard p{margin:0;font-size:13.5px;line-height:1.5;color:var(--s-mute)}
 .tcard .go{margin-top:auto;padding-top:6px;font-size:11px;font-weight:800;letter-spacing:.11em;
   text-transform:uppercase;color:var(--s-acc)}
@@ -251,7 +274,7 @@ body{background:var(--s-bg);color:var(--s-ink);
   text-transform:uppercase;color:var(--s-mute);text-decoration:none;padding:9px 13px;border:1px solid var(--s-line);
   border-radius:99px;min-height:38px;background:var(--s-panel)}
 .backlink:hover{border-color:var(--s-acc);color:var(--s-ink)}
-.appfoot{max-width:1180px;margin:30px auto 0;padding:22px 20px 40px;color:var(--s-mute);font-size:12.5px;
+footer.appfoot{max-width:1180px;margin:30px auto 0;padding:22px 20px 40px;color:var(--s-mute);font-size:12.5px;
   border-top:1px solid var(--s-line)}
 
 @media print{
@@ -269,7 +292,197 @@ views = "\n".join(
     f'{parts[t["key"]]["body"]}\n</section>'
     for t in TOOLS)
 
+A11Y_CSS = """
+/* ============================================================
+   ACCESSIBILITY LAYER
+   Five user controls, stored in this browser and applied to the
+   document element before first paint so nothing flashes:
+     data-uiscale   text size, drives --ui-scale
+     data-uifont    typeface, default or Atkinson Hyperlegible
+     data-contrast  normal or high
+     data-motion    system or always reduce
+     data-underline link underlines always on
+   Every font-size in the merged stylesheet is multiplied by
+   --ui-scale at build time, so text grows without the layout
+   being scaled with it.
+   ============================================================ */
+:root{--ui-scale:1}
+html[data-uiscale="115"]{--ui-scale:1.15}
+html[data-uiscale="130"]{--ui-scale:1.30}
+html[data-uiscale="150"]{--ui-scale:1.50}
+
+/* Atkinson Hyperlegible is drawn so that characters people confuse most,
+   such as capital I, lowercase l and the digit 1, stay distinct. */
+html[data-uifont="hyper"], html[data-uifont="hyper"] body,
+html[data-uifont="hyper"] button, html[data-uifont="hyper"] input,
+html[data-uifont="hyper"] select, html[data-uifont="hyper"] textarea,
+html[data-uifont="hyper"] h1, html[data-uifont="hyper"] h2,
+html[data-uifont="hyper"] h3, html[data-uifont="hyper"] h4,
+html[data-uifont="hyper"] .eyebrow, html[data-uifont="hyper"] .tab,
+html[data-uifont="hyper"] .brand b{
+  font-family:'Atkinson Hyperlegible','Plus Jakarta Sans',system-ui,sans-serif !important;
+}
+html[data-uifont="hyper"]{letter-spacing:.006em}
+
+html[data-underline="on"] a:not(.tcard):not(.brand):not(.skip):not(.act){text-decoration:underline}
+html[data-underline="on"] a:not(.tcard):not(.brand):not(.skip):not(.act):hover{text-decoration-thickness:2px}
+
+/* Motion. The system setting is honoured on its own; this is for people whose
+   operating system does not expose the preference or who want it only here. */
+html[data-motion="reduce"] *,
+html[data-motion="reduce"] *::before,
+html[data-motion="reduce"] *::after{
+  animation-duration:.001ms !important;animation-iteration-count:1 !important;
+  transition-duration:.001ms !important;scroll-behavior:auto !important;
+}
+
+/* Windows and macOS forced colours strip backgrounds, so anything that carried
+   meaning through a background needs a border to survive. */
+@media (forced-colors: active){
+  .tcard,.card,.kpi,.stat,.dTile,.opt,.fb,.gapRow,.sec,.q,.screen,.panel{border:1px solid CanvasText}
+  .tab[aria-selected="true"]{border:2px solid Highlight;forced-color-adjust:none}
+  .pill,.chip,.readpill,.badge{border:1px solid CanvasText}
+  :focus-visible{outline:3px solid Highlight;outline-offset:2px}
+}
+
+/* ---- the control itself ---- */
+.a11yWrap{position:relative;flex:0 0 auto}
+.a11yBtn{display:inline-flex;align-items:center;gap:7px;background:transparent;color:var(--s-ink);
+  border:1px solid var(--s-line);border-radius:999px;padding:8px 14px;font-family:inherit;
+  font-size:calc(12px*var(--ui-scale,1));font-weight:800;letter-spacing:.06em;text-transform:uppercase;
+  cursor:pointer;min-height:40px}
+.a11yBtn:hover{border-color:var(--s-acc);color:var(--s-ink)}
+.a11yBtn svg{width:17px;height:17px;flex:0 0 auto}
+.a11yPanel{position:absolute;right:0;top:calc(100% + 10px);z-index:200;width:310px;max-width:88vw;
+  background:var(--s-panel);border:1px solid var(--s-line);border-radius:14px;padding:16px 18px 18px;
+  box-shadow:0 18px 46px rgba(0,0,0,.42);text-align:left}
+.a11yPanel[hidden]{display:none}
+.a11yPanel h2{font-size:calc(14px*var(--ui-scale,1));margin:0 0 4px;color:var(--s-ink);font-weight:800}
+.a11yPanel .hint{font-size:calc(12px*var(--ui-scale,1));color:var(--s-mute);margin:0 0 14px;line-height:1.5}
+.a11yPanel fieldset{border:0;padding:0;margin:0 0 15px}
+.a11yPanel legend{font-size:calc(11px*var(--ui-scale,1));font-weight:800;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--s-mute);padding:0;margin-bottom:7px}
+.a11yOpts{display:flex;gap:6px;flex-wrap:wrap}
+.a11yOpts label{position:relative;display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid var(--s-line);border-radius:9px;padding:9px 12px;min-height:40px;min-width:44px;
+  font-size:calc(13px*var(--ui-scale,1));font-weight:700;color:var(--s-ink);cursor:pointer;background:transparent}
+.a11yOpts input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.a11yOpts label:has(input:checked){background:var(--s-acc);border-color:var(--s-acc);color:var(--s-onacc)}
+.a11yOpts label:has(input:focus-visible){outline:3px solid var(--s-acc);outline-offset:2px}
+.a11yRow{display:flex;align-items:flex-start;gap:10px;margin-bottom:11px}
+.a11yRow input{width:20px;height:20px;margin:1px 0 0;flex:0 0 auto;accent-color:var(--s-acc)}
+.a11yRow span{font-size:calc(13.5px*var(--ui-scale,1));color:var(--s-ink);line-height:1.45}
+.a11yReset{background:transparent;border:1px solid var(--s-line);color:var(--s-ink);border-radius:9px;
+  padding:9px 14px;font-family:inherit;font-size:calc(13px*var(--ui-scale,1));font-weight:700;
+  cursor:pointer;min-height:40px;width:100%}
+.a11yReset:hover{border-color:var(--s-acc)}
+@media(max-width:700px){ .a11yBtn span{display:none} .a11yBtn{padding:8px 10px} .a11yPanel{width:290px} }
+@media print{ .a11yWrap{display:none !important} }
+"""
+
+# ---- high contrast tokens, emitted for the shell and for every scoped view ----
+HC_DARK = {
+  "--bg":"#000000", "--panel":"#000000", "--panel-2":"#0B0B0B", "--paper":"#FFFFFF",
+  "--ink":"#FFFFFF", "--ink-soft":"#F2F4F8", "--ink-mute":"#DCE2EC",
+  "--line":"#FFFFFF", "--acc":"#7DF7A6", "--acc2":"#A9FFC6", "--onacc":"#000000",
+  "--gold":"#FFD98A", "--gold-hi":"#FFE9B8", "--terra":"#FFB39E", "--terra-hi":"#FFC9B8",
+  "--pulse":"#FF9E8A", "--alert":"#FFE873", "--ok":"#7DF7A6", "--mute":"#DCE2EC",
+  "--soft":"#DCE2EC", "--grid":"#FFFFFF", "--red":"#FF9E8A", "--amber":"#FFE873",
+  "--trace":"#000000", "--tracew":"3",
+}
+HC_LIGHT = {
+  "--bg":"#FFFFFF", "--panel":"#FFFFFF", "--panel-2":"#FFFFFF", "--paper":"#FFFFFF",
+  "--ink":"#000000", "--ink-soft":"#151515", "--ink-mute":"#2B2B2B",
+  "--line":"#000000", "--acc":"#0A4D20", "--acc2":"#063614", "--onacc":"#FFFFFF",
+  "--gold":"#5A4310", "--gold-hi":"#3F2F0A", "--terra":"#7A2418", "--terra-hi":"#7A2418",
+  "--pulse":"#7A2418", "--alert":"#6B2A0C", "--ok":"#0A4D20", "--mute":"#2B2B2B",
+  "--soft":"#2B2B2B", "--grid":"#000000", "--red":"#7A2418", "--amber":"#6B2A0C",
+  "--trace":"#000000", "--tracew":"3",
+}
+SHELL_HC_DARK = {"--s-bg":"#000000","--s-panel":"#000000","--s-ink":"#FFFFFF","--s-mute":"#DCE2EC",
+                 "--s-line":"#FFFFFF","--s-acc":"#7DF7A6","--s-onacc":"#000000"}
+SHELL_HC_LIGHT = {"--s-bg":"#FFFFFF","--s-panel":"#FFFFFF","--s-ink":"#000000","--s-mute":"#2B2B2B",
+                  "--s-line":"#000000","--s-acc":"#0A4D20","--s-onacc":"#FFFFFF"}
+
+def _decl(d):
+    return "".join("%s:%s;" % (k, v) for k, v in d.items())
+
+HC_NOTES = {
+  "--navy":"#000000", "--navy-tint":"#FFFFFF", "--ink":"#000000", "--ink-soft":"#000000",
+  "--ink-muted":"#1F1F1F", "--gold":"#5A4310", "--gold-text":"#4A3608", "--terra":"#7A2418",
+  "--terra-text":"#6B1F14", "--teal-text":"#123E44", "--rule":"#000000", "--rule-soft":"#4A4A4A",
+  "--white":"#FFFFFF", "--off-white":"#FFFFFF", "--paper":"#FFFFFF",
+  "--t-physio":"#123E44", "--t-patho":"#6B1F14", "--t-practice":"#000000", "--t-questions":"#4A3608",
+  "--t-physio-soft":"#FFFFFF", "--t-patho-soft":"#FFFFFF", "--t-practice-soft":"#FFFFFF",
+  "--t-questions-soft":"#FFFFFF",
+  "--card":"none", "--lift":"none",
+}
+
+def high_contrast_css(view_keys):
+    out = ["\n/* ---- high contrast, applied over whichever theme is active ---- */"]
+    out.append('html[data-contrast="high"][data-dark="on"]{%s}' % _decl(SHELL_HC_DARK))
+    out.append('html[data-contrast="high"][data-dark="off"]{%s}' % _decl(SHELL_HC_LIGHT))
+    for k in view_keys:
+        if k == "notes":
+            # a printed page is black on white whichever theme the app is in
+            out.append('html[data-contrast="high"] #view-notes{%s}' % _decl(HC_NOTES))
+            continue
+        out.append('html[data-contrast="high"][data-dark="on"] #view-%s{%s}' % (k, _decl(HC_DARK)))
+        out.append('html[data-contrast="high"][data-dark="off"] #view-%s{%s}' % (k, _decl(HC_LIGHT)))
+    out.append('html[data-contrast="high"] .card,html[data-contrast="high"] .kpi,'
+               'html[data-contrast="high"] .stat,html[data-contrast="high"] .dTile,'
+               'html[data-contrast="high"] .tcard,html[data-contrast="high"] .opt,'
+               'html[data-contrast="high"] .gapRow,html[data-contrast="high"] .q,'
+               'html[data-contrast="high"] .sec,html[data-contrast="high"] .fb'
+               '{border-width:2px !important;box-shadow:none !important}')
+    out.append('html[data-contrast="high"] :focus-visible{outline:4px solid var(--s-acc) !important;outline-offset:3px}')
+    out.append('html[data-contrast="high"] .pill,html[data-contrast="high"] .chip,'
+               'html[data-contrast="high"] .readpill,html[data-contrast="high"] .badge'
+               '{border-width:2px !important;font-weight:800}')
+    return "\n".join(out)
+
+# ---- scale every CSS font-size so the text control actually does something ----
+def scale_font_sizes(css):
+    """Multiply each font-size in px by --ui-scale.
+
+    Print blocks are skipped: paper output should not inherit a screen
+    preference. Values already using calc or a variable are left alone.
+    """
+    out, i, n, depth_print = [], 0, len(css), None
+    # find @media print blocks and protect them
+    spans = []
+    for m in re.finditer(r'@media[^{]*\bprint\b[^{]*\{', css):
+        j, d = m.end(), 1
+        while j < n and d:
+            if css[j] == '{': d += 1
+            elif css[j] == '}': d -= 1
+            j += 1
+        spans.append((m.start(), j))
+    def protected(pos):
+        return any(a <= pos < b for a, b in spans)
+    def repl(m):
+        if protected(m.start()):
+            return m.group(0)
+        return 'font-size:calc(%s*var(--ui-scale,1))' % m.group(1)
+    css = re.sub(r'font-size:\s*(\d*\.?\d+px)', repl, css)
+
+    # fluid headings use clamp(min, preferred, max); each of the three parts
+    # has to be scaled or the heading stays pinned at its ceiling
+    def repl_clamp(m):
+        if protected(m.start()):
+            return m.group(0)
+        parts = [x.strip() for x in m.group(1).split(',')]
+        if len(parts) != 3:
+            return m.group(0)
+        return 'font-size:clamp(%s)' % ','.join(
+            'calc(%s*var(--ui-scale,1))' % x for x in parts)
+    css = re.sub(r'font-size:\s*clamp\(([^()]*)\)', repl_clamp, css)
+    return css
+
+
 all_css = SHELL_CSS + "\n" + "\n".join(parts[t["key"]]["css"] for t in TOOLS)
+all_css = scale_font_sizes(all_css)
+all_css = all_css + "\n" + A11Y_CSS + "\n" + high_contrast_css([t["key"] for t in TOOLS])
 tool_js = "\n".join("/* ---- %s ---- */\n%s" % (t["file"], "\n".join(parts[t["key"]]["scripts"])) for t in TOOLS)
 
 HTML = f"""<!DOCTYPE html>
@@ -279,6 +492,23 @@ HTML = f"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CVRN Review Course | MedMasters Collaborative</title>
 <meta name="description" content="One app for the ECG and CVRN-BC review course: exam pacing, gap finder, weakness dashboard, live ECG lab, referenced study notes, and ten scored practice exams.">
+<script>
+/* Runs before the stylesheet is applied so a saved text size, typeface or
+   contrast setting is already on the document element at first paint. */
+(function(){{
+  try{{
+    var a = JSON.parse(localStorage.getItem('cvrn-a11y') || '{{}}');
+    var d = document.documentElement;
+    if(a.uiscale && a.uiscale !== '100') d.setAttribute('data-uiscale', a.uiscale);
+    if(a.uifont === 'hyper') d.setAttribute('data-uifont', 'hyper');
+    if(a.contrast === 'high') d.setAttribute('data-contrast', 'high');
+    if(a.motion) d.setAttribute('data-motion', 'reduce');
+    if(a.underline) d.setAttribute('data-underline', 'on');
+    var th = localStorage.getItem('cvrn-theme');
+    if(th === 'off') d.setAttribute('data-dark', 'off');
+  }}catch(e){{}}
+}})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=DM+Sans:wght@400;500;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
@@ -289,7 +519,7 @@ HTML = f"""<!DOCTYPE html>
 <body>
 <a class="skip" href="#main">Skip to main content</a>
 
-<div class="appbar">
+<header class="appbar">
   <div class="in">
     <a class="brand" href="#/home">
       <span class="mk">{MARK}</span>
@@ -305,12 +535,57 @@ HTML = f"""<!DOCTYPE html>
       <a href="#/os/exams" data-route="exams">Exams</a>
     </nav>
     <button class="themebtn" id="themeBtn" type="button" aria-pressed="true">Light</button>
-    <nav style="display:none" aria-hidden="true">
-    </nav>
-  </div>
-</div>
 
-<main id="main">
+    <div class="a11yWrap">
+      <button class="a11yBtn" id="a11yBtn" type="button" aria-expanded="false" aria-controls="a11yPanel">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.2"/><circle cx="12" cy="7.4" r="1.5" fill="currentColor" stroke="none"/><path d="M7.4 10.2h9.2M12 10.6v6.4M12 13.4l-2.6 3.6M12 13.4l2.6 3.6"/></svg>
+        <span>Accessibility</span>
+      </button>
+      <div class="a11yPanel" id="a11yPanel" role="group" aria-labelledby="a11yHd" hidden>
+        <h2 id="a11yHd">Display and reading</h2>
+        <p class="hint">Saved in this browser only, and applied to every screen in the course.</p>
+
+        <fieldset>
+          <legend id="lgSize">Text size</legend>
+          <div class="a11yOpts" role="none">
+            <label><input type="radio" name="uiscale" value="100" checked><span>100%</span></label>
+            <label><input type="radio" name="uiscale" value="115"><span>115%</span></label>
+            <label><input type="radio" name="uiscale" value="130"><span>130%</span></label>
+            <label><input type="radio" name="uiscale" value="150"><span>150%</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Typeface</legend>
+          <div class="a11yOpts">
+            <label><input type="radio" name="uifont" value="system" checked><span>Default</span></label>
+            <label><input type="radio" name="uifont" value="hyper"><span>Hyperlegible</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Contrast</legend>
+          <div class="a11yOpts">
+            <label><input type="radio" name="contrast" value="normal" checked><span>Standard</span></label>
+            <label><input type="radio" name="contrast" value="high"><span>High</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Other</legend>
+          <label class="a11yRow"><input type="checkbox" id="optMotion"><span>Reduce motion, including the monitor sweep</span></label>
+          <label class="a11yRow"><input type="checkbox" id="optUnderline"><span>Underline every link</span></label>
+        </fieldset>
+
+        <button class="a11yReset" id="a11yReset" type="button">Reset to defaults</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<p class="sr-only" id="routeLive" role="status" aria-live="polite"></p>
+
+<main id="main" tabindex="-1">
 
 <section class="view home" id="view-home" aria-label="Home">
   <div class="hero">
@@ -340,9 +615,9 @@ HTML = f"""<!DOCTYPE html>
 
 </main>
 
-<div class="appfoot">
+<footer class="appfoot">
   <p>ECG &amp; CVRN Review Course. Prepared by Dr. Sharilyn Rennie for MedMasters Collaborative. Progress is stored in this browser only. No names, identifiers, or scores leave this device. Teaching material for certification preparation, not a clinical protocol.</p>
-</div>
+</footer>
 
 <script>
 /* ---- shared data ---- */
@@ -379,6 +654,7 @@ HTML = f"""<!DOCTYPE html>
   }}
 
   var booted = false;
+  var routed = false;
   function show(name, sub){{
     if(VIEWS.indexOf(name) < 0) name = 'home';
     VIEWS.forEach(function(v){{
@@ -389,6 +665,16 @@ HTML = f"""<!DOCTYPE html>
       if(a.getAttribute('data-route') === name) a.setAttribute('aria-current','page');
       else a.removeAttribute('aria-current');
     }});
+    /* A hash route swap changes everything on screen but leaves focus where it
+       was and says nothing. Focus moves to the main region and the view name
+       goes to a polite live region, so the change is both heard and reachable. */
+    var TITLES = {{home:'Today', dash:'Weakness dashboard', os:'Mastery OS',
+                   ecg:'ECG lab', notes:'Study notes'}};
+    var live = el('routeLive');
+    if(live) live.textContent = (TITLES[name] || name) + ' view loaded';
+    var mainEl = el('main');
+    if(mainEl && routed) {{ mainEl.focus({{preventScroll:true}}); }}
+    routed = true;
     if(name === 'dash') window.dispatchEvent(new Event('cvrn:refresh'));
     if(name === 'ecg') {{ if(booted) resumeEcg(); }}
     else if(booted) pauseEcg();
@@ -436,6 +722,91 @@ HTML = f"""<!DOCTYPE html>
   tb.addEventListener('click', function(){{
     applyTheme(document.documentElement.getAttribute('data-dark') !== 'on');
   }});
+
+  /* ---------- accessibility settings ---------- */
+  var A11Y_KEY = 'cvrn-a11y';
+  var a11yDefaults = {{uiscale:'100', uifont:'system', contrast:'normal', motion:false, underline:false}};
+  function a11yLoad(){{
+    try{{ return Object.assign({{}}, a11yDefaults, JSON.parse(localStorage.getItem(A11Y_KEY) || '{{}}')); }}
+    catch(e){{ return Object.assign({{}}, a11yDefaults); }}
+  }}
+  function a11ySave(s){{ try{{ localStorage.setItem(A11Y_KEY, JSON.stringify(s)); }}catch(e){{}} }}
+  function a11yApply(s, announce){{
+    var d = document.documentElement;
+    if(s.uiscale === '100') d.removeAttribute('data-uiscale'); else d.setAttribute('data-uiscale', s.uiscale);
+    if(s.uifont === 'hyper') d.setAttribute('data-uifont','hyper'); else d.removeAttribute('data-uifont');
+    if(s.contrast === 'high') d.setAttribute('data-contrast','high'); else d.removeAttribute('data-contrast');
+    if(s.motion) d.setAttribute('data-motion','reduce'); else d.removeAttribute('data-motion');
+    if(s.underline) d.setAttribute('data-underline','on'); else d.removeAttribute('data-underline');
+    /* the ECG engines read their own colours and motion state from the document */
+    window.dispatchEvent(new CustomEvent('cvrn:a11y', {{detail:s}}));
+    if(announce){{
+      var live = el('routeLive');
+      if(live) live.textContent = announce;
+    }}
+  }}
+  function a11ySync(s){{
+    document.querySelectorAll('input[name="uiscale"]').forEach(function(i){{ i.checked = (i.value === s.uiscale); }});
+    document.querySelectorAll('input[name="uifont"]').forEach(function(i){{ i.checked = (i.value === s.uifont); }});
+    document.querySelectorAll('input[name="contrast"]').forEach(function(i){{ i.checked = (i.value === s.contrast); }});
+    var m = el('optMotion'), u = el('optUnderline');
+    if(m) m.checked = !!s.motion;
+    if(u) u.checked = !!s.underline;
+  }}
+  var a11yState = a11yLoad();
+  a11yApply(a11yState);
+  a11ySync(a11yState);
+
+  var a11yBtn = el('a11yBtn'), a11yPanel = el('a11yPanel');
+  function a11yOpen(v){{
+    a11yPanel.hidden = !v;
+    a11yBtn.setAttribute('aria-expanded', v ? 'true' : 'false');
+    if(v){{ var f = a11yPanel.querySelector('input'); if(f) f.focus(); }}
+  }}
+  a11yBtn.addEventListener('click', function(){{ a11yOpen(a11yPanel.hidden); }});
+  document.addEventListener('keydown', function(e){{
+    if(e.key === 'Escape' && !a11yPanel.hidden){{ a11yOpen(false); a11yBtn.focus(); }}
+  }});
+  document.addEventListener('click', function(e){{
+    if(a11yPanel.hidden) return;
+    if(!a11yPanel.contains(e.target) && e.target !== a11yBtn && !a11yBtn.contains(e.target)) a11yOpen(false);
+  }});
+  a11yPanel.addEventListener('focusout', function(e){{
+    if(!a11yPanel.contains(e.relatedTarget) && e.relatedTarget !== a11yBtn) a11yOpen(false);
+  }});
+  var LBL = {{uiscale:'Text size', uifont:'Typeface', contrast:'Contrast'}};
+  ['uiscale','uifont','contrast'].forEach(function(name){{
+    document.querySelectorAll('input[name="' + name + '"]').forEach(function(i){{
+      i.addEventListener('change', function(){{
+        a11yState[name] = i.value;
+        a11ySave(a11yState);
+        a11yApply(a11yState, LBL[name] + ' set to ' + i.parentNode.textContent.trim());
+      }});
+    }});
+  }});
+  el('optMotion').addEventListener('change', function(){{
+    a11yState.motion = this.checked; a11ySave(a11yState);
+    a11yApply(a11yState, this.checked ? 'Motion reduced' : 'Motion follows your system setting');
+  }});
+  el('optUnderline').addEventListener('change', function(){{
+    a11yState.underline = this.checked; a11ySave(a11yState);
+    a11yApply(a11yState, this.checked ? 'Links underlined' : 'Link underlines off');
+  }});
+  el('a11yReset').addEventListener('click', function(){{
+    a11yState = Object.assign({{}}, a11yDefaults);
+    a11ySave(a11yState); a11ySync(a11yState);
+    a11yApply(a11yState, 'Display settings reset to defaults');
+  }});
+
+  /* keep scroll-padding in step with the sticky header, which changes height
+     when the nav wraps or the text size is raised */
+  function syncHeaderHeight(){{
+    var h = document.querySelector('header.appbar');
+    if(h) document.documentElement.style.setProperty('--hdr-h', Math.ceil(h.getBoundingClientRect().height + 10) + 'px');
+  }}
+  syncHeaderHeight();
+  window.addEventListener('resize', syncHeaderHeight);
+  window.addEventListener('cvrn:a11y', function(){{ setTimeout(syncHeaderHeight, 40); }});
 
   route();
 

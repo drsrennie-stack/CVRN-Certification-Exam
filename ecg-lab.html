@@ -71,15 +71,15 @@ select,input[type="text"],input[type="number"]{
   font-family:inherit;font-size:14px;padding:9px 11px;border-radius:9px;min-height:42px;width:100%
 }
 .btnrow{display:flex;gap:8px;flex-wrap:wrap}
-button.act{
+button.act,a.act{
   background:var(--panel-2);border:1px solid var(--line);color:var(--ink);
   font-family:inherit;font-size:14px;font-weight:600;padding:10px 16px;border-radius:9px;cursor:pointer;min-height:42px;
   transition:transform 200ms ease,box-shadow 200ms ease,border-color 200ms ease,background 200ms ease
 }
-button.act:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+button.act:hover,a.act:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
 button.act[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
-button.primary{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
-button.primary:hover{background:var(--acc2);border-color:var(--acc2);color:var(--onacc)}
+button.primary,a.primary{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
+button.primary:hover,a.primary:hover{background:var(--acc2);border-color:var(--acc2);color:var(--onacc)}
 
 .monitorShell{display:grid;grid-template-columns:1fr 190px;gap:14px}
 @media(max-width:860px){.monitorShell{grid-template-columns:1fr}}
@@ -131,7 +131,7 @@ button.primary:hover{background:var(--acc2);border-color:var(--acc2);color:var(-
 
 .mastery{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
 .mCard{background:var(--panel-2);border:1px solid var(--line);border-radius:11px;padding:14px}
-.mCard[data-state="locked"]{border-style:dashed;border-color:var(--ink-mute);opacity:.62}
+.mCard[data-state="locked"]{border-style:dashed;border-color:var(--ink-mute)}
 .mCard[data-state="unlocked"]{border-color:var(--gold)}
 .mCard[data-state="done"]{border-color:var(--ink);background:var(--panel-3)}
 .mCard h3{margin:0 0 3px;font-size:14px}
@@ -162,8 +162,8 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 .num{background:#0B1530;border:1px solid rgba(255,255,255,.10);border-radius:11px;padding:9px 12px 10px;position:relative}
 .num .k{font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;letter-spacing:.13em;text-transform:uppercase;font-weight:700;display:flex;justify-content:space-between;align-items:center}
 .num .v{font-size:38px;font-weight:800;line-height:1.02;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
-.num .u{font-size:11px;font-weight:600;opacity:.62;margin-left:5px}
-.num .x{font-size:10.5px;opacity:.66;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:.05em}
+.num .u{font-size:11px;font-weight:600;opacity:1;margin-left:5px}
+.num .x{font-size:11px;opacity:1;font-family:'Plus Jakarta Sans',sans-serif;letter-spacing:.05em}
 .num[data-ch="ecg"]{color:#66BB6A} .num[data-ch="ecg"] .k{color:#66BB6A}
 .num[data-ch="spo2"]{color:#4FC3F7} .num[data-ch="spo2"] .k{color:#4FC3F7}
 .num[data-ch="art"]{color:#EF5350} .num[data-ch="art"] .k{color:#EF5350}
@@ -250,6 +250,22 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   .tabs .tab{white-space:nowrap;flex:0 0 auto}
   .toolbar{flex-wrap:wrap}
 }
+
+/* ---- tab row: the tablist holds tabs only, so the view toggle sits beside it ---- */
+.tabrow{display:flex;align-items:center;gap:12px;margin:0 0 20px;border-bottom:1px solid var(--line);padding-bottom:14px;flex-wrap:wrap}
+.tabrow .tabs{margin:0;border-bottom:0;padding-bottom:0;flex:1 1 auto;min-width:0}
+.tabrow > .act{flex:0 0 auto;margin-left:auto}
+@media (max-width:700px){ .tabrow{gap:8px} .tabrow > .act{margin-left:0} }
+
+.h3like{font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-weight:600;font-size:17px;margin:0 0 10px;color:var(--terra-hi)}
+
+/* ---- tracing description ---- */
+.trDesc{margin:8px 0 0;border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--panel)}
+.trDesc[hidden]{display:none}
+.trDescName{margin:0 0 8px;font-weight:800;font-size:15px;color:var(--ink)}
+.trDescList{margin:0;padding-left:22px}
+.trDescList li{font-size:14.5px;line-height:1.6;margin-bottom:6px;color:var(--ink)}
+.trDescNote{margin:8px 0 0;font-size:13px;color:var(--ink-soft)}
 </style>
 </head>
 <body>
@@ -265,18 +281,20 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 
 <main id="main">
 
-<div class="tabs" role="tablist" aria-label="Lab sections">
-  <button class="tab" role="tab" id="tab-mon" aria-controls="p-mon" aria-selected="true">Monitor</button>
-  <button class="tab" role="tab" id="tab-12" aria-controls="p-12" aria-selected="false">12-Lead</button>
-  <button class="tab" role="tab" id="tab-pr" aria-controls="p-pr" aria-selected="false">Practice</button>
-  <button class="tab" role="tab" id="tab-bp" aria-controls="p-bp" aria-selected="false">IABP</button>
-  <button class="tab" role="tab" id="tab-pg" aria-controls="p-pg" aria-selected="false">Practical gap finder</button>
-  <button class="tab" role="tab" id="tab-ms" aria-controls="p-ms" aria-selected="false">Mastery</button>
-  <button class="act" id="paperBtn" aria-pressed="false" style="margin-left:auto">Monitor view</button>
+<div class="tabrow">
+  <div class="tabs" role="tablist" aria-label="Lab sections">
+    <button class="tab" role="tab" id="tab-mon" aria-controls="p-mon" aria-selected="true" tabindex="0">Monitor</button>
+    <button class="tab" role="tab" id="tab-12" aria-controls="p-12" aria-selected="false" tabindex="-1">12-Lead</button>
+    <button class="tab" role="tab" id="tab-pr" aria-controls="p-pr" aria-selected="false" tabindex="-1">Practice</button>
+    <button class="tab" role="tab" id="tab-bp" aria-controls="p-bp" aria-selected="false" tabindex="-1">IABP</button>
+    <button class="tab" role="tab" id="tab-pg" aria-controls="p-pg" aria-selected="false" tabindex="-1">Practical gap finder</button>
+    <button class="tab" role="tab" id="tab-ms" aria-controls="p-ms" aria-selected="false" tabindex="-1">Mastery</button>
+  </div>
+  <button class="act" id="paperBtn" aria-pressed="false">Monitor view</button>
 </div>
 
 <!-- ============ MONITOR ============ -->
-<section class="panel" id="p-mon" role="tabpanel" aria-labelledby="tab-mon">
+<section class="panel" id="p-mon" role="tabpanel" tabindex="0" aria-labelledby="tab-mon">
   <div class="toolbar">
     <div class="field">
       <label for="rhySel">Rhythm</label>
@@ -303,7 +321,8 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 
   <div class="mon-shell">
     <div class="mon-screen" id="screen" data-frozen="0">
-      <canvas id="mon" width="1680" height="640" role="img" aria-label="Live critical care monitor: electrocardiogram lead two, pulse oximetry plethysmograph, and arterial pressure waveform"></canvas>
+      <canvas id="mon" width="1680" height="640" role="img" aria-describedby="monDesc"
+        aria-label="Live critical care monitor: electrocardiogram lead two, pulse oximetry plethysmograph, and arterial pressure waveform"></canvas>
       <div class="mon-alarm" id="alarmBar" role="status" aria-live="assertive"></div>
       <span class="mon-frozen">Frozen</span>
     </div>
@@ -335,7 +354,12 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   </div>
 
   <div class="readout">
-    <h3>Caliper measurement</h3>
+  <div class="btnrow" style="margin:12px 0 0">
+    <button class="act" id="monDescBtn" type="button" aria-expanded="false" aria-controls="monDesc">Describe this tracing</button>
+  </div>
+  <div class="trDesc" id="monDesc" hidden></div>
+
+    <h2 class="h3like">Caliper measurement</h2>
     <dl aria-live="polite" id="measOut">
       <div><dt>Interval</dt><dd id="mMs">not set</dd></div>
       <div><dt>Small boxes</dt><dd id="mBox">not set</dd></div>
@@ -347,7 +371,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 </section>
 
 <!-- ============ 12-LEAD ============ -->
-<section class="panel" id="p-12" role="tabpanel" aria-labelledby="tab-12" hidden>
+<section class="panel" id="p-12" role="tabpanel" tabindex="0" aria-labelledby="tab-12" hidden>
   <div class="toolbar">
     <div class="field" style="min-width:250px">
       <label for="patSel">Pattern</label>
@@ -359,7 +383,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   </div>
   <div class="leadGrid" id="leadGrid"></div>
   <div class="leadCell stripCell">
-    <canvas id="rhythmStrip" width="1600" height="200" role="img" aria-label="Rhythm strip, lead two"></canvas>
+    <canvas id="rhythmStrip" width="1600" height="200" role="img" aria-describedby="findBody" aria-label="Rhythm strip, lead two"></canvas>
     <span class="nm">II</span>
   </div>
   <div class="q" id="findBox" hidden>
@@ -370,7 +394,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 </section>
 
 <!-- ============ PRACTICE ============ -->
-<section class="panel" id="p-pr" role="tabpanel" aria-labelledby="tab-pr" hidden>
+<section class="panel" id="p-pr" role="tabpanel" tabindex="0" aria-labelledby="tab-pr" hidden>
   <div class="toolbar">
     <div class="field" style="min-width:300px">
       <label for="dokSel">Depth level</label>
@@ -385,14 +409,16 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   </div>
 
   <div class="screen" id="pScreen" data-frozen="1" style="margin-bottom:4px">
-    <canvas id="pMon" width="1600" height="380" role="img" aria-label="Practice electrocardiogram strip"></canvas>
+    <canvas id="pMon" width="1600" height="380" role="img" aria-describedby="prDesc" aria-label="Practice electrocardiogram strip"></canvas>
     <span class="leadTag" id="pLeadTag">Lead II</span>
     <span class="calTag">25 mm/s &middot; 10 mm/mV</span>
   </div>
   <div class="btnrow" style="margin:10px 0 0">
     <button class="act" id="pCalBtn" aria-pressed="false">Calipers</button>
     <span class="hint" id="pMeas" aria-live="polite" style="align-self:center;margin:0">no measurement yet</span>
+    <button class="act" id="prDescBtn" type="button" aria-expanded="false" aria-controls="prDesc">Describe this tracing</button>
   </div>
+  <div class="trDesc" id="prDesc" hidden></div>
 
   <div id="caseLeads" hidden style="margin-top:14px"></div>
 
@@ -410,7 +436,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 </section>
 
 <!-- ============ IABP WAVEFORM LAB ============ -->
-<section class="panel" id="p-bp" role="tabpanel" aria-labelledby="tab-bp" hidden>
+<section class="panel" id="p-bp" role="tabpanel" tabindex="0" aria-labelledby="tab-bp" hidden>
 
   <div class="toolbar">
     <div class="field" style="min-width:320px">
@@ -437,7 +463,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   </div>
 
   <div class="screen" data-frozen="1" style="margin-bottom:4px">
-    <canvas id="bpCan" width="1700" height="620" role="img" aria-label="Intra-aortic balloon pump arterial pressure waveform with a lead two rhythm strip above it"></canvas>
+    <canvas id="bpCan" width="1700" height="620" role="img" aria-describedby="bpTeach" aria-label="Intra-aortic balloon pump arterial pressure waveform with a lead two rhythm strip above it"></canvas>
   </div>
 
   <div class="q" id="bpTeach">
@@ -467,7 +493,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 </section>
 
 <!-- ============ PRACTICAL GAP FINDER ============ -->
-<section class="panel" id="p-pg" role="tabpanel" aria-labelledby="tab-pg" hidden>
+<section class="panel" id="p-pg" role="tabpanel" tabindex="0" aria-labelledby="tab-pg" hidden>
 
   <div class="q" id="pgIntro">
     <h2 style="margin-top:0">Practical gap finder</h2>
@@ -483,14 +509,16 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   <div id="pgStage" hidden>
     <p class="eyebrow" id="pgProg"></p>
     <div class="screen" id="pgScreen" data-frozen="1" style="margin-bottom:4px">
-      <canvas id="pgMon" width="1600" height="380" role="img" aria-label="Practical gap finder electrocardiogram strip"></canvas>
+      <canvas id="pgMon" width="1600" height="380" role="img" aria-describedby="pgDesc" aria-label="Practical gap finder electrocardiogram strip"></canvas>
       <span class="leadTag">Lead II</span>
       <span class="calTag">25 mm/s &middot; 10 mm/mV</span>
     </div>
     <div class="btnrow" id="pgCalRow" style="margin:10px 0 0">
       <button class="act" id="pgCalBtn" aria-pressed="false">Calipers</button>
+      <button class="act" id="pgDescBtn" type="button" aria-expanded="false" aria-controls="pgDesc">Describe this tracing</button>
       <span class="hint" id="pgMeas" aria-live="polite" style="align-self:center;margin:0">no measurement yet</span>
     </div>
+    <div class="trDesc" id="pgDesc" hidden></div>
     <div id="pgLeads" hidden style="margin-top:14px"></div>
     <div class="q">
       <p class="qstem" id="pgStem"></p>
@@ -509,7 +537,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 </section>
 
 <!-- ============ MASTERY ============ -->
-<section class="panel" id="p-ms" role="tabpanel" aria-labelledby="tab-ms" hidden>
+<section class="panel" id="p-ms" role="tabpanel" tabindex="0" aria-labelledby="tab-ms" hidden>
   <h2>ECG spine mastery</h2>
   <p class="usage" style="margin-bottom:18px">These five strands are the ECG spine from the competency framework. They write to the same browser store Mastery OS reads, so progress here shows up on the main dashboard.</p>
   <div class="mastery" id="mastery"></div>
@@ -579,22 +607,11 @@ var G = {
   tPeak:    [{a:0.78,mu:0,sig:0.028}],
   tFlat:    [{a:0.10,mu:0,sig:0.050}]
 };
-function gsum(dt, set, scale, sigScale){
-  var v=0, i, g, sg;
-  for(i=0;i<set.length;i++){
-    g=set[i]; sg = g.sig*(sigScale||1);
-    v += g.a*Math.exp(-((dt-g.mu)*(dt-g.mu))/(2*sg*sg));
-  }
+function gsum(dt, set, scale){
+  var v=0, i, g;
+  for(i=0;i<set.length;i++){ g=set[i]; v += g.a*Math.exp(-((dt-g.mu)*(dt-g.mu))/(2*g.sig*g.sig)); }
   return v*(scale==null?1:scale);
 }
-
-/* The QT interval tracks the heart rate. Holding it at a fixed 0.30 s pushed
-   the T wave into the following P at fast rates, which erased the P wave from
-   sinus tachycardia and left a tracing that was indistinguishable from SVT.
-   Bazett solved for QT rather than QTc, with the T narrowing to match, since
-   a short QT with a wide T is not a shape that exists. */
-function qtFor(rr){ var q = 0.36*Math.sqrt(rr); return q<0.21 ? 0.21 : (q>0.42 ? 0.42 : q); }
-function twFor(qt){ var w = qt/0.30; return w<0.56 ? 0.56 : (w>1.22 ? 1.22 : w); }
 
 /* A beat: {t (s, P anchor or QRS anchor), pm, qm, tm, pr, qt, scale, spike} */
 function beatValue(t, b){
@@ -602,7 +619,7 @@ function beatValue(t, b){
   if(b.pm){ v += gsum(t-b.t, G[b.pm], b.pScale||1); }
   var q0 = b.t + (b.pm ? b.pr : 0);
   v += gsum(t-q0, G[b.qm], b.scale||1);
-  if(b.tm){ v += gsum(t-(q0+b.qt), G[b.tm], b.tScale||1, b.tw||1); }
+  if(b.tm){ v += gsum(t-(q0+b.qt), G[b.tm], b.tScale||1); }
   if(b.st){ /* ST shift held between QRS end and T peak */
     var s0=q0+0.09, s1=q0+b.qt;
     if(t>s0 && t<s1){ v += b.st*Math.min(1,(t-s0)/0.03)*Math.min(1,(s1-t)/0.05); }
@@ -639,12 +656,7 @@ function sinusBuilder(o){
   return function(list, t, rate, st){
     var rr = 60/rate;
     if(o.resp){ rr = rr*(1 + o.resp*Math.sin(t*0.9)); }
-    var qt = qtFor(rr);
-    /* P waves grow a little with sinus tachycardia, which is part of why a
-       sinus P stays findable at 120 to 150 while SVT has none at all. */
-    var ps = rate>100 ? 1.40 : 1;
-    list.push({t:t, pm:o.pm||'p', qm:o.qm||'qrs', tm:o.tm||'t', pr:o.pr||0.16,
-               qt:qt, tw:twFor(qt), pScale:ps, st:st});
+    list.push({t:t, pm:o.pm||'p', qm:o.qm||'qrs', tm:o.tm||'t', pr:o.pr||0.16, qt:0.30, st:st});
     return t + rr;
   };
 }
@@ -653,13 +665,13 @@ function wenckebach(list,t,rate,st){
   var prs=[0.16,0.22,0.30,null];
   var pr = prs[n%4];
   if(pr===null){ list.push({t:t, pm:'p', qm:null, tm:null, pr:0, qt:0, drop:true}); }
-  else { var wq=qtFor(rr); list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:pr, qt:wq, tw:twFor(wq), st:st}); }
+  else { list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:pr, qt:0.30, st:st}); }
   wenckebach.n=n+1; return t+rr;
 }
 function mobitzII(list,t,rate,st){
   var rr=60/rate; var n = mobitzII.n = ((mobitzII.n||0));
   if(n%3===2){ list.push({t:t, pm:'p', qm:null, tm:null, pr:0, qt:0, drop:true}); }
-  else { var mq=qtFor(rr); list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.18, qt:mq, tw:twFor(mq), st:st}); }
+  else { list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.18, qt:0.30, st:st}); }
   mobitzII.n=n+1; return t+rr;
 }
 function completeBlock(list,t,rate,st){
@@ -671,7 +683,7 @@ function completeBlock(list,t,rate,st){
 }
 function afib(list,t,rate,st){
   var base=60/rate, rr = base*(0.62 + Math.random()*0.78);
-  var fq=qtFor(rr); list.push({t:t, pm:null, qm:'qrs', tm:'t', pr:0, qt:fq, tw:twFor(fq), st:st, fib:true});
+  list.push({t:t, pm:null, qm:'qrs', tm:'t', pr:0, qt:0.30, st:st, fib:true});
   return t+rr;
 }
 function aflutter(list,t,rate,st){
@@ -688,7 +700,7 @@ function svt(list,t,rate,st){
   return t+60/rate;
 }
 function junctional(list,t,rate,st){
-  var jq=qtFor(60/rate); list.push({t:t, pm:'pInv', qm:'qrsJunc', tm:'t', pr:0.09, qt:jq, tw:twFor(jq), st:st});
+  list.push({t:t, pm:'pInv', qm:'qrsJunc', tm:'t', pr:0.09, qt:0.30, st:st});
   return t+60/rate;
 }
 function pvcs(list,t,rate,st){
@@ -697,8 +709,7 @@ function pvcs(list,t,rate,st){
     list.push({t:t, pm:null, qm:'qrsVent', tm:'tInv', pr:0, qt:0.34, scale:0.95});
     pvcs.n=n+1; return t+rr*1.85;
   }
-  var vq=qtFor(rr);
-  list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.16, qt:vq, tw:twFor(vq), st:st});
+  list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.16, qt:0.30, st:st});
   pvcs.n=n+1; return t+rr;
 }
 function bigeminy(list,t,rate,st){
@@ -707,8 +718,7 @@ function bigeminy(list,t,rate,st){
     list.push({t:t, pm:null, qm:'qrsVent', tm:'tInv', pr:0, qt:0.34, scale:0.95});
     bigeminy.n=n+1; return t+rr*1.25;
   }
-  var bq=qtFor(rr);
-  list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.16, qt:bq, tw:twFor(bq), st:st});
+  list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.16, qt:0.30, st:st});
   bigeminy.n=n+1; return t+rr*0.78;
 }
 function vtach(list,t,rate,st){
@@ -1070,7 +1080,11 @@ Calipers.prototype.build=function(){
       var step = e.shiftKey ? 1 : 6;
       if(e.key==='ArrowLeft'){ self[k]=Math.max(0,self[k]-step); e.preventDefault(); self.draw(); }
       if(e.key==='ArrowRight'){ self[k]=Math.min(self.c.width,self[k]+step); e.preventDefault(); self.draw(); }
+      if(e.key==='Home'){ self[k]=0; e.preventDefault(); self.draw(); }
+      if(e.key==='End'){ self[k]=self.c.width; e.preventDefault(); self.draw(); }
     });
+    h.addEventListener('focus', function(){ h.style.outline='3px solid var(--acc)'; h.style.outlineOffset='2px'; });
+    h.addEventListener('blur',  function(){ h.style.outline='none'; });
     h.addEventListener('pointerdown', function(e){ self.drag=k; h.setPointerCapture(e.pointerId); e.preventDefault(); });
     h.addEventListener('pointermove', function(e){
       if(self.drag!==k) return;
@@ -1187,17 +1201,34 @@ function record(id, correct, confident){
 
 /* ---- tabs ---- */
 var tabs=[['tab-mon','p-mon'],['tab-12','p-12'],['tab-pr','p-pr'],['tab-bp','p-bp'],['tab-pg','p-pg'],['tab-ms','p-ms']];
-tabs.forEach(function(pair){
-  el(pair[0]).addEventListener('click', function(){
-    tabs.forEach(function(p){
-      var sel = p[0]===pair[0];
-      el(p[0]).setAttribute('aria-selected', sel?'true':'false');
-      el(p[1]).hidden = !sel;
-    });
-    if(pair[0]==='tab-12') draw12();
-    if(pair[0]==='tab-ms') renderMastery();
-    if(pair[0]==='tab-pg') pgFormNote();
-    if(pair[0]==='tab-bp') bpAll();
+/* ARIA authoring practices tab pattern: one stop in the tab order for the whole
+   tab list, arrow keys to move between tabs, Home and End to jump to the ends.
+   Without the roving tabindex a keyboard user has to tab through every tab to
+   reach the panel, which on this page is six extra stops on every visit. */
+function selectTab(id, focusIt){
+  tabs.forEach(function(pr){
+    var sel = pr[0]===id, t=el(pr[0]);
+    t.setAttribute('aria-selected', sel?'true':'false');
+    t.setAttribute('tabindex', sel?'0':'-1');
+    el(pr[1]).hidden = !sel;
+  });
+  if(focusIt) el(id).focus();
+  if(id==='tab-12') draw12();
+  if(id==='tab-ms') renderMastery();
+  if(id==='tab-pg') pgFormNote();
+  if(id==='tab-bp') bpAll();
+}
+tabs.forEach(function(pair, i){
+  var t=el(pair[0]);
+  t.addEventListener('click', function(){ selectTab(pair[0], false); });
+  t.addEventListener('keydown', function(e){
+    var k=e.key, n=null;
+    if(k==='ArrowRight'||k==='ArrowDown') n=(i+1)%tabs.length;
+    else if(k==='ArrowLeft'||k==='ArrowUp') n=(i-1+tabs.length)%tabs.length;
+    else if(k==='Home') n=0;
+    else if(k==='End') n=tabs.length-1;
+    else return;
+    e.preventDefault(); selectTab(tabs[n][0], true);
   });
 });
 el('paperBtn').addEventListener('click', function(){
@@ -1236,6 +1267,7 @@ function baseBP(k){
   return BPBASE[k];
 }
 function setRhythm(k){
+  setTimeout(function(){ refreshDesc('mon'); },0);
   var r = parseInt(el('rateIn').value,10);
   mon.stream = new Stream(k, (r && r>=20 && r<=250) ? r : null);
   mon.gain = parseFloat(el('gainSel').value);
@@ -1330,9 +1362,35 @@ function loop(ts){
   mon.step(dt);
   requestAnimationFrame(loop);
 }
-var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-if(reduce){ running=false; mon.running=false; el('runBtn').textContent='Run'; el('screen').setAttribute('data-frozen','1'); mon.renderStatic(); }
-else { requestAnimationFrame(loop); }
+function motionReduced(){
+  if(document.documentElement.getAttribute('data-motion')==='reduce') return true;
+  return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+}
+var ecgWanted = true;
+function applyMotion(){
+  if(!motionReduced()) return;
+  running=false; mon.running=false;
+  el('runBtn').textContent='Run';
+  el('screen').setAttribute('data-frozen','1');
+  mon.renderStatic();
+}
+applyMotion();
+/* The accessibility panel lives in the shell. These two are the only settings
+   that change what the canvases draw, so the lab listens for them and repaints
+   rather than waiting for the next resize. */
+window.addEventListener('cvrn:a11y', function(){
+  var wasReduced = !running;
+  applyMotion();
+  /* turning motion back on restarts the sweep the user had stopped */
+  if(wasReduced && !motionReduced() && ecgWanted){
+    running=true; mon.running=true;
+    el('runBtn').textContent='Freeze';
+    el('screen').setAttribute('data-frozen','0');
+    lastTs=null; requestAnimationFrame(loop);
+  }
+  setTimeout(function(){ try{ refitAll(); }catch(e){} }, 30);
+});
+if(!motionReduced()) requestAnimationFrame(loop);
 setRhythm('nsr'); mon.running=running;
 
 /* ---- 12-lead ---- */
@@ -1408,10 +1466,6 @@ el('pCalBtn').addEventListener('click', function(){ pcal.toggle(); this.setAttri
 var Q=null, chosen=null, conf=null;
 
 var BANK1=[
-  {r:'tach', a:'Sinus tachycardia', d:['Supraventricular tachycardia','Atrial flutter with 2 to 1 conduction','Atrial tachycardia'],
-   why:'Regular, narrow, and about 126, with an upright P wave in front of every QRS. The P is the whole answer. Two things separate this from SVT. First, sinus tachycardia has visible sinus P waves and SVT has none, because the reentry circuit does not depolarize the atria from the sinus node. Second, rate. Sinus tachycardia in an adult rarely exceeds 220 minus age and usually sits between 100 and 150, while SVT typically runs 150 to 250. At 126 with clear P waves, this is sinus. Look at the QT as well: it shortens as the rate rises, and that is what leaves room for the P wave to be seen.', s:'ecg-e2'},
-  {r:'svt', a:'Supraventricular tachycardia', d:['Sinus tachycardia','Monomorphic ventricular tachycardia','Atrial fibrillation with rapid ventricular response'],
-   why:'Regular, narrow, and about 186, with no identifiable P waves. Sinus tachycardia at this rate would still show a P before every QRS, and it rarely climbs this high in an adult at rest. Ventricular tachycardia is wide, not narrow. Atrial fibrillation is irregularly irregular. The clinical difference matters: sinus tachycardia is a response to something and you treat the cause, while SVT is the problem itself and you treat the rhythm with vagal maneuvers, adenosine, or cardioversion.', s:'ecg-e2'},
   {r:'afib', a:'Atrial fibrillation', d:['Atrial flutter','Multifocal atrial tachycardia','Sinus arrhythmia'],
    why:'Irregularly irregular with no organized P waves and a fibrillatory baseline. Flutter is regular or regularly irregular with sawtooth waves at about 300 per minute. Multifocal atrial tachycardia has P waves, just three or more shapes of them.', s:'ecg-e2'},
   {r:'aflut', a:'Atrial flutter with 2 to 1 conduction', d:['Sinus tachycardia','Supraventricular tachycardia','Atrial fibrillation'],
@@ -1477,6 +1531,8 @@ var BANK4=[
 ];
 
 function pickQ(){
+  setTimeout(function(){ refreshDesc('pr'); var b=el('prDescBtn'), x=el('prDesc');
+    if(b&&x){ x.hidden=true; b.setAttribute('aria-expanded','false'); b.textContent='Describe this tracing'; } },0);
   var dok = el('dokSel').value;
   chosen=null; conf=null;
   el('fb').hidden=true; el('confRow').hidden=false;
@@ -1705,6 +1761,8 @@ function pgRender(){
     body.appendChild(ul);
   }
   el('pgSubmit').textContent='Submit';
+  setTimeout(function(){ refreshDesc('pg'); var b=el('pgDescBtn'), x=el('pgDesc');
+    if(b&&x){ x.hidden=true; b.setAttribute('aria-expanded','false'); b.textContent='Describe this tracing'; } },0);
   Array.prototype.forEach.call(el('pgConf').querySelectorAll('[data-pgconf]'), function(b){ b.style.display=''; });
   var pgLab=el('pgConf').querySelector('.lab'); if(pgLab) pgLab.style.display='';
   el('pgStage').scrollIntoView && el('pgStage').scrollIntoView({block:'start'});
@@ -2141,6 +2199,242 @@ function refitAll(){
 }
 window.addEventListener('resize', function(){ clearTimeout(_rsz); _rsz=setTimeout(refitAll, 180); });
 window.addEventListener('orientationchange', function(){ setTimeout(refitAll, 300); });
+
+
+/* ============================================================
+   TEXT ALTERNATIVE FOR A TRACING
+
+   A canvas is invisible to a screen reader, so until now a blind
+   or low vision learner got nothing from any strip in this course.
+   Everything below is measured from the beats the engine actually
+   generated, not from a stored sentence, so a description can
+   never drift away from what is on screen.
+
+   Two modes. Naming mode is for the monitor, where the rhythm is
+   already chosen from a labelled control and saying it again costs
+   nothing. Findings mode is for practice and gap finder items,
+   where naming the rhythm would hand over the answer. Findings
+   mode gives exactly what a sighted learner gets from looking:
+   rate, regularity, P waves, intervals, QRS width, and anything
+   unusual about the baseline.
+   ============================================================ */
+function msRound(x, step){ return Math.round(x/step)*step; }
+
+function measureStream(key, seconds){
+  var st = new Stream(key);
+  st.fill(seconds || 10);
+  var beats = st.beats.filter(function(b){ return b.t <= (seconds||10); });
+  var qrsB = beats.filter(function(b){ return b.qm && !b.drop && !b.pOnly && !b.flat && !b.chaos; });
+  var out = {
+    key:key, name:(RHYTHMS[key]||{}).name || key,
+    chaos: beats.some(function(b){ return b.chaos; }),
+    flat: beats.length>0 && beats.every(function(b){ return b.flat; }),
+    fib: beats.some(function(b){ return b.fib; }),
+    flut: beats.some(function(b){ return b.flut; }),
+    paced: beats.some(function(b){ return b.spike; }),
+    dropped: beats.filter(function(b){ return b.drop; }).length,
+    pOnly: beats.filter(function(b){ return b.pOnly; }).length,
+    n: qrsB.length
+  };
+  /* rate and regularity from the R to R intervals actually drawn */
+  var rr = [];
+  for(var i=1;i<qrsB.length;i++) rr.push(qrsB[i].t - qrsB[i-1].t);
+  if(rr.length){
+    var mean = rr.reduce(function(a,v){return a+v;},0)/rr.length;
+    var lo = Math.min.apply(null, rr), hi = Math.max.apply(null, rr);
+    out.rate = Math.round(60/mean);
+    out.rateLo = Math.round(60/hi); out.rateHi = Math.round(60/lo);
+    out.spread = mean>0 ? (hi-lo)/mean : 0;
+  }
+  /* P waves and PR */
+  var withP = qrsB.filter(function(b){ return b.pm; });
+  out.pCount = withP.length + out.dropped;
+  out.pInverted = withP.length>0 && withP.every(function(b){ return b.pm==='pInv'; });
+  var prs = withP.map(function(b){ return b.pr; }).filter(function(v){ return v>0; });
+  if(prs.length){
+    out.prMin = Math.round(Math.min.apply(null,prs)*1000);
+    out.prMax = Math.round(Math.max.apply(null,prs)*1000);
+    out.prVaries = (out.prMax - out.prMin) > 25;
+  }
+  /* QRS width from the morphology the engine selected */
+  var wideFlags = qrsB.map(function(b){ return (b.qm==='qrsWide' || b.qm==='qrsVent') ? 1 : 0; });
+  var wide = wideFlags.reduce(function(a,v){ return a+v; }, 0);
+  out.alternating = wideFlags.length > 5 && wideFlags.every(function(v,i){ return i===0 || v !== wideFlags[i-1]; });
+  out.everyThird = wideFlags.length > 5 && !out.alternating &&
+    wideFlags.every(function(v,i){ return v === (i % 3 === 1 ? 1 : 0); });
+  out.wideAll = out.n>0 && wide === out.n;
+  out.wideSome = wide>0 && wide < out.n;
+  out.wideCount = wide;
+  out.qrsMs = out.wideAll ? 150 : (out.wideSome ? null : 90);
+  var qts = qrsB.map(function(b){ return b.qt; }).filter(function(v){ return v>0; });
+  if(qts.length) out.qtMs = msRound(qts.reduce(function(a,v){return a+v;},0)/qts.length*1000, 10);
+  /* atrial rate where there is organised atrial activity independent of the QRS */
+  if(key==='aflut') out.atrialRate = 300;
+  else if(key==='chb' || key==='mobitz2' || key==='wenck') out.atrialRate = out.rate ? null : null;
+  return out;
+}
+
+function regularityWord(m){
+  if(m.spread == null) return 'regular';
+  /* A dropped beat makes the R to R spread large, but the rhythm underneath is
+     regular and the irregularity repeats in a pattern. Calling that
+     irregularly irregular would point a learner straight at atrial
+     fibrillation, which is the opposite of what the strip shows. */
+  if(m.dropped > 0) return 'regular apart from the dropped beats, which produces group beating';
+  if(m.wideSome) return 'regular except where an early wide beat interrupts it, each followed by a pause';
+  if(m.spread < 0.10) return 'regular';
+  if(m.spread < 0.22) return 'slightly irregular';
+  return 'irregularly irregular';
+}
+
+/* Returns {summary, lines[]}. summary is one sentence for an aria-label,
+   lines is the ordered detail for the visible description block. */
+function describeRhythm(key, reveal){
+  var m = measureStream(key, 10);
+  var L = [];
+  if(m.flat){
+    return {summary:'A flat line with no electrical activity.',
+            lines:['The baseline is flat for the whole strip.',
+                   'There are no P waves, no QRS complexes, and no T waves.',
+                   'Confirm in a second lead and check the patient before treating the monitor.'],
+            name:m.name, reveal:!!reveal};
+  }
+  if(m.chaos){
+    return {summary:'A chaotic undulating baseline with no identifiable complexes.',
+            lines:['The baseline is chaotic and constantly changing in amplitude and direction.',
+                   'No P waves, QRS complexes or T waves can be identified.',
+                   'No rate can be measured, because there is nothing organised to measure between.'],
+            name:m.name, reveal:!!reveal};
+  }
+  /* rate */
+  if(m.spread != null && m.spread >= 0.22 && m.rateLo && m.rateHi && !m.dropped && !m.wideSome){
+    L.push('Ventricular rate averages about ' + m.rate + ' per minute, ranging from roughly ' +
+           m.rateLo + ' to ' + m.rateHi + '.');
+  } else if(m.rate){
+    L.push('Ventricular rate is about ' + m.rate + ' per minute.');
+  }
+  L.push('The rhythm is ' + regularityWord(m) + '.');
+  /* atrial activity */
+  if(m.flut){
+    L.push('There are no discrete P waves. The baseline carries a continuous sawtooth at about 300 per minute, with no flat segment between the waves.');
+  } else if(m.fib){
+    L.push('There are no P waves. The baseline is a fine, wandering, irregular fibrillatory line.');
+  } else if(m.pOnly > 0){
+    L.push('P waves are present and march out at their own regular rate, faster than the QRS rate.');
+    L.push('They have no fixed relationship to the QRS complexes. Some fall on T waves, some just after a QRS, and the PR interval is different on every beat. The atria and the ventricles are beating independently.');
+  } else if(m.pCount === 0){
+    L.push('No P waves are visible in front of the QRS complexes.');
+  } else if(m.pInverted){
+    L.push('P waves are inverted and sit close in front of the QRS, with a short PR of about ' + (m.prMin||90) + ' ms.');
+  } else if(m.dropped > 0 && m.prVaries){
+    L.push('Every QRS is preceded by a P wave, and there are ' + m.dropped + ' extra P waves that are not followed by a QRS.');
+    L.push('The PR interval lengthens progressively from about ' + m.prMin + ' ms to about ' + m.prMax +
+           ' ms across consecutive beats, then a QRS is dropped and the cycle restarts.');
+  } else if(m.dropped > 0){
+    L.push('Every conducted QRS is preceded by a P wave, and ' + m.dropped +
+           ' P waves are not followed by a QRS.');
+    if(m.prMin != null) L.push('The PR interval on conducted beats is constant at about ' + m.prMin + ' ms and does not lengthen before the dropped beat.');
+  } else if(m.prMin != null){
+    if(m.prMin > 200) L.push('Every QRS is preceded by an upright P wave. The PR interval is long, about ' + m.prMin + ' ms, and constant.');
+    else L.push('Every QRS is preceded by an upright P wave, with a PR interval of about ' + m.prMin + ' ms.');
+  }
+  /* QRS */
+  if(m.wideAll) L.push('Every QRS is wide, about 150 ms, and abnormally shaped.');
+  else if(m.wideSome && m.alternating) L.push('The complexes alternate. Every second beat is early, wide and bizarre with no P wave in front of it, and each one is followed by a pause before the next normal beat.');
+  else if(m.wideSome && m.everyThird) L.push('Every third beat is early, wide and bizarre with no P wave in front of it, and each one is followed by a pause.');
+  else if(m.wideSome) L.push('Most complexes are narrow at about 90 ms. ' + m.wideCount +
+                             ' beats on the strip are wide and bizarre with no preceding P wave, and each is followed by a pause.');
+  else L.push('The QRS is narrow, about 90 ms.');
+  if(m.paced) L.push('A sharp vertical pacing spike precedes each wide QRS.');
+  if(m.qtMs && !m.wideAll) L.push('The QT interval measures about ' + m.qtMs + ' ms at this rate.');
+  if(key==='torsade') L.push('The QRS axis twists around the baseline, so the complexes grow and shrink in a repeating spindle pattern.');
+  if(key==='hyperk') L.push('T waves are tall, narrow based and peaked, and the P waves are flattened.');
+  var summary = (m.rate ? 'About ' + m.rate + ' per minute, ' : '') + regularityWord(m) + ', ' +
+                (m.wideAll ? 'wide QRS' : (m.wideSome ? 'mostly narrow QRS with wide ectopic beats' : 'narrow QRS')) + '. ' +
+                (m.flut ? 'Sawtooth baseline, no P waves.' :
+                 m.fib ? 'Fibrillatory baseline, no P waves.' :
+                 m.pCount===0 ? 'No P waves.' : 'P waves present.');
+  return {summary:summary, lines:L, name:m.name, reveal:!!reveal};
+}
+
+function describeToHtml(d){
+  var h = '';
+  if(d.reveal && d.name) h += '<p class="trDescName">' + d.name + '</p>';
+  h += '<ol class="trDescList">' + d.lines.map(function(x){ return '<li>' + x + '</li>'; }).join('') + '</ol>';
+  if(!d.reveal) h += '<p class="trDescNote">These are the findings on the strip. Naming the rhythm is the question, so the name is not given here.</p>';
+  return h;
+}
+
+
+/* ---- 12-lead: findings without naming the diagnosis, for question modes ---- */
+function describePattern(key, reveal){
+  var pat = PATTERNS[key]; if(!pat) return {summary:'', lines:[]};
+  var leads = pat.lead(), up = [], down = [], L = [];
+  LEADS.forEach(function(nm){
+    var st = leads[nm] && leads[nm].st || 0;
+    if(st >= 0.15) up.push(nm); else if(st <= -0.10) down.push(nm);
+  });
+  L.push('Rate is about ' + pat.rate + ' per minute.');
+  L.push(pat.qm === 'qrsWide' ? 'The QRS is wide, over 120 ms, in every lead.'
+                              : 'The QRS is narrow, about 80 to 90 ms.');
+  if(up.length) L.push('ST elevation in ' + up.join(', ') + '.');
+  if(down.length) L.push('ST depression in ' + down.join(', ') + '.');
+  if(!up.length && !down.length) L.push('No ST elevation or depression in any lead.');
+  var tallR = LEADS.filter(function(nm){ return nm.charAt(0)==='V' && (leads[nm].q||0) > 0.5 && ['V1','V2','V3'].indexOf(nm)>=0; });
+  if(tallR.length) L.push('Tall R waves in ' + tallR.join(', ') + '.');
+  var invT = LEADS.filter(function(nm){ return (leads[nm].t||0) < 0; });
+  if(invT.length && invT.join()!=='aVR') L.push('Inverted T waves in ' + invT.filter(function(x){return x!=='aVR';}).join(', ') + '.');
+  var d = {summary:'Twelve lead tracing. ' + L.slice(0,3).join(' '), lines:L, name:pat.name, reveal:!!reveal};
+  if(reveal && pat.find) d.lines = d.lines.concat(['Interpretation. ' + pat.find]);
+  return d;
+}
+
+/* ---- disclosure wiring, shared by all three strips ---- */
+function wireDesc(btnId, boxId, getDesc, canvasId){
+  var btn = el(btnId), box = el(boxId);
+  if(!btn || !box) return;
+  function paint(){
+    var d = getDesc();
+    if(!d) return;
+    box.innerHTML = describeToHtml(d);
+    var c = canvasId && el(canvasId);
+    if(c && d.summary){
+      /* the short summary rides on the canvas itself, so a screen reader gets
+         the gist without having to open anything */
+      var base = c.getAttribute('data-baselabel') || c.getAttribute('aria-label') || '';
+      if(!c.getAttribute('data-baselabel')) c.setAttribute('data-baselabel', base);
+      c.setAttribute('aria-label', base + '. ' + d.summary);
+    }
+  }
+  btn.addEventListener('click', function(){
+    var open = box.hidden;
+    if(open) paint();
+    box.hidden = !open;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.textContent = open ? 'Hide description' : 'Describe this tracing';
+  });
+  return {refresh:function(){ paint(); }};
+}
+
+var monDesc = wireDesc('monDescBtn','monDesc', function(){ return describeRhythm(sel.value, true); }, 'mon');
+var prDesc  = wireDesc('prDescBtn','prDesc',  function(){
+  if(Q && Q.q && Q.q.pattern) return describePattern(Q.q.pattern, false);
+  return describeRhythm(pLastR || 'nsr', false);
+}, 'pMon');
+var pgDesc  = wireDesc('pgDescBtn','pgDesc',  function(){
+  var it = PG && PG.items && PG.items[PG.i];
+  if(it && it.pattern) return describePattern(it.pattern, false);
+  return describeRhythm((it && it.rhythm) || pgLastR || 'nsr', false);
+}, 'pgMon');
+
+/* every strip refresh re-renders an open description and the canvas label */
+function refreshDesc(which){
+  var w = which==='mon' ? monDesc : which==='pr' ? prDesc : pgDesc;
+  var box = el(which==='mon'?'monDesc':which==='pr'?'prDesc':'pgDesc');
+  if(!w) return;
+  w.refresh();                       /* always update the canvas aria-label */
+  if(box && box.hidden) box.innerHTML = box.innerHTML;  /* keep it built but hidden */
+}
 
 /* ---- mastery ---- */
 function renderMastery(){

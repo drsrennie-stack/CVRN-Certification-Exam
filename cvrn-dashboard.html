@@ -119,6 +119,24 @@ tbody tr:hover td{background:var(--panel2)}
   tbody tr:hover td{background:transparent}
   .btn:hover{border-color:var(--line);box-shadow:none}
 }
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+
+/* A data table wider than a phone has to scroll somewhere. The wrapper takes
+   the scroll and carries tabindex and a label, so a keyboard user can reach
+   and pan it instead of it simply running off the screen. */
+.tblview,.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+.tblview:focus-visible,.tblwrap:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.tblview table,.tblwrap table{min-width:100%}
+#queue{overflow-x:auto;max-width:100%}
+#queue:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+
+/* Grid and flex children default to min-width:auto, which lets a wide table
+   push its column open instead of scrolling inside it. */
+.dsec,.panel,.grid>*,.dgrid>*,.kpi,.grid2>*,.dsec>*,.legend,.legend span{min-width:0}
+.legend{flex-wrap:wrap}
+.chart,#domChart,#mixChart,#trendChart,#covChart{max-width:100%;overflow-x:auto}
+.chart svg,#domChart svg,#mixChart svg,#trendChart svg,#covChart svg{max-width:100%;height:auto}
 </style>
 </head>
 <body>
@@ -136,8 +154,8 @@ tbody tr:hover td{background:var(--panel2)}
     <h2>Readiness by domain</h2>
     <p class="sub">Bar length is your mastery. Bar color is depth of evidence, palest means barely tested. The number on the right is the domain's share of the exam.</p>
     <div id="domChart"></div>
-    <button class="btn" id="domTbl" aria-pressed="false" style="margin-top:12px">Show as table</button>
-    <div class="tblview" id="domTable" hidden></div>
+    <button class="btn" id="domTbl" aria-pressed="false" aria-controls="domTable" style="margin-top:12px">Show as table</button>
+    <div class="tblview" id="domTable" role="region" aria-label="Readiness by domain, table" tabindex="0" hidden></div>
   </div>
 
   <div>
@@ -146,11 +164,15 @@ tbody tr:hover td{background:var(--panel2)}
       <p class="sub">Every competency in scope, by state.</p>
       <div class="legend" id="mixLegend"></div>
       <div id="mixChart"></div>
+      <button class="btn" id="mixTbl" aria-pressed="false" aria-controls="mixTable" style="margin-top:12px">Show as table</button>
+      <div class="tblview" id="mixTable" role="region" aria-label="Mastery mix, table" tabindex="0" hidden></div>
     </div>
     <div class="panel" style="margin-top:14px">
       <h2>Readiness trend</h2>
       <p class="sub">One point per day you studied.</p>
       <div id="trendChart"></div>
+      <button class="btn" id="trendTbl" aria-pressed="false" aria-controls="trendTable" style="margin-top:12px">Show as table</button>
+      <div class="tblview" id="trendTable" role="region" aria-label="Readiness trend, table" tabindex="0" hidden></div>
     </div>
   </div>
 </div>
@@ -166,13 +188,15 @@ tbody tr:hover td{background:var(--panel2)}
   </div>
   <div id="covChart"></div>
   <p class="sub" id="covNote" style="margin-top:10px"></p>
+  <button class="btn" id="covTbl" aria-pressed="false" aria-controls="covTable" style="margin-top:12px">Show as table</button>
+  <div class="tblview" id="covTable" role="region" aria-label="Exam points at risk, table" tabindex="0" hidden></div>
 </div>
 
 <div class="dsec panel">
   <div class="dsechd">
     <div><h2>Weakness queue</h2><p>Ranked by blueprint weight, severity, time since you touched it, and whether other competencies depend on it.</p></div>
   </div>
-  <div id="queue"></div>
+  <div id="queue" role="region" aria-label="Weakness queue, table" tabindex="0"></div>
   <p class="note" id="queueNote"></p>
 </div>
 
@@ -393,12 +417,24 @@ function renderDomains(){
       +'%</td><td class="wt">'+d.tested+' of '+d.n+'</td><td class="wt">'+d.weight+'%</td></tr>'; }).join('')
     + '</tbody></table>';
 }
-el('domTbl').addEventListener('click', function(){
-  var open = el('domTable').hidden === false;
-  el('domTable').hidden = open;
-  this.setAttribute('aria-pressed', open?'false':'true');
-  this.textContent = open ? 'Show as table' : 'Hide table';
-});
+/* Every chart on this page is an SVG. A screen reader gets the label and
+   nothing else, so each one carries the same figures as a real table that
+   anyone can open. The tables are also what a learner uses when the chart is
+   too small to read, which happens on a phone long before it happens to a
+   screen reader. */
+function wireTable(btnId, tblId){
+  var b=el(btnId); if(!b) return;
+  b.addEventListener('click', function(){
+    var t=el(tblId), open = t.hidden === false;
+    t.hidden = open;
+    this.setAttribute('aria-pressed', open?'false':'true');
+    this.textContent = open ? 'Show as table' : 'Hide table';
+  });
+}
+wireTable('domTbl','domTable');
+wireTable('mixTbl','mixTable');
+wireTable('trendTbl','trendTable');
+wireTable('covTbl','covTable');
 
 /* ---------- mastery mix, ordinal ramp ---------- */
 function renderMix(){
@@ -420,29 +456,46 @@ function renderMix(){
     return '<span><i style="background:'+o.col+'"></i>'+o.label+' '+counts[o.k]
       +' <b style="font-weight:700;color:var(--ink)">'+Math.round(counts[o.k]/mixTotal*100)+'%</b></span>'; }).join('');
 
-  var w=380,h=44,host=el('mixChart'); host.innerHTML='';
+  var w=380,h=50,host=el('mixChart'); host.innerHTML='';
   var s=svg(w,h); s.setAttribute('aria-label','Mastery mix, stacked bar');
   var total=scope.length||1, x=0;
   order.forEach(function(o){
     var seg = counts[o.k]/total*w;
     if(seg<=0) return;
     var gap = 2;                       /* 2px surface gap between fills */
-    var rect=mk('rect',{x:x,y:6,width:Math.max(1,seg-gap),height:20,rx:3,fill:o.col});
+    var rect=mk('rect',{x:x,y:6,width:Math.max(1,seg-gap),height:26,rx:3,fill:o.col});
     hoverable(rect,'<b>'+o.label+'</b><span class="r">'+counts[o.k]+' of '+total+' competencies, '
       +Math.round(counts[o.k]/total*100)+' percent</span>');
     s.appendChild(rect);
     x+=seg;
   });
   host.appendChild(s);
+  el('mixTable').innerHTML = '<table><caption class="sr-only">Mastery mix by state</caption>'
+    + '<thead><tr><th>State</th><th>Competencies</th><th>Share</th></tr></thead><tbody>'
+    + order.map(function(o){ return '<tr><td>'+o.label+'</td><td class="wt">'+counts[o.k]
+        +'</td><td class="wt">'+Math.round(counts[o.k]/mixTotal*100)+'%</td></tr>'; }).join('')
+    + '<tr><td><strong>Total</strong></td><td class="wt"><strong>'+mixTotal+'</strong></td><td class="wt"><strong>100%</strong></td></tr>'
+    + '</tbody></table>';
 }
 
 /* ---------- readiness trend ---------- */
 function renderTrend(){
   var keys=Object.keys(H).sort(), host=el('trendChart'); host.innerHTML='';
+  var tt=el('trendTable'), tb=el('trendTbl');
   if(keys.length<2){
     host.innerHTML='<p class="empty">Two study days will draw a line here. One point is recorded each day you answer something.</p>';
+    if(tt) tt.innerHTML='<p class="empty">Nothing to tabulate yet.</p>';
+    if(tb) tb.hidden=true;
     return;
   }
+  if(tb) tb.hidden=false;
+  if(tt) tt.innerHTML='<table><caption class="sr-only">Readiness by date</caption>'
+    + '<thead><tr><th>Date</th><th>Readiness</th><th>Change</th></tr></thead><tbody>'
+    + keys.map(function(k,i){
+        var d = i ? H[k]-H[keys[i-1]] : 0;
+        return '<tr><td>'+k+'</td><td class="wt">'+H[k]+'%</td><td class="wt">'
+          + (i ? (d>0?'up '+d:(d<0?'down '+Math.abs(d):'no change')) : 'first point') + '</td></tr>'; }).join('')
+    + '</tbody></table>';
   var w=380,h=124,padL=28,padB=20,padT=8;
   var s=svg(w,h); s.setAttribute('aria-label','Readiness over time, line chart');
   var vals=keys.map(function(k){ return H[k]; });
@@ -498,6 +551,14 @@ function renderCoverage(){
   });
   s.appendChild(mk('line',{x1:0,y1:h-padB,x2:w,y2:h-padB,stroke:'var(--grid)','stroke-width':1}));
   host.appendChild(s);
+  el('covTable').innerHTML = '<table><caption class="sr-only">Exam points at risk by domain</caption>'
+    + '<thead><tr><th>Domain</th><th>Points carried</th><th>Points at risk</th><th>Mastery</th></tr></thead><tbody>'
+    + D.map(function(d){ return '<tr><td>'+d.id+' '+d.name+'</td><td class="wt">'+d.weight
+        +'</td><td class="wt">'+(Math.round(d.weight*(1-d.mastery)*10)/10)+'</td><td class="wt">'
+        +Math.round(d.mastery*100)+'%</td></tr>'; }).join('')
+    + '<tr><td><strong>Total</strong></td><td class="wt"><strong>100</strong></td><td class="wt"><strong>'
+    + Math.round(totalRisk) + '</strong></td><td class="wt"></td></tr>'
+    + '</tbody></table>';
   var note=el('covNote');
   if(note) note.textContent='About '+Math.round(totalRisk)+' of 100 exam points are currently at risk across all fourteen domains. '
     + 'That figure falls as mastery rises, and it is the single number worth watching week to week.';

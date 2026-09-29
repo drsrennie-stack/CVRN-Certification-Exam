@@ -328,6 +328,24 @@ footer{margin-top:60px;padding-top:20px;font-size:13.5px;color:var(--ink-muted)}
   .wg-k-ao,.wg-k-lv,.wg-k-la,.wg-k-vol,.wg-ev-l,.wg-snd-l,.wg-wave,.wg-phase,.wg-ax,.wg-lane{fill:#000}
   .wg-div,.wg-grid{stroke:#CCC}
 }
+
+/* Long headings and chapter titles must be allowed to wrap, and every flex or
+   grid child needs min-width:0 or its content sets a floor wider than a phone. */
+.chapter,.chd,.chdmain,.secnav,.secnav li,.secnav a,.toc,.toc li,.toc a,.sec,.secbody,
+.sech,.sectog,.sectitle,.srclist,.srclist li{min-width:0}
+.toc a,.secnav a,.sectog{flex-wrap:wrap}
+.toc .t,.toc .sub,.secnav a,.sectitle,.ceyebrow,h1,h2,h3{overflow-wrap:anywhere;word-break:normal}
+.wgfig,.wgfig svg.wg{max-width:100%}
+table{max-width:100%}
+.tblscroll{overflow-x:auto;max-width:100%}
+
+/* DOI links are one long unbreakable token, so on a phone they set a minimum
+   width wider than the screen. They are allowed to break anywhere. */
+.refs,.refs li,.refs ol,.srclist,.srclist li{min-width:0}
+.refs a,.refs li,.doi,.srclist a,a[href^="http"]{overflow-wrap:anywhere;word-break:break-word}
+.tblscroll{overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
+.tblscroll:focus-visible{outline:3px solid var(--terra-text);outline-offset:3px}
+@media print{ .tblscroll{overflow:visible} }
 </style>
 </head>
 <body>
@@ -1276,6 +1294,25 @@ footer{margin-top:60px;padding-top:20px;font-size:13.5px;color:var(--ink-muted)}
   function sendHeight(){ try{ window.parent.postMessage({id:'cvrn-study-notes',height:document.documentElement.scrollHeight},'*'); }catch(e){} }
   if(window.ResizeObserver) new ResizeObserver(sendHeight).observe(document.body);
   window.addEventListener('load',sendHeight); window.addEventListener('resize',sendHeight);
+})();
+
+/* A data table sets its own minimum width from its content, so on a phone it
+   pushes the whole page sideways. Each one gets a scrollable wrapper that is
+   focusable and labelled, which is the standard way to keep a wide table
+   reachable by keyboard instead of simply letting it run off the screen. */
+(function(){
+  var tables = document.querySelectorAll('table');
+  Array.prototype.forEach.call(tables, function(t){
+    if(t.parentNode && t.parentNode.classList && t.parentNode.classList.contains('tblscroll')) return;
+    var cap = t.querySelector('caption');
+    var w = document.createElement('div');
+    w.className = 'tblscroll';
+    w.setAttribute('role','region');
+    w.setAttribute('tabindex','0');
+    w.setAttribute('aria-label', (cap ? cap.textContent.trim() : 'Table') + ', scrollable');
+    t.parentNode.insertBefore(w, t);
+    w.appendChild(t);
+  });
 })();
 </script>
 </body>

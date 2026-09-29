@@ -60,10 +60,10 @@ h3{font-size:15px;font-weight:700;margin:0 0 8px}
 .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
 .field label{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
 select,input,textarea{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:15px;padding:10px 12px;border-radius:9px;min-height:44px;width:100%}
-button.act{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:14px;font-weight:600;padding:11px 18px;border-radius:9px;cursor:pointer;min-height:44px;transition:transform 200ms,box-shadow 200ms,border-color 200ms,background 200ms}
-button.act:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
-button.primary{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
-button.primary:hover{background:var(--acc2);border-color:var(--acc2);color:var(--onacc)}
+button.act,a.act{background:var(--panel-2);border:1px solid var(--line);color:var(--ink);font-family:inherit;font-size:14px;font-weight:600;padding:11px 18px;border-radius:9px;cursor:pointer;min-height:44px;transition:transform 200ms,box-shadow 200ms,border-color 200ms,background 200ms}
+button.act:hover,a.act:hover{border-color:var(--gold);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+button.primary,a.primary{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
+button.primary:hover,a.primary:hover{background:var(--acc2);border-color:var(--acc2);color:var(--onacc)}
 button.act[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
 .btnrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
 .stat{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px 17px}
@@ -79,10 +79,10 @@ button.act[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);co
 .bar i{display:block;height:100%;background:var(--acc);border-radius:99px;transition:width 400ms ease}
 .dTile{background:var(--panel-2);border:1px solid var(--line);border-radius:12px;padding:15px;transition:transform 200ms,box-shadow 200ms,border-color 200ms}
 .dTile:hover{transform:translateY(-2px);box-shadow:var(--shadow-hover)}
-.dTile[data-state="locked"]{border-style:dashed;border-color:var(--ink-mute);opacity:.6}
+.dTile[data-state="locked"]{border-style:dashed;border-color:var(--ink-mute)}
 .dTile[data-state="unlocked"]{border-color:var(--gold)}
 .dTile[data-state="done"]{border-color:var(--ink);background:var(--panel-3)}
-.dTile .st{font-family:'Plus Jakarta Sans',sans-serif;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute);font-weight:700}
+.dTile .st{font-family:'Plus Jakarta Sans',sans-serif;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);font-weight:700}
 .dTile h3{margin:2px 0 4px;font-size:14px}
 .dTile p{margin:0;font-size:12px;color:var(--ink-mute)}
 table{width:100%;border-collapse:collapse;font-size:14px}
@@ -159,6 +159,12 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
   .tabs .tab{white-space:nowrap;flex:0 0 auto}
   .toolbar{flex-wrap:wrap}
 }
+
+/* ---- tab row: the tablist holds tabs only, so the view toggle sits beside it ---- */
+.tabrow{display:flex;align-items:center;gap:12px;margin:0 0 20px;border-bottom:1px solid var(--line);padding-bottom:14px;flex-wrap:wrap}
+.tabrow .tabs{margin:0;border-bottom:0;padding-bottom:0;flex:1 1 auto;min-width:0}
+.tabrow > .act{flex:0 0 auto;margin-left:auto}
+@media (max-width:700px){ .tabrow{gap:8px} .tabrow > .act{margin-left:0} }
 </style>
 </head>
 <body>
@@ -172,17 +178,19 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 </header>
 
 <main id="main">
-<div class="tabs" role="tablist" aria-label="Sections">
-  <button class="tab" role="tab" id="t-set" aria-controls="p-set" aria-selected="true">Setup</button>
-  <button class="tab" role="tab" id="t-gap" aria-controls="p-gap" aria-selected="false">Gap finder</button>
-  <button class="tab" role="tab" id="t-now" aria-controls="p-now" aria-selected="false">Right now</button>
-  <button class="tab" role="tab" id="t-dash" aria-controls="p-dash" aria-selected="false">Dashboard</button>
-  <button class="tab" role="tab" id="t-ex" aria-controls="p-ex" aria-selected="false">Practice exams</button>
-  <button class="act" id="darkBtn" aria-pressed="false" style="margin-left:auto">Dark mode</button>
+<div class="tabrow">
+  <div class="tabs" role="tablist" aria-label="Sections">
+    <button class="tab" role="tab" id="t-set" aria-controls="p-set" aria-selected="true" tabindex="0">Setup</button>
+    <button class="tab" role="tab" id="t-gap" aria-controls="p-gap" aria-selected="false" tabindex="-1">Gap finder</button>
+    <button class="tab" role="tab" id="t-now" aria-controls="p-now" aria-selected="false" tabindex="-1">Right now</button>
+    <button class="tab" role="tab" id="t-dash" aria-controls="p-dash" aria-selected="false" tabindex="-1">Dashboard</button>
+    <button class="tab" role="tab" id="t-ex" aria-controls="p-ex" aria-selected="false" tabindex="-1">Practice exams</button>
+  </div>
+  <button class="act" id="darkBtn" aria-pressed="false">Dark mode</button>
 </div>
 
 <!-- SETUP -->
-<section class="panel" id="p-set" role="tabpanel" aria-labelledby="t-set">
+<section class="panel" id="p-set" role="tabpanel" tabindex="0" aria-labelledby="t-set">
   <div class="card">
     <h2>Set the target</h2>
     <p class="lede" style="margin-bottom:18px">Everything downstream is computed from these five answers. Change them any time and the plan recalculates.</p>
@@ -246,7 +254,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 </section>
 
 <!-- GAP FINDER -->
-<section class="panel" id="p-gap" role="tabpanel" aria-labelledby="t-gap" hidden>
+<section class="panel" id="p-gap" role="tabpanel" tabindex="0" aria-labelledby="t-gap" hidden>
   <div class="card">
     <h2>Two gap finders, because two things fail independently</h2>
     <p class="lede">Knowing the content and reading a tracing are separate skills. Candidates fail on either one, and a single blended number hides which. So they are run separately, scored separately, and never averaged together. Both draw from their own item pool, and neither touches the reserved practice exam pool, so nothing you see here inflates a later score estimate.</p>
@@ -277,7 +285,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 </section>
 
 <!-- RIGHT NOW -->
-<section class="panel" id="p-now" role="tabpanel" aria-labelledby="t-now" hidden>
+<section class="panel" id="p-now" role="tabpanel" tabindex="0" aria-labelledby="t-now" hidden>
   <div class="card">
     <h2>Right now</h2>
     <p class="lede" id="nowLede">Finish setup and run the gap finder, then this becomes the only screen you need.</p>
@@ -286,7 +294,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 </section>
 
 <!-- DASHBOARD -->
-<section class="panel" id="p-dash" role="tabpanel" aria-labelledby="t-dash" hidden>
+<section class="panel" id="p-dash" role="tabpanel" tabindex="0" aria-labelledby="t-dash" hidden>
   <div class="card">
     <h2>Readiness</h2>
     <div class="grid3" style="margin-top:14px">
@@ -309,7 +317,7 @@ footer{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);color:v
 </section>
 
 <!-- EXAMS -->
-<section class="panel" id="p-ex" role="tabpanel" aria-labelledby="t-ex" hidden>
+<section class="panel" id="p-ex" role="tabpanel" tabindex="0" aria-labelledby="t-ex" hidden>
   <div class="card">
     <h2>Practice exams</h2>
     <p class="lede">Ten forms, each assembled proportional to the ABCM CVRN-BC blueprint from a pool reserved for exams only. No item appears in the practice or recall decks, and no item repeats across forms, so each score is an independent estimate. A full-length form is the honest estimate; the 30-item quick check is for a mid-week read.</p>
@@ -398,12 +406,33 @@ try{ var th=localStorage.getItem('cvrn-theme'); if(th==='on'){ document.document
 
 /* tabs */
 var TABS=[['t-set','p-set'],['t-gap','p-gap'],['t-now','p-now'],['t-dash','p-dash'],['t-ex','p-ex']];
-TABS.forEach(function(pr){ el(pr[0]).addEventListener('click',function(){
-  TABS.forEach(function(q){ var s=q[0]===pr[0]; el(q[0]).setAttribute('aria-selected',s?'true':'false'); el(q[1]).hidden=!s; });
-  if(pr[0]==='t-dash') renderDash();
-  if(pr[0]==='t-now') renderNow();
-  if(pr[0]==='t-ex') renderForms();
-});});
+/* ARIA authoring practices tab pattern, same as the ECG lab: one tab stop for
+   the list, arrow keys between tabs, Home and End to the ends. */
+function selectTab(id, focusIt){
+  TABS.forEach(function(q){
+    var sel=q[0]===id, t=el(q[0]);
+    t.setAttribute('aria-selected', sel?'true':'false');
+    t.setAttribute('tabindex', sel?'0':'-1');
+    el(q[1]).hidden=!sel;
+  });
+  if(focusIt) el(id).focus();
+  if(id==='t-dash') renderDash();
+  if(id==='t-now') renderNow();
+  if(id==='t-ex') renderForms();
+}
+TABS.forEach(function(pr,i){
+  var t=el(pr[0]);
+  t.addEventListener('click', function(){ selectTab(pr[0], false); });
+  t.addEventListener('keydown', function(e){
+    var k=e.key, n=null;
+    if(k==='ArrowRight'||k==='ArrowDown') n=(i+1)%TABS.length;
+    else if(k==='ArrowLeft'||k==='ArrowUp') n=(i-1+TABS.length)%TABS.length;
+    else if(k==='Home') n=0;
+    else if(k==='End') n=TABS.length-1;
+    else return;
+    e.preventDefault(); selectTab(TABS[n][0], true);
+  });
+});
 
 /* ---------- SETUP + PACING ---------- */
 function LV(){ return parseInt(S.level,10); }
