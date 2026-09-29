@@ -579,11 +579,22 @@ var G = {
   tPeak:    [{a:0.78,mu:0,sig:0.028}],
   tFlat:    [{a:0.10,mu:0,sig:0.050}]
 };
-function gsum(dt, set, scale){
-  var v=0, i, g;
-  for(i=0;i<set.length;i++){ g=set[i]; v += g.a*Math.exp(-((dt-g.mu)*(dt-g.mu))/(2*g.sig*g.sig)); }
+function gsum(dt, set, scale, sigScale){
+  var v=0, i, g, sg;
+  for(i=0;i<set.length;i++){
+    g=set[i]; sg = g.sig*(sigScale||1);
+    v += g.a*Math.exp(-((dt-g.mu)*(dt-g.mu))/(2*sg*sg));
+  }
   return v*(scale==null?1:scale);
 }
+
+/* The QT interval tracks the heart rate. Holding it at a fixed 0.30 s pushed
+   the T wave into the following P at fast rates, which erased the P wave from
+   sinus tachycardia and left a tracing that was indistinguishable from SVT.
+   Bazett solved for QT rather than QTc, with the T narrowing to match, since
+   a short QT with a wide T is not a shape that exists. */
+function qtFor(rr){ var q = 0.36*Math.sqrt(rr); return q<0.21 ? 0.21 : (q>0.42 ? 0.42 : q); }
+function twFor(qt){ var w = qt/0.30; return w<0.56 ? 0.56 : (w>1.22 ? 1.22 : w); }
 
 /* A beat: {t (s, P anchor or QRS anchor), pm, qm, tm, pr, qt, scale, spike} */
 function beatValue(t, b){
@@ -591,7 +602,7 @@ function beatValue(t, b){
   if(b.pm){ v += gsum(t-b.t, G[b.pm], b.pScale||1); }
   var q0 = b.t + (b.pm ? b.pr : 0);
   v += gsum(t-q0, G[b.qm], b.scale||1);
-  if(b.tm){ v += gsum(t-(q0+b.qt), G[b.tm], b.tScale||1); }
+  if(b.tm){ v += gsum(t-(q0+b.qt), G[b.tm], b.tScale||1, b.tw||1); }
   if(b.st){ /* ST shift held between QRS end and T peak */
     var s0=q0+0.09, s1=q0+b.qt;
     if(t>s0 && t<s1){ v += b.st*Math.min(1,(t-s0)/0.03)*Math.min(1,(s1-t)/0.05); }
@@ -628,7 +639,12 @@ function sinusBuilder(o){
   return function(list, t, rate, st){
     var rr = 60/rate;
     if(o.resp){ rr = rr*(1 + o.resp*Math.sin(t*0.9)); }
-    list.push({t:t, pm:o.pm||'p', qm:o.qm||'qrs', tm:o.tm||'t', pr:o.pr||0.16, qt:0.30, st:st});
+    var qt = qtFor(rr);
+    /* P waves grow a little with sinus tachycardia, which is part of why a
+       sinus P stays findable at 120 to 150 while SVT has none at all. */
+    var ps = rate>100 ? 1.40 : 1;
+    list.push({t:t, pm:o.pm||'p', qm:o.qm||'qrs', tm:o.tm||'t', pr:o.pr||0.16,
+               qt:qt, tw:twFor(qt), pScale:ps, st:st});
     return t + rr;
   };
 }
@@ -637,13 +653,13 @@ function wenckebach(list,t,rate,st){
   var prs=[0.16,0.22,0.30,null];
   var pr = prs[n%4];
   if(pr===null){ list.push({t:t, pm:'p', qm:null, tm:null, pr:0, qt:0, drop:true}); }
-  else { list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:pr, qt:0.30, st:st}); }
+  else { var wq=qtFor(rr); list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:pr, qt:wq, tw:twFor(wq), st:st}); }
   wenckebach.n=n+1; return t+rr;
 }
 function mobitzII(list,t,rate,st){
   var rr=60/rate; var n = mobitzII.n = ((mobitzII.n||0));
   if(n%3===2){ list.push({t:t, pm:'p', qm:null, tm:null, pr:0, qt:0, drop:true}); }
-  else { list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.18, qt:0.30, st:st}); }
+  else { var mq=qtFor(rr); list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.18, qt:mq, tw:twFor(mq), st:st}); }
   mobitzII.n=n+1; return t+rr;
 }
 function completeBlock(list,t,rate,st){
@@ -655,7 +671,7 @@ function completeBlock(list,t,rate,st){
 }
 function afib(list,t,rate,st){
   var base=60/rate, rr = base*(0.62 + Math.random()*0.78);
-  list.push({t:t, pm:null, qm:'qrs', tm:'t', pr:0, qt:0.30, st:st, fib:true});
+  var fq=qtFor(rr); list.push({t:t, pm:null, qm:'qrs', tm:'t', pr:0, qt:fq, tw:twFor(fq), st:st, fib:true});
   return t+rr;
 }
 function aflutter(list,t,rate,st){
@@ -672,7 +688,7 @@ function svt(list,t,rate,st){
   return t+60/rate;
 }
 function junctional(list,t,rate,st){
-  list.push({t:t, pm:'pInv', qm:'qrsJunc', tm:'t', pr:0.09, qt:0.30, st:st});
+  var jq=qtFor(60/rate); list.push({t:t, pm:'pInv', qm:'qrsJunc', tm:'t', pr:0.09, qt:jq, tw:twFor(jq), st:st});
   return t+60/rate;
 }
 function pvcs(list,t,rate,st){
@@ -681,7 +697,8 @@ function pvcs(list,t,rate,st){
     list.push({t:t, pm:null, qm:'qrsVent', tm:'tInv', pr:0, qt:0.34, scale:0.95});
     pvcs.n=n+1; return t+rr*1.85;
   }
-  list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.16, qt:0.30, st:st});
+  var vq=qtFor(rr);
+  list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.16, qt:vq, tw:twFor(vq), st:st});
   pvcs.n=n+1; return t+rr;
 }
 function bigeminy(list,t,rate,st){
@@ -690,7 +707,8 @@ function bigeminy(list,t,rate,st){
     list.push({t:t, pm:null, qm:'qrsVent', tm:'tInv', pr:0, qt:0.34, scale:0.95});
     bigeminy.n=n+1; return t+rr*1.25;
   }
-  list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.16, qt:0.30, st:st});
+  var bq=qtFor(rr);
+  list.push({t:t, pm:'p', qm:'qrs', tm:'t', pr:0.16, qt:bq, tw:twFor(bq), st:st});
   bigeminy.n=n+1; return t+rr*0.78;
 }
 function vtach(list,t,rate,st){
@@ -1390,6 +1408,10 @@ el('pCalBtn').addEventListener('click', function(){ pcal.toggle(); this.setAttri
 var Q=null, chosen=null, conf=null;
 
 var BANK1=[
+  {r:'tach', a:'Sinus tachycardia', d:['Supraventricular tachycardia','Atrial flutter with 2 to 1 conduction','Atrial tachycardia'],
+   why:'Regular, narrow, and about 126, with an upright P wave in front of every QRS. The P is the whole answer. Two things separate this from SVT. First, sinus tachycardia has visible sinus P waves and SVT has none, because the reentry circuit does not depolarize the atria from the sinus node. Second, rate. Sinus tachycardia in an adult rarely exceeds 220 minus age and usually sits between 100 and 150, while SVT typically runs 150 to 250. At 126 with clear P waves, this is sinus. Look at the QT as well: it shortens as the rate rises, and that is what leaves room for the P wave to be seen.', s:'ecg-e2'},
+  {r:'svt', a:'Supraventricular tachycardia', d:['Sinus tachycardia','Monomorphic ventricular tachycardia','Atrial fibrillation with rapid ventricular response'],
+   why:'Regular, narrow, and about 186, with no identifiable P waves. Sinus tachycardia at this rate would still show a P before every QRS, and it rarely climbs this high in an adult at rest. Ventricular tachycardia is wide, not narrow. Atrial fibrillation is irregularly irregular. The clinical difference matters: sinus tachycardia is a response to something and you treat the cause, while SVT is the problem itself and you treat the rhythm with vagal maneuvers, adenosine, or cardioversion.', s:'ecg-e2'},
   {r:'afib', a:'Atrial fibrillation', d:['Atrial flutter','Multifocal atrial tachycardia','Sinus arrhythmia'],
    why:'Irregularly irregular with no organized P waves and a fibrillatory baseline. Flutter is regular or regularly irregular with sawtooth waves at about 300 per minute. Multifocal atrial tachycardia has P waves, just three or more shapes of them.', s:'ecg-e2'},
   {r:'aflut', a:'Atrial flutter with 2 to 1 conduction', d:['Sinus tachycardia','Supraventricular tachycardia','Atrial fibrillation'],
